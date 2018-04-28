@@ -6,5 +6,5 @@ public interface AccountService {
 	public Account getAccount(String username);
 	public Account getAccount(Long id);
 	public Account createAccount(Account newAccount);
-	public boolean authenticate(String username, String password);
+	public Account authenticate(String username, String password);
 }

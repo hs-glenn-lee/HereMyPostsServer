@@ -8,7 +8,10 @@ public interface SignService {
 	
 	public boolean signup(Account account);
 	
-	public boolean signin(Account account, HttpSession httpSession);
+	/**
+	 * if not valid username and password, this will return null
+	 * */
+	public Account signin(Account account, HttpSession httpSession);
 	
 	public boolean signout(HttpSession session);
 	

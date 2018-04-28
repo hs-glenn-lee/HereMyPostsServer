@@ -2,14 +2,19 @@ package web.model.service.sign;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import web.model.jpa.entities.Account;
+import web.model.service.AccountService;
 
 @Service("signService")
 public class SignServiceImpl implements SignService{
 	
 	private final static String SIGN_KEY = "SIGN";
+	
+	@Autowired
+	AccountService accountService;
 	
 	@Override
 	public boolean signup(Account account) {
@@ -18,12 +23,18 @@ public class SignServiceImpl implements SignService{
 	}
 
 	@Override
-	public boolean signin(Account account, HttpSession httpSession) {
+	public Account signin(Account account, HttpSession httpSession) {
+
+		Account authenicatedAccount = accountService.authenticate(account.getUsername(), account.getPassword());
+		
+		if(authenicatedAccount == null)
+			return null;
+		
 		Sign sign = new Sign();
-		sign.setAccount(account);
+		sign.setAccount(authenicatedAccount);
 		httpSession.setAttribute(SIGN_KEY, sign);
 		
-		return true;
+		return authenicatedAccount;
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService{
 	}
 	
 	@Override
-	public boolean authenticate(String username, String password) {
+	public Account authenticate(String username, String password) {
 		
 		Query q = em.createQuery("SELECT a FROM Account a WHERE a.username = :username and a.password = :password", Account.class);
 		q.setParameter("username", username);
@@ -49,9 +49,9 @@ public class AccountServiceImpl implements AccountService{
 		
 		Account account = (Account) q.getSingleResult();
 		if(account == null) {
-			return false;
+			return null;
 		}else {
-			return true;
+			return account;
 		}
 	}
 

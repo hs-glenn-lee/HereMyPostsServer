@@ -57,7 +57,7 @@ public class AccountController {
 							@RequestParam String password,
 							HttpServletRequest req) {
 		
-		boolean isAuthenticated = accountService.authenticate(username, password);
+/*		boolean isAuthenticated = accountService.authenticate(username, password);
 		if(isAuthenticated) {
 			Account account = accountService.getAccount(username);
 			signService.signin(account, req.getSession());
@@ -65,7 +65,7 @@ public class AccountController {
 			
 		}
 		Sign s = (Sign) req.getSession().getAttribute("SIGN");
-		System.out.println(s.getAccount().getUsername());
+		System.out.println(s.getAccount().getUsername());*/
 		return "account/sign-in";
 	}
 }

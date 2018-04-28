@@ -52,6 +52,11 @@ public class Account implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="author")
 	private Set<Article> articles;
 	
+	public Account(String username, String plainPassword) {
+		
+	}
+	
+	public Account() {}
 
 	public Long getId() {
 		return id;
