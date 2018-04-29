@@ -55,4 +55,19 @@ public class AccountServiceImpl implements AccountService{
 		}
 	}
 
+	@Override
+	public boolean isUniqueNewUsername(String username) {
+		Query q = em.createQuery("SELECT a FROM Account a WHERE a.username = :username", Account.class);
+		q.setParameter("username", username);
+		
+		Account account = (Account) q.getSingleResult();
+		
+		if(account == null) {
+			return true;
+		}else {
+			return false;
+		}		
+		
+	}
+
 }

@@ -17,9 +17,9 @@ public class SignServiceImpl implements SignService{
 	AccountService accountService;
 	
 	@Override
-	public boolean signup(Account account) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean signup(Account newAccount) {
+		accountService.createAccount(newAccount);
+		return true;
 	}
 
 	@Override

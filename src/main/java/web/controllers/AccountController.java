@@ -29,7 +29,7 @@ public class AccountController {
 		return "account/sign-up-form";
 	}
 	
-	@RequestMapping(value="sign-up",method=RequestMethod.POST)
+/*	@RequestMapping(value="sign-up",method=RequestMethod.POST)
 	public String signup(	@RequestParam String email,
 							@RequestParam String password,
 							@RequestParam String username	) {
@@ -44,7 +44,7 @@ public class AccountController {
 		accountService.createAccount(newAccount);
 		
 		return "account/after-sign-up";
-	}
+	}*/
 	
 	@RequestMapping(value="sign-in",method=RequestMethod.GET)
 	public String signinForm() {
@@ -52,12 +52,12 @@ public class AccountController {
 		return "account/sign-in-form";
 	}
 	
-	@RequestMapping(value="sign-in",method=RequestMethod.POST)
+/*	@RequestMapping(value="sign-in",method=RequestMethod.POST)
 	public String signin(	@RequestParam String username,
 							@RequestParam String password,
 							HttpServletRequest req) {
 		
-/*		boolean isAuthenticated = accountService.authenticate(username, password);
+		boolean isAuthenticated = accountService.authenticate(username, password);
 		if(isAuthenticated) {
 			Account account = accountService.getAccount(username);
 			signService.signin(account, req.getSession());
@@ -65,7 +65,7 @@ public class AccountController {
 			
 		}
 		Sign s = (Sign) req.getSession().getAttribute("SIGN");
-		System.out.println(s.getAccount().getUsername());*/
+		System.out.println(s.getAccount().getUsername());
 		return "account/sign-in";
-	}
+	}*/
 }
