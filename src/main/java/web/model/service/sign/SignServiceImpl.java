@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.service.AccountService;
 
@@ -51,11 +52,18 @@ public class SignServiceImpl implements SignService{
 			return true;
 		}
 	}
-
+	/**
+	 * return sign object
+	 * there's no stored sign object in current session throw NotSignedInException
+	 * */
 	@Override
-	public Sign getSign(HttpSession session) {
+	public Sign getSign(HttpSession session) throws NotSignedInException {
 		Sign sign = (Sign) session.getAttribute(SIGN_KEY);
+		if(sign == null)
+			throw new NotSignedInException();
 		return sign;
 	}
+	
+	
 
 }

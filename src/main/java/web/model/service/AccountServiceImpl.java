@@ -1,6 +1,7 @@
 package web.model.service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,28 +47,31 @@ public class AccountServiceImpl implements AccountService{
 		Query q = em.createQuery("SELECT a FROM Account a WHERE a.username = :username and a.password = :password", Account.class);
 		q.setParameter("username", username);
 		q.setParameter("password", password);
-		
-		Account account = (Account) q.getSingleResult();
-		if(account == null) {
-			return null;
-		}else {
+
+		try {
+			Account account = (Account) q.getSingleResult();
 			return account;
+		}catch(NoResultException nre) {
+			return null;
 		}
+		
 	}
 
 	@Override
 	public boolean isUniqueNewUsername(String username) {
 		Query q = em.createQuery("SELECT a FROM Account a WHERE a.username = :username", Account.class);
 		q.setParameter("username", username);
-		
-		Account account = (Account) q.getSingleResult();
-		
-		if(account == null) {
+
+		try {
+			Account account = (Account) q.getSingleResult();
+			if(account == null)
+				return true;
+			else
+				return false;
+		}catch(NoResultException nre) {
 			return true;
-		}else {
-			return false;
-		}		
-		
+		}
+
 	}
 
 }

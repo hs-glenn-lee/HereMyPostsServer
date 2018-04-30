@@ -2,6 +2,7 @@ package web.model.service.sign;
 
 import javax.servlet.http.HttpSession;
 
+import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 
 public interface SignService {
@@ -17,6 +18,6 @@ public interface SignService {
 	
 	public boolean isSignedin(HttpSession httpSession);
 	
-	public Sign getSign(HttpSession session);
+	public Sign getSign(HttpSession session) throws NotSignedInException;
 	
 }

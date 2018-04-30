@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Category;
 import web.model.service.CategoryService;
 import web.model.service.sign.Sign;
@@ -41,7 +42,7 @@ public class CategoryController {
 	public ModelAndView createCategory(ModelMap model, HttpServletRequest req,
 										@RequestParam String id,
 										@RequestParam String name,
-										@RequestParam String parentId) {
+										@RequestParam String parentId) throws NotSignedInException {
 		
 		Category cat = new Category();
 		cat.setId(id);
@@ -58,7 +59,7 @@ public class CategoryController {
 	
 	
 	@RequestMapping(value="myCats",method=RequestMethod.GET)
-	public String myCategories(HttpServletRequest req) {
+	public String myCategories(HttpServletRequest req) throws NotSignedInException {
 		Sign sign = signService.getSign(req.getSession());
 		List<Category> cats = categoryService.getCategoriesOwnedBy(sign.getAccount());
 		for(Category cat : cats) {
@@ -68,4 +69,14 @@ public class CategoryController {
 		return "home";
 	}
 	
+	@RequestMapping(value="myCats",method=RequestMethod.POST)
+	public String errorTest(HttpServletRequest req) throws NotSignedInException {
+		Sign sign = signService.getSign(req.getSession());
+		List<Category> cats = categoryService.getCategoriesOwnedBy(sign.getAccount());
+		for(Category cat : cats) {
+			System.out.println(cat.getId());
+			System.out.println(cat.getName());
+		}
+		return "home";
+	}
 }
