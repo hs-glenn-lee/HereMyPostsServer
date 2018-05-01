@@ -1,33 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE>
-<html>
-<head>
-<link rel="stylesheet" href="/css/reset.css">
-</head>
-<body>
-
-  
-  <main>
-    <div class="site-represenative-display">
-      <img class="represenative-image"/>
-      <a class="start-button"><span>시작하기</span></a>
-    </div>
-
-    <div class="site-preview">
-      <div class="notice-preview">
-        <a class="preview-link"><span>공지사항 더보기</span></a>
-        <p><span class="notice-title">공지사항 제목</span><span class="create-date">2018.01.01</span></p>
-        <p><span class="notice-text-summary">공지사항 요약</span></p>
-      </div>
-      <div class="unit-preview">
-        <div class="unit-status">
-          <span>보유 유닛 </span><span class="unit-quantity">1,000</span><span> 유닛</span>
-        </div>
-        <a class="preview-link">충전하기</a>
-      </div>
-    </div>
-  </main>
-
-</body>
-</html>
+<html><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>here-my-posts</title><link href=/static/css/app.3aba1b2e7f5cd36dba40a81f6e4f21f9.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=/static/js/manifest.2ae2e69a05c33dfc65f8.js></script><script type=text/javascript src=/static/js/vendor.d54d62d1236271f4d303.js></script><script type=text/javascript src=/static/js/app.f04565fe25ee60b35a1d.js></script></body></html>

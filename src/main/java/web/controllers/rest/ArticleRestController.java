@@ -12,5 +12,7 @@ public class ArticleRestController {
 						@PathVariable String articleId) {
 		return "";
 	}
+	
+	
 
 }
