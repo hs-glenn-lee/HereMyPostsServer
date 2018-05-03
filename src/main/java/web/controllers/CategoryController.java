@@ -32,13 +32,13 @@ public class CategoryController {
 	CategoryService categoryService;
 	
 	
-	@RequestMapping(value="create", method=RequestMethod.GET)
+	/*@RequestMapping(value="create", method=RequestMethod.GET)
 	public String createCategoryForm(Model model, HttpServletRequest req) {
 		
 		return "/category/create-category-form";
-	}
+	}*/
 	
-	@RequestMapping(value="create", method=RequestMethod.POST)
+/*	@RequestMapping(value="create", method=RequestMethod.POST)
 	public ModelAndView createCategory(ModelMap model, HttpServletRequest req,
 										@RequestParam String id,
 										@RequestParam String name,
@@ -55,7 +55,7 @@ public class CategoryController {
 		categoryService.create(cat);
 		
 		return new ModelAndView("redirect:/category/myCats");
-	}
+	}*/
 	
 	
 	@RequestMapping(value="myCats",method=RequestMethod.GET)

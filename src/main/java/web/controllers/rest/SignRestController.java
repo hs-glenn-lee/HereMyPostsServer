@@ -9,13 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import web.controllers.rest.responses.GenericResponse;
+import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.service.AccountService;
+import web.model.service.sign.Sign;
 import web.model.service.sign.SignService;
 
 @RestController
@@ -55,6 +56,14 @@ public class SignRestController {
 		HashMap<String, Boolean> ret = new HashMap<>();
 		ret.put("isUniqueNewUserName", isUniqueAndNew);
 		return ret;
+	}
+	
+	@RequestMapping(value="/getMyAccount", method=RequestMethod.GET)
+	public Account getMyAccount(HttpServletRequest req) throws NotSignedInException {
+		Sign sign = signService.getSign(req.getSession());
+		Account mine = sign.getAccount();
+		mine.setPassword("");
+		return mine;
 	}
 
 /*	@RequestMapping("/sign-out")
