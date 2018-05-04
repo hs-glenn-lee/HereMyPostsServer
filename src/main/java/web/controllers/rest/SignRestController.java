@@ -20,6 +20,7 @@ import web.model.service.sign.Sign;
 import web.model.service.sign.SignService;
 
 @RestController
+@RequestMapping(value="/api", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class SignRestController {
 	
 	@Autowired
@@ -28,7 +29,7 @@ public class SignRestController {
 	@Autowired
 	AccountService accountSerivce;
 	
-	@RequestMapping(value="/sign-in", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value="/sign-in", method=RequestMethod.POST)
 	public GenericResponse<?> signin(@RequestBody Account trying,
 													HttpServletRequest req) {
 		Account account = signService.signin(trying, req.getSession());
@@ -38,6 +39,7 @@ public class SignRestController {
 		}else {
 			GenericResponse<Account> gr = new GenericResponse<Account>();
 			gr.setStatus(GenericResponse.STATUS_SUCCESS);
+			account.setPassword("");
 			gr.setData(account);
 			return gr;
 		}

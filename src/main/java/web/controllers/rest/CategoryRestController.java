@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,7 @@ import web.model.service.sign.Sign;
 import web.model.service.sign.SignService;
 
 @RestController
+@RequestMapping(value="/api", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class CategoryRestController {
 	
 	@Autowired
