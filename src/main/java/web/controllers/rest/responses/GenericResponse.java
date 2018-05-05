@@ -3,7 +3,7 @@ package web.controllers.rest.responses;
 public class GenericResponse<T> {
 	
 	public static final String STATUS_FAIL = "fail";
-	public static final String STATUS_SUCCESS = "scuess";
+	public static final String STATUS_SUCCESS = "success";
 	
 	private String status = STATUS_SUCCESS;
 	private String message;
