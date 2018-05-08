@@ -23,7 +23,7 @@ public class CORSConfiguration extends WebMvcConfigurerAdapter{
 		
 		if(activeSpringProfiles.equals("development")) {
 			 registry.addMapping("/**")
-             .allowedMethods("GET", "POST")
+             .allowedMethods("GET", "POST", "PUT")
              .allowedOrigins("http://localhost:8081");
 		}
     }
