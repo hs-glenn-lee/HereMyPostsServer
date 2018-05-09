@@ -38,7 +38,7 @@ public class CategoryRestController {
 	}
 	
 	
-	@RequestMapping(value="/category/all", method=RequestMethod.POST)
+	@RequestMapping(value="/category/all", method=RequestMethod.GET)
 	public List<Category> all(Account account) {
 		List<Category> catList = categoryService.getCategoriesOwnedBy(account);
 		return catList;
