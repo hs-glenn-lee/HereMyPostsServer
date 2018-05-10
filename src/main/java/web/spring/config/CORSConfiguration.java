@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * 프론트엔드에서 ajax 사용을위한 CORS설정
  * */
 @Configuration
-@EnableWebMvc
+//@EnableWebMVC 이거떄문에 view resolving 안됐었다. mvc-anntation-driven과 비슷한 의미라하니 기존 설정이 먹지 않도록 하게 하는듯
 public class CORSConfiguration extends WebMvcConfigurerAdapter{
 	
 	@Value("${spring.profiles.active}")
@@ -22,7 +22,7 @@ public class CORSConfiguration extends WebMvcConfigurerAdapter{
 			return;
 		
 		if(activeSpringProfiles.equals("development")) {
-			 registry.addMapping("/**")
+			 registry.addMapping("/api/**")
              .allowedMethods("GET", "POST", "PUT")
              .allowedOrigins("http://localhost:8081");
 		}

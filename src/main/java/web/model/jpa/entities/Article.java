@@ -43,10 +43,14 @@ public class Article {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateTimestamp;
 	
-	@Column(name="is_valid")
+	@Column(name="is_del")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	private Boolean isValid = true;
-	
+	private Boolean isDel = true;
+
+	@Column(name="is_public")
+	@Type(type="org.hibernate.type.NumericBooleanType")
+	private Boolean isPublic = true;
+
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
@@ -111,13 +115,6 @@ public class Article {
 		this.updateTimestamp = updateTimestamp;
 	}
 
-	public Boolean getIsValid() {
-		return isValid;
-	}
-
-	public void setIsValid(Boolean isValid) {
-		this.isValid = isValid;
-	}
 
 	public Category getCategory() {
 		return category;
@@ -135,7 +132,29 @@ public class Article {
 		this.author = author;
 	}
 
+	public String getContentFilePath() {
+		return contentFilePath;
+	}
 
+	public void setContentFilePath(String contentFilePath) {
+		this.contentFilePath = contentFilePath;
+	}
+
+	public Boolean getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Boolean isDel) {
+		this.isDel = isDel;
+	}
+
+	public Boolean getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(Boolean isPublic) {
+		this.isPublic = isPublic;
+	}
 	
 	public String toString() {
 		String ret = "id: " + id + ", "
@@ -145,7 +164,7 @@ public class Article {
 					+ "readCount : " + readCount  + ","
 					+ "createTimestamp;: " + createTimestamp + ","
 					+ "updateTimestamp;: " + updateTimestamp + ","
-					+ "isValid : " + isValid;
+					;
 		return ret;
 		
 	}

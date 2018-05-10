@@ -28,6 +28,14 @@ public class Category {
 	@Column(name="seq")
 	Integer seq;
 	
+	public Set<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(Set<Article> articles) {
+		this.articles = articles;
+	}
+
 	@ManyToOne
 	@JoinColumn(name="owner_id")
 	Account account;

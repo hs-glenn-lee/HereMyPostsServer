@@ -22,7 +22,7 @@ public class RootController {
 	
 	@RequestMapping(value="sign-in", method=RequestMethod.GET)
 	public String signIn(Model model) {
-		String v = testService.getValue(0);
+		String v = testService.getValue(0); 
 		return "index";
 	}
 	
