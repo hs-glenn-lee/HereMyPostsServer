@@ -35,6 +35,10 @@ public class SignServiceImpl implements SignService{
 		sign.setAccount(authenicatedAccount);
 		httpSession.setAttribute(SIGN_KEY, sign);
 		
+		sign = (Sign) httpSession.getAttribute(SIGN_KEY);
+		System.out.println(sign.getAccount());
+		System.out.println(httpSession.getId());
+		
 		return authenicatedAccount;
 	}
 
@@ -58,6 +62,7 @@ public class SignServiceImpl implements SignService{
 	 * */
 	@Override
 	public Sign getSign(HttpSession session) throws NotSignedInException {
+		System.out.println(session.getId());
 		Sign sign = (Sign) session.getAttribute(SIGN_KEY);
 		if(sign == null)
 			throw new NotSignedInException();

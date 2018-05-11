@@ -2,7 +2,7 @@ package web.controllers.rest;
 
 import java.util.List;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +29,7 @@ public class CategoryRestController {
 	SignService signService;
 	
 	@RequestMapping(value="/category/create", method=RequestMethod.POST)
-	public Category all(Category category, HttpServletRequest req) throws NotSignedInException {
+	public Category create(Category category, HttpServletRequest req) throws NotSignedInException {
 		Sign sign = signService.getSign(req.getSession());
 		Account curAcc = sign.getAccount();
 		Category newwest = categoryService.create(category);
@@ -39,8 +39,10 @@ public class CategoryRestController {
 	
 	
 	@RequestMapping(value="/category/all", method=RequestMethod.GET)
-	public List<Category> all(Account account) {
-		List<Category> catList = categoryService.getCategoriesOwnedBy(account);
+	public List<Category> getAllMyCategory(HttpServletRequest req) throws NotSignedInException {
+		System.out.println(req.getSession().getId());
+		Sign sign = signService.getSign(req.getSession());
+		List<Category> catList = categoryService.getCategoriesOwnedBy(sign.getAccount());
 		return catList;
 	}
 	

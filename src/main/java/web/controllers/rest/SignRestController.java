@@ -38,7 +38,7 @@ public class SignRestController {
 			return GenericResponse.getFail("일치하는 사용자 정보가 없습니다.");
 		}else {
 			GenericResponse<Account> gr = new GenericResponse<Account>();
-			gr.setStatus(GenericResponse.STATUS_SUCCESS);
+			gr.setStatus(GenericResponse.STATUS_SUCCESS); 
 			account.setPassword("");
 			gr.setData(account);
 			return gr;

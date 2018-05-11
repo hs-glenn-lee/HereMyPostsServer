@@ -50,6 +50,9 @@ public class AccountServiceImpl implements AccountService{
 
 		try {
 			Account account = (Account) q.getSingleResult();
+			System.out.println(account);
+			System.out.println(account.getCategories().size());
+			
 			return account;
 		}catch(NoResultException nre) {
 			return null;
