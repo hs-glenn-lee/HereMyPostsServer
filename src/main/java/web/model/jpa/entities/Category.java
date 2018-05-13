@@ -1,5 +1,6 @@
 package web.model.jpa.entities;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,8 +14,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="categories")
-public class Category {
+public class Category implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5244875034007596637L;
+
 	@Id
 	@Column(name="id")
 	String id;
@@ -36,7 +42,7 @@ public class Category {
 		this.articles = articles;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="owner_id")
 	Account account;
 	

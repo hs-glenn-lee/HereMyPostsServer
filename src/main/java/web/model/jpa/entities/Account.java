@@ -15,7 +15,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+//when jackson convert this object as JSON, this annotation prevent cyclic call like a.b and also b.a
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")	
 @Entity
 @Table(name="accounts")
 public class Account implements Serializable{
