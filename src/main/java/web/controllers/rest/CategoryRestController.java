@@ -40,7 +40,6 @@ public class CategoryRestController {
 	
 	@RequestMapping(value="/category/all", method=RequestMethod.GET)
 	public List<Category> getAllMyCategory(HttpServletRequest req) throws NotSignedInException {
-		System.out.println(req.getSession().getId());
 		Sign sign = signService.getSign(req.getSession());
 		List<Category> catList = categoryService.getCategoriesOwnedBy(sign.getAccount());
 		return catList;

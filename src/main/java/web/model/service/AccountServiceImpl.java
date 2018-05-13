@@ -50,9 +50,8 @@ public class AccountServiceImpl implements AccountService{
 
 		try {
 			Account account = (Account) q.getSingleResult();
-			System.out.println(account);
-			System.out.println(account.getCategories().size());
-			
+			em.detach(account);//왜 eager fetch 되는지 전혀 알수가없다. 나주에 수정
+			account.setCategories(null);
 			return account;
 		}catch(NoResultException nre) {
 			return null;

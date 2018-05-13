@@ -83,5 +83,7 @@ public class Category {
 		this.account = account;
 	}
 	
-	
+	public String toString() {
+		return this.id + " / " + this.name + "/" + this.seq;
+	}
 }
