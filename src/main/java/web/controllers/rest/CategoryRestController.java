@@ -28,7 +28,7 @@ public class CategoryRestController {
 	@Autowired
 	SignService signService;
 	
-	@RequestMapping(value="/category/create", method=RequestMethod.POST)
+	@RequestMapping(value="/category/create", method=RequestMethod.PUT)
 	public Category create(Category category, HttpServletRequest req) throws NotSignedInException {
 		Sign sign = signService.getSign(req.getSession());
 		Account curAcc = sign.getAccount();
