@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name="categories")
 public class Category implements Serializable {
@@ -34,14 +36,14 @@ public class Category implements Serializable {
 	@Column(name="seq")
 	Integer seq;
 	
-	public Set<Article> getArticles() {
-		return articles;
-	}
-
-	public void setArticles(Set<Article> articles) {
-		this.articles = articles;
-	}
-
+	@Column(name="is_del")
+	@Type(type="org.hibernate.type.NumericBooleanType")
+	Boolean isDel;
+	
+	@Column(name="is_public")
+	@Type(type="org.hibernate.type.NumericBooleanType")
+	Boolean isPublic;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="owner_id")
 	Account account;
@@ -89,7 +91,31 @@ public class Category implements Serializable {
 		this.account = account;
 	}
 	
+	public Boolean getIsDel() {
+		return isDel;
+	}
+
+	public void setIsDel(Boolean isDel) {
+		this.isDel = isDel;
+	}
+
+	public Boolean getIsPublic() {
+		return isPublic;
+	}
+
+	public void setIsPublic(Boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+
 	public String toString() {
 		return this.id + " / " + this.name + "/" + this.seq;
+	}
+	
+	public Set<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(Set<Article> articles) {
+		this.articles = articles;
 	}
 }
