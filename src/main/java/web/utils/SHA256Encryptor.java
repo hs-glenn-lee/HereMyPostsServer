@@ -1,4 +1,4 @@
-package web.model.utils;
+package web.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

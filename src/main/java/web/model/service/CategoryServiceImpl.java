@@ -1,7 +1,6 @@
 package web.model.service;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Category;
 import web.model.jpa.repos.CategoryRepo;
+import web.utils.UUIDUtil;
 
 @Service("categoryService")
 public class CategoryServiceImpl implements CategoryService{
@@ -24,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	@Override
 	public Category create(Category category) {
+		category.setId(UUIDUtil.getUUID());
 		return categoryRepo.saveAndFlush(category);
 	}
 

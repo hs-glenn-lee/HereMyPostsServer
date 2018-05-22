@@ -1,4 +1,4 @@
-package web.model.utils;
+package web.utils;
 
 public class UUIDUtil {
 	

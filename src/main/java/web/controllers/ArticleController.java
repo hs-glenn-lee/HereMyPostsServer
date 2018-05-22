@@ -14,7 +14,7 @@ import web.model.jpa.entities.Category;
 import web.model.service.AccountService;
 import web.model.service.CategoryService;
 import web.model.service.article.ArticleService;
-import web.model.utils.UUIDUtil;
+import web.utils.UUIDUtil;
 
 @Controller
 @RequestMapping("/article")
