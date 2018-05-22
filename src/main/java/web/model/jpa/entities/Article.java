@@ -45,11 +45,11 @@ public class Article {
 	
 	@Column(name="is_del")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	private Boolean isDel = true;
+	private Boolean isDel = false;
 
 	@Column(name="is_public")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	private Boolean isPublic = true;
+	private Boolean isPublic = false;
 
 	@ManyToOne
 	@JoinColumn(name="category_id")

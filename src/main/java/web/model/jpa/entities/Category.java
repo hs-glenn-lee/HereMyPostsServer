@@ -38,11 +38,11 @@ public class Category implements Serializable {
 	
 	@Column(name="is_del")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	Boolean isDel;
+	Boolean isDel = false;
 	
 	@Column(name="is_public")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	Boolean isPublic;
+	Boolean isPublic = false;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="owner_id")

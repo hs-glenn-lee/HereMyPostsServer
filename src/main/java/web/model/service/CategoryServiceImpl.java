@@ -24,7 +24,6 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	@Override
 	public Category create(Category category) {
-		category.setId(UUIDUtil.getUUID());
 		return categoryRepo.saveAndFlush(category);
 	}
 
