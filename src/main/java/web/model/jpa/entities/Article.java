@@ -168,6 +168,23 @@ public class Article {
 		return ret;
 		
 	}
+	
+	
+	
+	private String content;	//for convention
+	
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+
+	
+	
+	
 }
 
 
