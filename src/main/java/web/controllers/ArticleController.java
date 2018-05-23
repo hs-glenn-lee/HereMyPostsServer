@@ -1,5 +1,7 @@
 package web.controllers;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class ArticleController {
 						String content,
 						String title,
 						String categoryId
-						) {
+						) throws IOException {
 		
 		
 		

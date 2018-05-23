@@ -1,17 +1,18 @@
 package web.model.service.article;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
-import web.model.jpa.entities.Category;
 import web.model.jpa.repos.ArticleRepo;
+import web.model.service.file.FileStorage;
 
 @Service("articleSerivce")
 public class ArticleServiceImpl implements ArticleService{
@@ -22,17 +23,20 @@ public class ArticleServiceImpl implements ArticleService{
 	@Autowired
 	EntityManager em;
 	
+	@Autowired
+	FileStorage fileStorage;
 	
+	@Transactional
 	@Override
-	public Article write(Article compositeArticle) {
-		return articleRepo.saveAndFlush(compositeArticle);
+	public Article write(Article compositeArticle) throws IOException {
+		fileStorage.writeContentFile(compositeArticle);
+		em.persist(compositeArticle);
+		
+		em.flush();
+		em.close();
+		return compositeArticle;
 	}
 
-	@Override
-	public Article write(Article article, Category category, Account author) {
-		
-		return null;
-	}
 
 	@Override
 	public Article read(String articleId) {
