@@ -23,6 +23,10 @@ public class ArticleFilePolicy extends FilePolicy{
 		return super.getRootPath() + File.separator + this.userId + File.separator + this.articleId;
 	}
 	
+	public String getArticleContentFilePath () {
+		return super.getRootPath() + File.separator + this.userId + File.separator + this.articleId + File.separator + this.articleId;
+	}
+	
 	public String getArticleImagePath() {
 		return super.getRootPath() + File.separator
 				+ this.userId + File.separator

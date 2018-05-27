@@ -28,7 +28,7 @@ public class FileStorageImpl implements FileStorage{
 	@Override
 	public File writeContentFile(Article article) throws IOException {
 		ArticleFilePolicy policy = new ArticleFilePolicy(article);
-		String contentPath = policy.getArticlePath() + article.getId();
+		String contentPath = policy.getArticleContentFilePath();
 		Files.write(Paths.get(contentPath), article.getContent().getBytes(StandardCharsets.UTF_8));
 		return new File(contentPath);
 	}

@@ -108,7 +108,7 @@ public class Category implements Serializable {
 	}
 
 	public String toString() {
-		return this.id + " / " + this.name + "/" + this.seq;
+		return this.id + ", " + this.name + ", " + this.parentId + ", " + this.seq + ", " + this.isDel;
 	}
 	
 	public Set<Article> getArticles() {
@@ -118,4 +118,7 @@ public class Category implements Serializable {
 	public void setArticles(Set<Article> articles) {
 		this.articles = articles;
 	}
+	
+	
+	
 }

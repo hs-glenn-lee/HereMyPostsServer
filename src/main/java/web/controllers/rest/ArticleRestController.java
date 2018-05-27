@@ -1,5 +1,7 @@
 package web.controllers.rest;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,13 @@ public class ArticleRestController {
 	}
 	
 	@RequestMapping(value="/article/save", method=RequestMethod.POST)
-	public String saveArticle(HttpServletRequest req, @RequestBody Article article) {
+	public String saveArticle(HttpServletRequest req, @RequestBody Article article) throws IOException {
 		System.out.println(article);
+		System.out.println(article.getCategory());
+		System.out.println(article.getAuthor());
 		
 		
-		//articleSerivce.write(compositeArticle);
+		articleSerivce.write(article);
 		
 		return "";
 	}
