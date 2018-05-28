@@ -1,6 +1,8 @@
 package web.model.service.file.policies;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import web.model.jpa.entities.Article;
 
@@ -12,26 +14,34 @@ public class ArticleFilePolicy extends FilePolicy{
 
 	private String articleId = null;
 	
-	private Long userId = null;
+	private UserFilePolicy userFile = null;
 	
 	public ArticleFilePolicy(Article article) {
 		this.articleId = article.getId();
-		this.userId = article.getAuthor().getId();
+		this.userFile = new UserFilePolicy(article.getAuthor());
+	}
+
+	public String getArticlePathString() {
+		return userFile.getUserPathString() + File.separator + this.articleId;
 	}
 	
-	public String getArticlePath() {
-		return super.getRootPath() + File.separator + this.userId + File.separator + this.articleId;
+	public String getArticleContentFilePathString () {
+		return userFile.getUserPathString() + File.separator + this.articleId + File.separator + this.articleId + ".html";
 	}
 	
-	public String getArticleContentFilePath () {
-		return super.getRootPath() + File.separator + this.userId + File.separator + this.articleId + File.separator + this.articleId;
+	public String getArticleImagePathString() {
+		return getArticlePathString() + File.separator + "images";
 	}
 	
-	public String getArticleImagePath() {
-		return super.getRootPath() + File.separator
-				+ this.userId + File.separator
-				+ this.articleId + File.separator
-				+ "images";
+	public Path getArticlePath() {
+		return Paths.get(getArticlePathString());
 	}
 	
+	public Path getArticleContentFilePath () {
+		return Paths.get(getArticleContentFilePathString());
+	}
+	
+	public Path getArticleImagePath() {
+		return Paths.get(getArticleImagePathString());
+	}
 }

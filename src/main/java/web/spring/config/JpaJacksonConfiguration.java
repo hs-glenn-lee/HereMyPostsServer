@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module.Feature;
 
 /*
  * Jpa Object의 json 변환중 lazy load 하는 문제를 해결하기 위한 설정
@@ -26,7 +27,10 @@ public class JpaJacksonConfiguration extends WebMvcConfigurerAdapter{
 
         ObjectMapper mapper = new ObjectMapper();
         //Registering Hibernate4Module to support lazy objects
-        mapper.registerModule(new Hibernate4Module());
+        
+        Hibernate4Module hm = new Hibernate4Module();
+        hm.disable(Feature.USE_TRANSIENT_ANNOTATION);//this option is that enable serializing and deserializing of object property which is annotated as jpa:@Transient !!
+        mapper.registerModule(hm);
 
         messageConverter.setObjectMapper(mapper);
         return messageConverter;

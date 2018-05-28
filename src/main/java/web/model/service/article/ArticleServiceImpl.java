@@ -1,5 +1,6 @@
 package web.model.service.article;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import web.model.jpa.entities.Article;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.service.file.FileStorage;
+import web.utils.UUIDUtil;
 
 @Service("articleSerivce")
 public class ArticleServiceImpl implements ArticleService{
@@ -29,7 +31,12 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public Article write(Article compositeArticle) throws IOException {
-		fileStorage.writeContentFile(compositeArticle);
+		//set id of new article
+		compositeArticle.setId(UUIDUtil.getUUID());
+		
+		//write article content file and set its file path
+		File contentFile = fileStorage.writeContentFile(compositeArticle);
+		compositeArticle.setContentFilePath(contentFile.toString());
 		em.persist(compositeArticle);
 		
 		em.flush();
