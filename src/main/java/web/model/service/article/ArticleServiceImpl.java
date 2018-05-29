@@ -2,7 +2,9 @@ package web.model.service.article;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import web.model.jpa.entities.Article;
+import web.model.jpa.entities.Category;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.service.file.FileStorage;
 import web.utils.UUIDUtil;
@@ -69,10 +72,20 @@ public class ArticleServiceImpl implements ArticleService{
 		return null;
 	}
 
+
+
 	@Override
-	public List<Article> getArticlesIn(String categoryId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Article> getArticlesOfCategory(String categoryId) {
+		Category category = em.find(Category.class, categoryId);
+		Set<Article> articles = category.getArticles();
+		
+		em.close();
+		
+		for(Article article : articles) {//this statement prevent loop when serialize object by jackson 
+			article.setCategory(null);
+		}
+		
+		return articles;
 	}
 
 }

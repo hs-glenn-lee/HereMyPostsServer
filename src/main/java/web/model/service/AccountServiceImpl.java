@@ -28,6 +28,8 @@ public class AccountServiceImpl implements AccountService{
 		Query q = em.createQuery("SELECT account FROM Account account WHERE account.username = :username", Account.class);
 		q.setParameter("username", username);
 		Account account = (Account) q.getSingleResult();
+		
+		em.close();
 		return account;
 	}
 

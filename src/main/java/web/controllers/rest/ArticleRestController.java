@@ -1,6 +1,7 @@
 package web.controllers.rest;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,6 +42,10 @@ public class ArticleRestController {
 		return "";
 	}
 	
+	@RequestMapping(value="/article/{categoryId}", method=RequestMethod.GET)
+	public Set<Article> getArticlesOfCategory(HttpServletRequest req, @PathVariable String categoryId) {
+		return articleSerivce.getArticlesOfCategory(categoryId);
+	}
 	
 
 }
