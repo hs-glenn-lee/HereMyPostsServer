@@ -24,25 +24,21 @@ public class ArticleRestController {
 	@Autowired
 	ArticleService articleSerivce;
 	
-	@RequestMapping("/{username}/article/{articleId}")
-	public String article(@PathVariable String username,
-						@PathVariable String articleId) {
-		return "";
+	@RequestMapping(value="/article/{articleId}", method=RequestMethod.GET)
+	public Article getArticle(@PathVariable String articleId) throws IOException {
+		return articleSerivce.getArticle(articleId);
 	}
 	
 	@RequestMapping(value="/article/save", method=RequestMethod.POST)
-	public String saveArticle(HttpServletRequest req, @RequestBody Article article) throws IOException {
+	public Article saveArticle(HttpServletRequest req, @RequestBody Article article) throws IOException {
 		System.out.println(article);
 		System.out.println(article.getCategory());
 		System.out.println(article.getAuthor());
-		
-		
-		articleSerivce.write(article);
-		
-		return "";
+
+		return articleSerivce.write(article);
 	}
 	
-	@RequestMapping(value="/article/{categoryId}", method=RequestMethod.GET)
+	@RequestMapping(value="/category/{categoryId}/articles", method=RequestMethod.GET)
 	public Set<Article> getArticlesOfCategory(HttpServletRequest req, @PathVariable String categoryId) {
 		return articleSerivce.getArticlesOfCategory(categoryId);
 	}

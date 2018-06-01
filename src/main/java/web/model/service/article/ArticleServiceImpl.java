@@ -2,7 +2,9 @@ package web.model.service.article;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -61,9 +63,15 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 	@Override
-	public Article getArticle(String articleId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Article getArticle(String articleId) throws IOException {
+		Article article = em.find(Article.class, articleId);
+		article.getCategory();
+		article.getAuthor();
+		
+		File content = fileStorage.getFile(articleId);
+		article.setContent(fileToString(content));
+		em.close();
+		return article;
 	}
 
 	@Override
@@ -88,4 +96,16 @@ public class ArticleServiceImpl implements ArticleService{
 		return articles;
 	}
 
+
+	@Override
+	public String getArticleContent(String articleId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	private String fileToString(File file) throws IOException {
+		byte[] encoded = Files.readAllBytes(file.toPath());
+		return new String(encoded, StandardCharsets.UTF_8);
+	}
 }
