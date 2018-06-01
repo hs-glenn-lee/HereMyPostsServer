@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
 import web.model.jpa.repos.ArticleRepo;
+import web.model.service.file.FilePathMapService;
 import web.model.service.file.FileStorage;
 import web.utils.UUIDUtil;
 
@@ -33,6 +33,9 @@ public class ArticleServiceImpl implements ArticleService{
 	@Autowired
 	FileStorage fileStorage;
 	
+	@Autowired
+	FilePathMapService filePathMapService;
+	
 	@Transactional
 	@Override
 	public Article write(Article compositeArticle) throws IOException {
@@ -42,6 +45,9 @@ public class ArticleServiceImpl implements ArticleService{
 		//write article content file and set its file path
 		File contentFile = fileStorage.writeContentFile(compositeArticle);
 		compositeArticle.setContentFilePath(contentFile.toString());
+		
+		filePathMapService.putFilePathMap(compositeArticle.getId(), compositeArticle.getContentFilePath());
+		
 		em.persist(compositeArticle);
 		
 		em.flush();

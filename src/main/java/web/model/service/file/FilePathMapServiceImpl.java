@@ -1,5 +1,7 @@
 package web.model.service.file;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,22 @@ public class FilePathMapServiceImpl implements FilePathMapService{
 	@Autowired
 	FilePathMapRepo fileMapRepo;
 	
+	@Autowired
+	EntityManager em;
+	
 	@Override
 	public FilePathMap getFilePathMap(String id) {
 		return fileMapRepo.findOne(id);
+	}
+
+	@Override
+	public FilePathMap putFilePathMap(String id, String path) {
+		FilePathMap fpm = new FilePathMap();
+		fpm.setId(id);
+		fpm.setPath(path);
+		em.persist(fpm);
+		em.close();
+		return fpm;
 	}
 	
 }

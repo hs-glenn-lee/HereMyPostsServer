@@ -35,12 +35,10 @@ public class FileStorageImpl implements FileStorage{
 		makeDirsIfNotExists(articlePath);
 		
 		Path contentPath = policy.getArticleContentFilePath();
-		
-		System.out.println(article.getContent());
 		Files.write(contentPath, article.getContent().getBytes(StandardCharsets.UTF_8));
 		
-		article.setContentFilePath(contentPath.toString());
 		
+		article.setContentFilePath(contentPath.toString());
 		return contentPath.toFile();
 	}
 
