@@ -20,13 +20,13 @@ public class RootController {
 		return "index";
 	}
 	
-	@RequestMapping(value="sign-in", method=RequestMethod.GET)
+	@RequestMapping(value="/sign/sign-in", method=RequestMethod.GET)
 	public String signIn(Model model) {
 		String v = testService.getValue(0); 
 		return "index";
 	}
 	
-	@RequestMapping(value="sign-up", method=RequestMethod.GET)
+	@RequestMapping(value="/sign/sign-up", method=RequestMethod.GET)
 	public String signUp(Model model) {
 		String v = testService.getValue(0);
 		return "index";

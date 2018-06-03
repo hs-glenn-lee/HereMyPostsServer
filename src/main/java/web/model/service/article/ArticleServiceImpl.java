@@ -12,6 +12,9 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import web.model.jpa.entities.Article;
@@ -102,6 +105,20 @@ public class ArticleServiceImpl implements ArticleService{
 		return articles;
 	}
 
+	@Override
+	public List<Article> getRecentArticles(String username) {
+		Query query = em.createQuery("select article from Article article where article.author.username = :username");
+		query.setParameter("username", username);
+		int pageNumber = 1;
+		int pageSize = 10;
+		query.setFirstResult((pageNumber-1) * pageSize);
+		query.setMaxResults(pageSize);
+		
+		List<Article> recentArticles = query.getResultList();
+		
+		return recentArticles;
+	}
+	
 
 	@Override
 	public String getArticleContent(String articleId) {

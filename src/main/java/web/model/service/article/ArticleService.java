@@ -1,6 +1,5 @@
 package web.model.service.article;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +13,7 @@ public interface ArticleService {
 	
 	public Article getArticle(String articleId) throws IOException;
 	public String getArticleContent(String articleId);
-	
+	public List<Article> getRecentArticles(String username);
 	public List<Article> getArticlesAuthoredBy(String authorId);
 	public Set<Article> getArticlesOfCategory(String categoryId);
 	

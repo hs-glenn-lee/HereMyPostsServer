@@ -1,6 +1,7 @@
 package web.controllers.rest;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,5 +44,9 @@ public class ArticleRestController {
 		return articleSerivce.getArticlesOfCategory(categoryId);
 	}
 	
+	@RequestMapping(value="/{username}/recent-articles", method=RequestMethod.GET)
+	public List<Article> getRecentArticles(HttpServletRequest req, @PathVariable String username) {
+		return articleSerivce.getRecentArticles(username);
+	}
 
 }
