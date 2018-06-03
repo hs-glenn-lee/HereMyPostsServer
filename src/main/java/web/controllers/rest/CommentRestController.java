@@ -30,13 +30,13 @@ public class CommentRestController {
 		return commentService.getComment(_commentId);
 	}
 	
-	@RequestMapping(value="/comment/write", method=RequestMethod.POST)
+	@RequestMapping(value="/comment/write", method=RequestMethod.PUT)
 	public Comment writeComment(HttpServletRequest req, @RequestBody Comment comment) throws IOException {
 		return commentService.writeComment(comment);
 	}
 	
 	@RequestMapping(value="/article/{articleId}/comments", method=RequestMethod.GET)
-	public Set<Comment> getArticlesOfCategory(HttpServletRequest req, @PathVariable String articleId) {
+	public Set<Comment> getCommentsOfArticle(HttpServletRequest req, @PathVariable String articleId) {
 		return commentService.getComments(articleId);
 	}
 

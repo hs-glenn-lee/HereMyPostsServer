@@ -3,6 +3,7 @@ package web.model.service;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ public class CommentServiceImpl implements CommentService{
 	
 	@Autowired
 	EntityManager em;
-
+	
+	@Transactional
 	@Override
 	public Comment writeComment(Comment comment) {
 		em.persist(comment);
@@ -31,6 +33,9 @@ public class CommentServiceImpl implements CommentService{
 	@Override
 	public Set<Comment> getComments(String articleId) {
 		Article article = em.find(Article.class, articleId);//todo is comments has article??
+		article.getComments();
+		System.out.println(article.getComments().size());
+		em.close();
 		return article.getComments();
 	}
 

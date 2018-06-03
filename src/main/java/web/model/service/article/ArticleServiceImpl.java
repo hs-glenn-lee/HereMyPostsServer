@@ -107,7 +107,9 @@ public class ArticleServiceImpl implements ArticleService{
 
 	@Override
 	public List<Article> getRecentArticles(String username) {
-		Query query = em.createQuery("select article from Article article where article.author.username = :username");
+		Query query = em.createQuery("select article from Article article"
+				+ " where article.author.username = :username "
+				+ " order by article.createTimestamp desc");
 		query.setParameter("username", username);
 		int pageNumber = 1;
 		int pageSize = 10;
@@ -115,7 +117,7 @@ public class ArticleServiceImpl implements ArticleService{
 		query.setMaxResults(pageSize);
 		
 		List<Article> recentArticles = query.getResultList();
-		
+		em.close();
 		return recentArticles;
 	}
 	

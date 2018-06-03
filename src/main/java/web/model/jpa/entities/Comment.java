@@ -28,7 +28,7 @@ public class Comment {
 	private String authorName;
 	
 	@Column(name="author_id")
-	private Long autorId;
+	private Long authorId;
 	
 	@Column(name="content")
 	private String content;
@@ -96,12 +96,12 @@ public class Comment {
 		this.isAnonymous = isAnonymous;
 	}
 
-	public Long getAutorId() {
-		return autorId;
+	public Long getAuthorId() {
+		return authorId;
 	}
 
-	public void setAutorId(Long autorId) {
-		this.autorId = autorId;
+	public void setAuthorId(Long autorId) {
+		this.authorId = autorId;
 	}
 
 	public Date getCreateTimestamp() {
