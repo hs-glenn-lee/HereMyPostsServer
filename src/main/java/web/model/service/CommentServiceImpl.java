@@ -1,14 +1,15 @@
 package web.model.service;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Comment;
 import web.model.jpa.repos.CommentRepo;
 
@@ -31,12 +32,18 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public Set<Comment> getComments(String articleId) {
-		Article article = em.find(Article.class, articleId);//todo is comments has article??
+	public List<Comment> getComments(String articleId) {
+		/*Article article = em.find(Article.class, articleId);//todo is comments has article??
 		article.getComments();
-		System.out.println(article.getComments().size());
+		System.out.println(article.getComments().size());*/
+		
+		Query query = em.createQuery("SELECT c from Comment c join fetch c.article ca"
+				+ "	where ca.id = :articleId ");
+		query.setParameter("articleId", articleId);
+		
+		List<Comment> comments = query.getResultList();
 		em.close();
-		return article.getComments();
+		return comments;
 	}
 
 	@Override

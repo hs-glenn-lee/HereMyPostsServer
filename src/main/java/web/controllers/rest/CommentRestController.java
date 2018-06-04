@@ -1,6 +1,7 @@
 package web.controllers.rest;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +37,9 @@ public class CommentRestController {
 	}
 	
 	@RequestMapping(value="/article/{articleId}/comments", method=RequestMethod.GET)
-	public Set<Comment> getCommentsOfArticle(HttpServletRequest req, @PathVariable String articleId) {
-		return commentService.getComments(articleId);
+	public List<Comment> getCommentsOfArticle(HttpServletRequest req, @PathVariable String articleId) {
+		List<Comment> com = commentService.getComments(articleId);
+		return com;
 	}
 
 }
