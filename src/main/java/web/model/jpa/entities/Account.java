@@ -2,6 +2,7 @@ package web.model.jpa.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -50,11 +51,33 @@ public class Account implements Serializable{
 	
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="account")
-	private Set<Category> categories;
+	private Set<Category> categories = new HashSet<Category>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="author")
-	private Set<Article> articles;
+	private Set<Article> articles = new HashSet<Article>();
 	
+	public Set<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(Set<Article> articles) {
+		this.articles = articles;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="owner")
+	private Set<Series> series = new HashSet<Series>();
+
+
+
+
+	public Set<Series> getSeries() {
+		return series;
+	}
+
+	public void setSeries(Set<Series> series) {
+		this.series = series;
+	}
+
 	public Account(String username, String plainPassword) {
 		
 	}

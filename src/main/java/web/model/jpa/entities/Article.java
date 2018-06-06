@@ -1,6 +1,8 @@
 package web.model.jpa.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -61,10 +63,11 @@ public class Article {
 	@JoinColumn(name="author_id")
 	private Account author;
 
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
 	private Set<Comment> comments;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
+	private List<SeriesArticle> seriesArticle = new ArrayList<SeriesArticle>();
 	
 	public Set<Comment> getComments() {
 		return comments;
@@ -194,6 +197,14 @@ public class Article {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public List<SeriesArticle> getSeriesArticle() {
+		return seriesArticle;
+	}
+
+	public void setSeriesArticle(List<SeriesArticle> seriesArticle) {
+		this.seriesArticle = seriesArticle;
 	}
 
 
