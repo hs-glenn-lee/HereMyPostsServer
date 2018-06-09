@@ -65,17 +65,17 @@ public class Account implements Serializable{
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="owner")
-	private Set<Series> series = new HashSet<Series>();
+	private Set<Tag> tags = new HashSet<Tag>();
 
 
 
 
-	public Set<Series> getSeries() {
-		return series;
+	public Set<Tag> getTags() {
+		return tags;
 	}
 
-	public void setSeries(Set<Series> series) {
-		this.series = series;
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
 	}
 
 	public Account(String username, String plainPassword) {

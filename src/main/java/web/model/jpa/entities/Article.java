@@ -67,8 +67,16 @@ public class Article {
 	private Set<Comment> comments;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
-	private List<SeriesArticle> seriesArticle = new ArrayList<SeriesArticle>();
+	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
 	
+	public List<TagArticle> getTagArticles() {
+		return tagArticles;
+	}
+
+	public void setTagArticles(List<TagArticle> tagArticles) {
+		this.tagArticles = tagArticles;
+	}
+
 	public Set<Comment> getComments() {
 		return comments;
 	}
@@ -199,13 +207,7 @@ public class Article {
 		this.content = content;
 	}
 
-	public List<SeriesArticle> getSeriesArticle() {
-		return seriesArticle;
-	}
 
-	public void setSeriesArticle(List<SeriesArticle> seriesArticle) {
-		this.seriesArticle = seriesArticle;
-	}
 
 
 	

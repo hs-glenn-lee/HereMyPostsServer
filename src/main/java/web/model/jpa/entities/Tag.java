@@ -18,8 +18,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="series")
-public class Series {
+@Table(name="tags")
+public class Tag {
 
 	@Id
 	@Column(name="id")
@@ -36,20 +36,22 @@ public class Series {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateTimestamp;
 	
-	@OneToMany(mappedBy="series")
-	private List<SeriesArticle> seriesArticles = new ArrayList<SeriesArticle>();
+	@OneToMany(mappedBy="tag")
+	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
 	
+	public List<TagArticle> getTagArticles() {
+		return tagArticles;
+	}
+
+	public void setTagArticles(List<TagArticle> tagArticles) {
+		this.tagArticles = tagArticles;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="owner_id")
 	private Account owner;
 	
-	public List<SeriesArticle> getSeriesArticles() {
-		return seriesArticles;
-	}
 
-	public void setSeriesArticles(List<SeriesArticle> seriesArticles) {
-		this.seriesArticles = seriesArticles;
-	}
 
 	public Account getOwner() {
 		return owner;
@@ -94,25 +96,25 @@ public class Series {
 	
 	
 	//convention
-	public void addArticle(Article article) {
-		SeriesArticle seriesArticle = new SeriesArticle(this, article);
-		seriesArticles.add(seriesArticle);
-		article.getSeriesArticle().add(seriesArticle);
+/*	public void addArticle(Article article) {
+		TagArticle seriesArticle = new TagArticle(this, article);
+		tagArticles.add(seriesArticle);
+		article.getTagArticles().add(seriesArticle);
 	}
 
 	public void removeArticle(Article article) {
-		for (Iterator<SeriesArticle> iterator = seriesArticles.iterator(); 
+		for (Iterator<TagArticle> iterator = tagArticles.iterator(); 
 	             iterator.hasNext(); ) {
-				SeriesArticle seriesArticle = iterator.next();
+				TagArticle seriesArticle = iterator.next();
 	 
 	            if (seriesArticle.getSeries().equals(this) &&
 	            		seriesArticle.getArticle().equals(article)) {
 	                iterator.remove();
-	                seriesArticle.getArticle().getSeriesArticle().remove(seriesArticle);
+	                seriesArticle.getArticle().getTagArticles().remove(seriesArticle);
 	                seriesArticle.setSeries(null);
 	                seriesArticle.setArticle(null);
 	            }
 	        }
-	}
+	}*/
 	
 }

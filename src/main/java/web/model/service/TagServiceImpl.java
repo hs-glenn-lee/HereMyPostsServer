@@ -14,26 +14,26 @@ import org.springframework.stereotype.Service;
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
-import web.model.jpa.entities.Series;
-import web.model.jpa.entities.SeriesArticle;
-import web.model.jpa.repos.SeriesRepo;
+import web.model.jpa.entities.Tag;
+import web.model.jpa.entities.TagArticle;
+import web.model.jpa.repos.TagRepo;
 import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
 
 @Service("seriesService")
-public class SeriesServiceImpl  implements SeriesService{
+public class TagServiceImpl  implements TagService{
 	
 	@Autowired
 	EntityManager em;
 	
 	@Autowired
-	SeriesRepo seriesRepo;
+	TagRepo tagRepo;
 	
 	@Autowired
 	SignService signService;
 	
 	@Override
-	public List<Series> getSeriesByUsername(String username) {
+	public List<Tag> getSeriesByUsername(String username) {
 		/*Query query = em.createQuery(
 		"SELECT series from Series series"
 		+ "join fetch Account acc"
@@ -43,21 +43,21 @@ public class SeriesServiceImpl  implements SeriesService{
 		List<Series> series = null;
 		series = query.getResultList();*/
 		
-		return seriesRepo.findByOwnerUsername(username);
+		return tagRepo.findByOwnerUsername(username);
 	}
 	
 	
 	
 	
 	@Override
-	public List<Article> getArticlesBySeriesId(String seriesId) {
+	public List<Article> getArticlesBySeriesId(String tagId) {
 		Query query = em.createQuery(
 				"SELECT articles from Article articles"
-				+ "join fetch SeriesArticle sa"
-				+ "join fetch Series s"
-				+ "where s.id = :seriesId");
+				+ "join fetch TagArticle ta"
+				+ "join fetch Tag tag"
+				+ "where tag.id = :tagId");
 		
-		query.setParameter("seriesId", seriesId);
+		query.setParameter("tagId", tagId);
 		
 		List<Article> articles = null;
 		articles = query.getResultList();
@@ -68,7 +68,7 @@ public class SeriesServiceImpl  implements SeriesService{
 	
 
 	@Override
-	public Series saveSeries(Series series) {
+	public Tag saveSeries(Tag series) {
 		em.persist(series);
 		em.close();
 		return series;
@@ -76,7 +76,7 @@ public class SeriesServiceImpl  implements SeriesService{
 	
 	@Transactional
 	@Override
-	public Series createNewSeries(Series series) {
+	public Tag createNewSeries(Tag series) {
 		series.setId(UUIDUtil.getUUID());
 		em.persist(series);
 		em.close();
@@ -85,7 +85,7 @@ public class SeriesServiceImpl  implements SeriesService{
 	
 	
 	@Override
-	public Series saveSeries(Account owner, Series series) {
+	public Tag saveSeries(Account owner, Tag series) {
 		owner = em.find(Account.class, owner.getId());
 		em.persist(owner);
 
@@ -98,22 +98,22 @@ public class SeriesServiceImpl  implements SeriesService{
 	
 	
 	@Override
-	public void addSeriesArticle(Article article, Series series) {
+	public void addSeriesArticle(Article article, Tag series) {
 		
 	}
 	
 
 	@Override
-	public Series getSeries(String seriesId) {
-		Series series = em.find(Series.class, seriesId);
+	public Tag getSeries(String seriesId) {
+		Tag series = em.find(Tag.class, seriesId);
 		return series;
 	}
 	
 	
 
 	@Override
-	public List<Article> getArticlesOfSeries(Series series) {
-		List<SeriesArticle> sa = em.find(Series.class, series.getId()).getSeriesArticles();
+	public List<Article> getArticlesOfSeries(Tag series) {
+		List<TagArticle> sa = em.find(Tag.class, series.getId()).getTagArticles();
 		
 		
 		return null;
@@ -123,9 +123,19 @@ public class SeriesServiceImpl  implements SeriesService{
 
 
 	@Override
-	public List<Series> findMySeriesByPage(HttpSession session, Pageable pageable) throws NotSignedInException {
+	public List<Tag> findMySeriesByPage(HttpSession session, Pageable pageable) throws NotSignedInException {
 		Account me = signService.getSign(session).getAccount();
-		List<Series> seriesList = seriesRepo.findMySeriesByPage(me.getId(), pageable);
+		List<Tag> seriesList = tagRepo.findMyTagsByPage(me.getId(), pageable);
+		return seriesList;
+	}
+
+
+
+
+	@Override
+	public List<Tag> findAllMySeries(HttpSession session) throws NotSignedInException {
+		Account me = signService.getSign(session).getAccount();
+		List<Tag> seriesList = tagRepo.findAllMyTags(me.getId());
 		return seriesList;
 	}
 

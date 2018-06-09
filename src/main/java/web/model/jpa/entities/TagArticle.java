@@ -8,8 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="series_articles")
-public class SeriesArticle {
+@Table(name="tags_articles")
+public class TagArticle {
 	
 	@Id
 	@Column(name="id")
@@ -23,15 +23,15 @@ public class SeriesArticle {
 	private Article article;
 	
 	@ManyToOne
-	@JoinColumn(name="series_id")
-	private Series series;
+	@JoinColumn(name="tag_id")
+	private Tag tag;
 	
 
-	public SeriesArticle() {}
+	public TagArticle() {}
 	
-	public SeriesArticle(Series series, Article article) {
+	public TagArticle(Tag tag, Article article) {
 		this.article = article;
-		this.series = series;
+		this.tag = tag;
 	}
 	
 
@@ -51,14 +51,14 @@ public class SeriesArticle {
 		this.article = article;
 	}
 
-	public Series getSeries() {
-		return series;
+	public Tag getTag() {
+		return tag;
 	}
 
-	public void setSeries(Series series) {
-		this.series = series;
-		if(!series.getSeriesArticles().contains(this)) {
-			series.getSeriesArticles().add(this);
+	public void setTag(Tag tag) {
+		this.tag = tag;
+		if(!tag.getTagArticles().contains(this)) {
+			tag.getTagArticles().add(this);
 		}
 	}
 
