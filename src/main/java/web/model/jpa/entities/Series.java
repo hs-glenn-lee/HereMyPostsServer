@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="series")
@@ -41,9 +42,6 @@ public class Series {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="owner_id")
 	private Account owner;
-	
-	
-
 	
 	public List<SeriesArticle> getSeriesArticles() {
 		return seriesArticles;

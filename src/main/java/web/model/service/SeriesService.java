@@ -1,8 +1,12 @@
 package web.model.service;
 
 import java.util.List;
-import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.data.domain.Pageable;
+
+import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Series;
@@ -20,6 +24,8 @@ public interface SeriesService{
 	Series createNewSeries(Series series);
 
 	List<Article> getArticlesBySeriesId(String seriesId);
+	
+	public List<Series> findMySeriesByPage(HttpSession session, Pageable pageable) throws NotSignedInException;
 	
 	
 }
