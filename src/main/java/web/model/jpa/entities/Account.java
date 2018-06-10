@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -50,11 +51,21 @@ public class Account implements Serializable{
 	private Date updatesTimestamp;
 	
 	
+	@OneToOne(mappedBy="account", fetch = FetchType.LAZY)
+	private AccountSetting accountSetting;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="account")
 	private Set<Category> categories = new HashSet<Category>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="author")
 	private Set<Article> articles = new HashSet<Article>();
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="owner")
+	private Set<Tag> tags = new HashSet<Tag>();
+
+	public Account(String username, String plainPassword) {}
+	
+	public Account() {}
 	
 	public Set<Article> getArticles() {
 		return articles;
@@ -63,11 +74,6 @@ public class Account implements Serializable{
 	public void setArticles(Set<Article> articles) {
 		this.articles = articles;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="owner")
-	private Set<Tag> tags = new HashSet<Tag>();
-
-
 
 
 	public Set<Tag> getTags() {
@@ -78,11 +84,7 @@ public class Account implements Serializable{
 		this.tags = tags;
 	}
 
-	public Account(String username, String plainPassword) {
-		
-	}
 	
-	public Account() {}
 
 	public Long getId() {
 		return id;
@@ -139,6 +141,14 @@ public class Account implements Serializable{
 
 	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
+	}
+	
+	public AccountSetting getAccountSetting() {
+		return accountSetting;
+	}
+
+	public void setAccountSetting(AccountSetting accountSetting) {
+		this.accountSetting = accountSetting;
 	}
 
 	public String toString() {

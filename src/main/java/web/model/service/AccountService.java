@@ -3,9 +3,25 @@ package web.model.service;
 import web.model.jpa.entities.Account;
 
 public interface AccountService {
-	public Account getAccount(String username);
-	public Account getAccount(Long id);
-	public Account createAccount(Account newAccount);
+	
+	/**
+	 * this method would be called in context of signing up. create new account and initialize AccountSetting, 
+	 * */
+	public Account createNewAccount(Account newAccount) throws IllegalStateException;
+	
+	/**
+	 * match account with username and password. if authenticate successfully return Account, else return null.
+	 * */
 	public Account authenticate(String username, String password);
+	
+	/**
+	 * is parameter username unique as new Account
+	 * */
 	public boolean isUniqueNewUsername(String username);
+	
+	/**
+	 * is parameter email unique as new Account
+	 * */
+	public boolean isUniqueNewEmail(String email);
+	
 }

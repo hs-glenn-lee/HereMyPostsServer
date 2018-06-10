@@ -1,15 +1,17 @@
 package web.model.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.AccountSetting;
 import web.model.jpa.repos.AccountRepo;
+import web.model.jpa.repos.AccountSettingRepo;
 
 @Transactional
 @Service("accountService")
@@ -19,66 +21,67 @@ public class AccountServiceImpl implements AccountService{
 	AccountRepo accountRepo;
 	
 	@Autowired
+	AccountSettingRepo accountSettingRepo;
+	
+	@Autowired
 	EntityManager em;
-	
-	
-	@Override
-	public Account getAccount(String username) {
-		
-		Query q = em.createQuery("SELECT account FROM Account account WHERE account.username = :username", Account.class);
-		q.setParameter("username", username);
-		Account account = (Account) q.getSingleResult();
-		
-		em.close();
-		return account;
-	}
 
-	@Override
-	public Account getAccount(Long id) {
-		return accountRepo.getOne(id);
-	}
-
-	@Override
-	public Account createAccount(Account newAccount) {
-		return accountRepo.saveAndFlush(newAccount);
-	}
 	
 	@Override
-	@Transactional
-	public Account authenticate(String username, String password) {
+	public Account createNewAccount(Account newAccount) throws IllegalStateException{
+		validateNewAccount(newAccount);
 		
-		Query q = em.createQuery("SELECT a FROM Account a WHERE a.username = :username and a.password = :password", Account.class);
-		q.setParameter("username", username);
-		q.setParameter("password", password);
+		//save Account should precede before save AccountSetting, because account.id must be set first.
+		Account created = accountRepo.save(newAccount);
+		
+		//initial empty AccountSetting
+		AccountSetting actSet = new AccountSetting("","");
+		actSet.setAccount(created);
+		accountSettingRepo.save(actSet);
 
-		try {
-			Account account = (Account) q.getSingleResult();
-/*			em.detach(account);//왜 eager fetch 되는지 전혀 알수가없다. 나주에 수정
-						System.out.println(account.getCategories().toString());
-			account.setCategories(null);
-			em.close();*/
-			return account;
-		}catch(NoResultException nre) {
-			return null;
+		return created;
+	}
+	
+	/**
+	 * validate account instance. if instance is invalidate throw IllegalStateException.
+	 * */
+	private void validateNewAccount(Account newAccount) throws IllegalStateException{
+		if(!isUniqueNewUsername(newAccount.getUsername())) {
+			throw new IllegalStateException("이미 사용중인 사용자명입니다.");
 		}
-		
+		if(!isUniqueNewEmail(newAccount.getEmail())) {
+			throw new IllegalStateException("이미 사용중인 이메일입니다.");
+		}
 	}
 
+	@Override
+	public Account authenticate(String username, String password) {
+		List<Account> finded = accountRepo.findByUsernameAndPassword(username, password);
+		if(finded.isEmpty()) {
+			return null;
+		}else {
+			return finded.get(0);
+		}
+	}
+	
 	@Override
 	public boolean isUniqueNewUsername(String username) {
-		Query q = em.createQuery("SELECT a FROM Account a WHERE a.username = :username", Account.class);
-		q.setParameter("username", username);
-
-		try {
-			Account account = (Account) q.getSingleResult();
-			if(account == null)
-				return true;
-			else
-				return false;
-		}catch(NoResultException nre) {
+		List<Account> findByName = accountRepo.findByUsername(username);
+		if(!findByName.isEmpty()) {
+			return false;
+		}else {
 			return true;
 		}
+	}
 
+	@Override
+	public boolean isUniqueNewEmail(String email) {
+		List<Account> findByName = accountRepo.findByEmail(email);
+		if(!findByName.isEmpty()) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 }

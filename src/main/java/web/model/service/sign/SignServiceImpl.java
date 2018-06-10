@@ -19,7 +19,7 @@ public class SignServiceImpl implements SignService{
 	
 	@Override
 	public boolean signup(Account newAccount) {
-		accountService.createAccount(newAccount);
+		accountService.createNewAccount(newAccount);
 		return true;
 	}
 

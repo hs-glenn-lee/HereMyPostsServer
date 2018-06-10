@@ -60,6 +60,14 @@ public class SignRestController {
 		return ret;
 	}
 	
+	@RequestMapping(value="/isUniqueNewEmail", method=RequestMethod.POST)
+	public HashMap<String, Boolean> isUniqueNewEmail(@RequestBody HashMap<String, Object> jsonMap) {
+		boolean isUniqueAndNew = accountSerivce.isUniqueNewUsername((String)jsonMap.get("email"));
+		HashMap<String, Boolean> ret = new HashMap<>();
+		ret.put("isUniqueNewEmail", isUniqueAndNew);
+		return ret;
+	}
+
 	@RequestMapping(value="/getMyAccount", method=RequestMethod.GET)
 	public Account getMyAccount(HttpServletRequest req) throws NotSignedInException {
 		Sign sign = signService.getSign(req.getSession());

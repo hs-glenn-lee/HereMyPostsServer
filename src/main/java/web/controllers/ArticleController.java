@@ -31,7 +31,7 @@ public class ArticleController {
 	@Autowired
 	ArticleService articleService;
 	
-	@RequestMapping(value="write",method=RequestMethod.POST)
+	/*@RequestMapping(value="write",method=RequestMethod.POST)
 	public String write(HttpServletRequest req,
 						String content,
 						String title,
@@ -67,7 +67,7 @@ public class ArticleController {
 		articleService.write(article);
 		
 		return "redirect:/article/read/"+articleId;
-	}
+	}*/
 	
 	@RequestMapping(value="write",method=RequestMethod.GET)
 	public String write() {
