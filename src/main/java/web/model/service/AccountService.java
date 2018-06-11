@@ -23,5 +23,5 @@ public interface AccountService {
 	 * is parameter email unique as new Account
 	 * */
 	public boolean isUniqueNewEmail(String email);
-	
+
 }
