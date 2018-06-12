@@ -31,6 +31,9 @@ public class AccountSetting implements Serializable{
 	@Column(name="introduction")
 	private String introduction;
 	
+	@Column(name="profile_picture_file_id")
+	private String profilePictureFileId;
+
 	@OneToOne
 	@JoinColumn(name="account_id")
 	private Account account;
@@ -40,6 +43,7 @@ public class AccountSetting implements Serializable{
 		this.penName = penName;
 		this.introduction = introduction;
 	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -64,5 +68,12 @@ public class AccountSetting implements Serializable{
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+	public String getProfilePictureFileId() {
+		return profilePictureFileId;
+	}
+	public void setProfilePictureFileId(String profilePictureFileId) {
+		this.profilePictureFileId = profilePictureFileId;
+	}
+
 
 }

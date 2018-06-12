@@ -9,10 +9,16 @@ import java.nio.file.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.FilePathMap;
 import web.model.service.file.policies.ArticleFilePolicy;
+import web.model.service.file.policies.UserFilePolicy;
 
+/*
+ * 얘는 대체 하는게뭐냐 ㅋㅋㅋㅋ
+ * 끔찍한 혼종
+ * */
 @Service("fileStorage")
 public class FileStorageImpl implements FileStorage{
 	
@@ -26,6 +32,24 @@ public class FileStorageImpl implements FileStorage{
 		return new File(path);
 	}
 
+	@Override
+	public File writeFile(File file, Path path) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public File writeProfilePictureFile(File file, Account account) {
+		UserFilePolicy ufp = new UserFilePolicy(account);
+		Path up = ufp.getUserPath();
+		Path picFilePath = ufp.getProfilePicturePath();
+		
+		makeDirsIfNotExists(up);
+		/*file.get
+		Files.write(picFilePath, file., options)*/
+		
+		return null;
+	}
 
 	@Override
 	public File writeContentFile(Article article) throws IOException {
@@ -51,5 +75,10 @@ public class FileStorageImpl implements FileStorage{
 		
 		return asFile;
 	}
+
+
+
+
+	
 
 }

@@ -26,5 +26,13 @@ public class UserFilePolicy extends FilePolicy{
 	public Path getUserPath() {
 		return Paths.get(getUserPathString());
 	}
+	
+	public String getProfilePicturePathString () {
+		return this.getUserPathString() + File.separator + "profile_picture"; // file will be saved as "profile_picture"
+	}
+	
+	public Path getProfilePicturePath() {
+		return Paths.get(getProfilePicturePathString());
+	}
 
 }
