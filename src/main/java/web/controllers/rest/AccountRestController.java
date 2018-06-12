@@ -51,8 +51,7 @@ public class AccountRestController {
 	}
 	
 	@RequestMapping(value="account/my-settings", method=RequestMethod.GET)
-	public AccountSetting getMySettings(@RequestBody HashMap<String, Object> jsonMap,
-			HttpServletRequest req) throws NotSignedInException {
+	public AccountSetting getMySettings(HttpServletRequest req) throws NotSignedInException {
 		Account me = signService.getSign(req.getSession()).getAccount();
 		return accountSettingService.findAccountSettingByAccountId(me.getId());
 	}
