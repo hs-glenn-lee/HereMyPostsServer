@@ -11,11 +11,11 @@ import web.model.jpa.entities.Account;
  * Decorator Pattern
  * 
  * */
-public class UserFilePolicy extends FilePolicy{
+public class AccountFilePolicy extends FilePolicy{
 	
 	private Long userId = null;
 	
-	public UserFilePolicy(Account account) {
+	public AccountFilePolicy(Account account) {
 		this.userId = account.getId();
 	}
 

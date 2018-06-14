@@ -18,7 +18,7 @@ import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.service.file.FilePathMapService;
-import web.model.service.file.FileStorage;
+import web.model.service.file.StorageService;
 import web.utils.UUIDUtil;
 
 @Service("articleSerivce")
@@ -31,7 +31,7 @@ public class ArticleServiceImpl implements ArticleService{
 	EntityManager em;
 	
 	@Autowired
-	FileStorage fileStorage;
+	StorageService fileStorage;
 	
 	@Autowired
 	FilePathMapService filePathMapService;

@@ -7,10 +7,16 @@ import java.nio.file.Path;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 
-public interface FileStorage {
+public interface StorageService {
 	public File getFile(String id);
-	public File writeFile(File file, Path path);
+	
 	public File writeContentFile(Article article) throws IOException;
 	public File makeDirsIfNotExists(Path path) throws IOException;
 	public File writeProfilePictureFile(File file, Account account);
+	
+	
+	
+	//--
+	public File writeFile(File file, Path path);
+	
 }

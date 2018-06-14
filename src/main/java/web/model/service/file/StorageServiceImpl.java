@@ -13,14 +13,14 @@ import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.FilePathMap;
 import web.model.service.file.policies.ArticleFilePolicy;
-import web.model.service.file.policies.UserFilePolicy;
+import web.model.service.file.policies.AccountFilePolicy;
 
 /*
  * 얘는 대체 하는게뭐냐 ㅋㅋㅋㅋ
  * 끔찍한 혼종
  * */
 @Service("fileStorage")
-public class FileStorageImpl implements FileStorage{
+public class StorageServiceImpl implements StorageService{
 	
 	@Autowired
 	FilePathMapService filePathMapService;
@@ -40,7 +40,7 @@ public class FileStorageImpl implements FileStorage{
 	
 	@Override
 	public File writeProfilePictureFile(File file, Account account) {
-		UserFilePolicy ufp = new UserFilePolicy(account);
+		AccountFilePolicy ufp = new AccountFilePolicy(account);
 		Path up = ufp.getUserPath();
 		Path picFilePath = ufp.getProfilePicturePath();
 		

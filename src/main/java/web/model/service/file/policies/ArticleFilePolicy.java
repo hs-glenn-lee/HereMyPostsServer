@@ -14,11 +14,11 @@ public class ArticleFilePolicy extends FilePolicy{
 
 	private String articleId = null;
 	
-	private UserFilePolicy userFile = null;
+	private AccountFilePolicy userFile = null;
 	
 	public ArticleFilePolicy(Article article) {
 		this.articleId = article.getId();
-		this.userFile = new UserFilePolicy(article.getAuthor());
+		this.userFile = new AccountFilePolicy(article.getAuthor());
 	}
 
 	public String getArticlePathString() {

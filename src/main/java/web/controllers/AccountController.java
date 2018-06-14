@@ -1,16 +1,11 @@
 package web.controllers;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import web.model.jpa.entities.Account;
 import web.model.service.AccountService;
-import web.model.service.sign.Sign;
 import web.model.service.sign.SignService;
 
 
@@ -68,4 +63,6 @@ public class AccountController {
 		System.out.println(s.getAccount().getUsername());
 		return "account/sign-in";
 	}*/
+
+	
 }

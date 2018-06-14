@@ -10,7 +10,7 @@ import web.model.jpa.entities.Account;
 import web.model.jpa.entities.AccountSetting;
 import web.model.jpa.repos.AccountRepo;
 import web.model.jpa.repos.AccountSettingRepo;
-import web.model.service.file.policies.UserFilePolicy;
+import web.model.service.file.policies.AccountFilePolicy;
 
 @Service("accountSettingService")
 public class AccountSettingServiceImpl implements AccountSettingService{
