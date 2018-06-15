@@ -1,6 +1,8 @@
 package web.model.service;
 
-import java.io.File;
+import java.io.IOException;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.AccountSetting;
@@ -30,7 +32,9 @@ public interface AccountSettingService {
 	
 	/**
 	 * save ProfilePictureFile
+	 * return profilePicture fileId
+	 * @throws IOException 
 	 * */
-	public void saveProfilePictureFile(File uploadedPicture, Account account);
+	public AccountSetting saveProfilePictureFile(MultipartFile uploadedPicture, Account account) throws IOException;
 
 }

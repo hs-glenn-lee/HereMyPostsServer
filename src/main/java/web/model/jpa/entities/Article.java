@@ -30,8 +30,8 @@ public class Article {
 	@Column(name="title")
 	private String title;
 	
-	@Column(name="content_file_path")
-	private String contentFilePath;
+	@Column(name="content_file_id")
+	private String contentFileId;
 	
 	@Column(name="summary")
 	private String summary;
@@ -101,12 +101,13 @@ public class Article {
 		this.title = title;
 	}
 
-	public String getContetnFilePath() {
-		return contentFilePath;
+	public String getContentFileId() {
+		return contentFileId;
 	}
 
-	public void setContetnFilePath(String contetnFilePath) {
-		this.contentFilePath = contetnFilePath;
+	public void setContentFileId(String contetnFileId) {
+		this.contentFileId = contetnFileId;
+		
 	}
 
 	public String getSummary() {
@@ -158,13 +159,7 @@ public class Article {
 		this.author = author;
 	}
 
-	public String getContentFilePath() {
-		return contentFilePath;
-	}
 
-	public void setContentFilePath(String contentFilePath) {
-		this.contentFilePath = contentFilePath;
-	}
 
 	public Boolean getIsDel() {
 		return isDel;
@@ -185,7 +180,7 @@ public class Article {
 	public String toString() {
 		String ret = "id: " + id + ", "
 					+ "title: " + id + ","
-					+ "contentFilePath: " + contentFilePath + ","
+					+ "contentFilePath: " + contentFileId + ","
 					+ "summary: " + summary + ","
 					+ "readCount : " + readCount  + ","
 					+ "createTimestamp;: " + createTimestamp + ","

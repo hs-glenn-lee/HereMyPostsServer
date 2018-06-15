@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import web.controllers.rest.responses.GenericResponse;
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.AccountSetting;
@@ -58,47 +59,13 @@ public class AccountRestController {
 	}
 	
 	@RequestMapping(value="account/setting/upload-profile-picture", method=RequestMethod.POST)
-	public String uploadProfilePicture(
-			@RequestParam("file") MultipartFile uploadedFile,
+	public AccountSetting uploadProfilePicture(
+			@RequestParam("file") MultipartFile uploadedPicture,
 			HttpServletRequest req)
 			throws NotSignedInException, IOException {
 		Account me = signService.getSign(req.getSession()).getAccount();
-		System.out.println(uploadedFile.getName());
-		System.out.println(uploadedFile.getOriginalFilename());
-		
-/*		 byte fileData[] = file.getBytes();
-         
-         fos = new FileOutputStream(path + "\\" + fileName);
-          
-         fos.write(fileData);*/
-		
-		InputStream in = uploadedFile.getInputStream();
-		BufferedInputStream bis = new BufferedInputStream(in);
-		
-		File target = new File("/usr/" + uploadedFile.getOriginalFilename());
-		target.createNewFile();
-		System.out.println(target.getAbsolutePath().toString());
-		
-		FileOutputStream fos = new FileOutputStream(target);
-		byte[] buf = new byte[200];
-		while(bis.read(buf) > 0) {
-			fos.write(buf);
-		}
-
-		//String filePath = req.getServletContext().getRealPath("/"); 
-		/*String filePath = req.getServletContext().getRealPath("/"); 
-		try {
-			uploadedFile.transferTo(new File(filePath));
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		
-		return "";
+		AccountSetting set = accountSettingService.saveProfilePictureFile(uploadedPicture, me);
+		return set;
 	}
 	
 	@RequestMapping(value="account/my-settings", method=RequestMethod.GET)

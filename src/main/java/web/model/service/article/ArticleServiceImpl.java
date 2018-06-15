@@ -18,7 +18,9 @@ import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.service.file.FilePathMapService;
+import web.model.service.file.FileService;
 import web.model.service.file.StorageService;
+import web.model.service.file.policies.NewArticleContentFilePolicy;
 import web.utils.UUIDUtil;
 
 @Service("articleSerivce")
@@ -36,6 +38,9 @@ public class ArticleServiceImpl implements ArticleService{
 	@Autowired
 	FilePathMapService filePathMapService;
 	
+	@Autowired
+	FileService fileService;
+	
 	@Transactional
 	@Override
 	public Article write(Article compositeArticle) throws IOException {
@@ -43,14 +48,12 @@ public class ArticleServiceImpl implements ArticleService{
 		compositeArticle.setId(UUIDUtil.getUUID());
 		
 		//write article content file and set its file path
-		File contentFile = fileStorage.writeContentFile(compositeArticle);
-		compositeArticle.setContentFilePath(contentFile.toString());
+		String fileId = fileService.saveFile(compositeArticle.getContent().getBytes(StandardCharsets.UTF_8),
+						new NewArticleContentFilePolicy(compositeArticle));
 		
-		filePathMapService.putFilePathMap(compositeArticle.getId(), compositeArticle.getContentFilePath());
+		compositeArticle.setContentFileId(fileId);
 		
 		em.persist(compositeArticle);
-		
-		em.flush();
 		em.close();
 		return compositeArticle;
 	}
@@ -74,7 +77,7 @@ public class ArticleServiceImpl implements ArticleService{
 		article.getCategory();
 		article.getAuthor();
 		
-		File content = fileStorage.getFile(articleId);
+		File content = fileService.getFile(article.getContentFileId());
 		article.setContent(fileToString(content));
 		em.close();
 		return article;

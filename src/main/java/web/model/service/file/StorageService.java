@@ -2,21 +2,15 @@ package web.model.service.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
-import web.model.jpa.entities.Account;
-import web.model.jpa.entities.Article;
-
 public interface StorageService {
-	public File getFile(String id);
-	
-	public File writeContentFile(Article article) throws IOException;
+
 	public File makeDirsIfNotExists(Path path) throws IOException;
-	public File writeProfilePictureFile(File file, Account account);
-	
-	
 	
 	//--
-	public File writeFile(File file, Path path);
+	public File writeFile(InputStream in, Path path) throws IOException;
+	public Path writeFile(byte[] data, Path path) throws IOException;
 	
 }
