@@ -75,7 +75,7 @@ public class ArticleController {
 	}
 	
 	
-	@RequestMapping(value="read/{articleId}", method=RequestMethod.GET)
+	/*@RequestMapping(value="read/{articleId}", method=RequestMethod.GET)
 	public String read(
 			@PathVariable("articleId") String articleId
 			) {
@@ -87,7 +87,7 @@ public class ArticleController {
 		System.out.println(cat.getName());
 		
 		return "article/read";
-	}
+	}*/
 	
 	@RequestMapping(value="modify",method=RequestMethod.GET)
 	public String modify() {

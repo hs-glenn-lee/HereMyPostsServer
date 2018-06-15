@@ -2,6 +2,7 @@ package web.model.service.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -23,8 +24,24 @@ public class FileServiceImpl implements FileService{
 	FilePathMapService filePathMapService;
 	
 	@Override
+	public File getFile(String fileId) {
+		FilePathMap fpm = filePathMapService.getFilePathMap(fileId);
+		return Paths.get(fpm.getPath()).toFile();
+	}
+
+	@Override
+	public Path getPath(String fileId) {
+		FilePathMap fpm = filePathMapService.getFilePathMap(fileId);
+		return Paths.get(fpm.getPath());
+	}
+	
+	@Override
 	public String saveFile(MultipartFile mFile, NewFilePolicy filePolicy) throws IOException {
 		Path path = filePolicy.getPath();
+		
+		if(filePolicy.isDir()) {
+			throw new IllegalArgumentException("FileService.saveFile: this file policy is directory.");
+		}
 		
 		storageService.writeFile(mFile.getInputStream(), path);
 		
@@ -39,6 +56,10 @@ public class FileServiceImpl implements FileService{
 	public String saveFile(byte[] data, NewFilePolicy filePolicy) throws IOException {
 		Path path = filePolicy.getPath();
 		
+		if(filePolicy.isDir()) {
+			throw new IllegalArgumentException("FileService.saveFile: this file policy is directory.");
+		}
+		
 		storageService.writeFile(data, path);
 		
 		String fileId = UUIDUtil.getUUID();
@@ -47,16 +68,15 @@ public class FileServiceImpl implements FileService{
 		return fileId;
 	}
 	
+	
 	@Override
-	public File getFile(String fileId) {
-		FilePathMap fpm = filePathMapService.getFilePathMap(fileId);
-		return Paths.get(fpm.getPath()).toFile();
-	}
-
-	@Override
-	public Path getPath(String fileId) {
-		FilePathMap fpm = filePathMapService.getFilePathMap(fileId);
-		return Paths.get(fpm.getPath());
+	public void createDirs(NewFilePolicy filePolicy) throws IOException {
+		Path path = filePolicy.getPath();
+		if(filePolicy.isDir()) {
+			Files.createDirectories(path);
+		}else {
+			throw new IllegalArgumentException("FileService.createDirs: this file policy is file.");
+		}
 	}
 
 }

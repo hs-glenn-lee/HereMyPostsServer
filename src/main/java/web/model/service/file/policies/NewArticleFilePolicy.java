@@ -26,5 +26,10 @@ public class NewArticleFilePolicy implements NewFilePolicy{
 	public String getPathString() {
 		return articlePathString;
 	}
+
+	@Override
+	public boolean isDir() {
+		return true;
+	}
 	
 }

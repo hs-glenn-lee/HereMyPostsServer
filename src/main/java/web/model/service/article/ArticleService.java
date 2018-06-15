@@ -9,7 +9,7 @@ import web.model.jpa.entities.Article;
 public interface ArticleService {
 	
 	public Article write(Article compositeArticle) throws IOException;
-	public Article read(String articleId);
+	/*public Article read(String articleId);*/
 	
 	public Article getArticle(String articleId) throws IOException;
 	public String getArticleContent(String articleId);

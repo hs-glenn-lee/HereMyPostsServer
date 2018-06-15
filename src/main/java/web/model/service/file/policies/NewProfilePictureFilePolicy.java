@@ -26,5 +26,10 @@ public class NewProfilePictureFilePolicy implements NewFilePolicy{
 	public String getPathString() {
 		return profilePictureFilePathString;
 	}
+
+	@Override
+	public boolean isDir() {
+		return false;
+	}
 	
 }

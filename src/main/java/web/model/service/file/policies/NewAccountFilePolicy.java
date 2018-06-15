@@ -26,5 +26,10 @@ public class NewAccountFilePolicy implements NewFilePolicy{
 	public String getPathString() {
 		return accountPathString;
 	}
+
+	@Override
+	public boolean isDir() {
+		return true;
+	}
 	
 }

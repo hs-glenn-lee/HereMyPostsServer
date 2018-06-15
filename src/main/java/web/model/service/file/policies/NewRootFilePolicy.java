@@ -42,4 +42,9 @@ public class NewRootFilePolicy implements NewFilePolicy{
 	public String getPathString() {
 		return USER_FILES_ROOT_PATH_STRING;
 	}
+
+	@Override
+	public boolean isDir() {
+		return true;
+	}
 }

@@ -1,5 +1,6 @@
 package web.controllers.rest;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +48,7 @@ public class SignRestController {
 	}
 	
 	@RequestMapping(value="/sign-up", method=RequestMethod.PUT)
-	public @ResponseBody GenericResponse<?> signup(@RequestBody Account account) {
+	public @ResponseBody GenericResponse<?> signup(@RequestBody Account account) throws IOException {
 		signService.signup(account);
 		return new GenericResponse<Object>();
 	}

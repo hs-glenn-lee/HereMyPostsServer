@@ -20,7 +20,9 @@ import web.model.jpa.repos.ArticleRepo;
 import web.model.service.file.FilePathMapService;
 import web.model.service.file.FileService;
 import web.model.service.file.StorageService;
+import web.model.service.file.policies.ArticleFilePolicy;
 import web.model.service.file.policies.NewArticleContentFilePolicy;
+import web.model.service.file.policies.NewArticleFilePolicy;
 import web.utils.UUIDUtil;
 
 @Service("articleSerivce")
@@ -48,9 +50,11 @@ public class ArticleServiceImpl implements ArticleService{
 		compositeArticle.setId(UUIDUtil.getUUID());
 		
 		//write article content file and set its file path
+		NewArticleFilePolicy afp = new NewArticleFilePolicy(compositeArticle);
+		fileService.createDirs(afp);
 		String fileId = fileService.saveFile(compositeArticle.getContent().getBytes(StandardCharsets.UTF_8),
 						new NewArticleContentFilePolicy(compositeArticle));
-		
+
 		compositeArticle.setContentFileId(fileId);
 		
 		em.persist(compositeArticle);
@@ -59,7 +63,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 
-	@Override
+/*	@Override
 	public Article read(String articleId) {
 		Query q = em.createQuery("SELECT article FROM Article article "
 								  +"inner join fetch article.category "
@@ -70,7 +74,7 @@ public class ArticleServiceImpl implements ArticleService{
 		Article article = (Article) q.getSingleResult();
 		return article;
 	}
-
+*/
 	@Override
 	public Article getArticle(String articleId) throws IOException {
 		Article article = em.find(Article.class, articleId);

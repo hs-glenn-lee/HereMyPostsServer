@@ -1,15 +1,23 @@
 package web.model.service.sign;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.Category;
 import web.model.service.AccountService;
+import web.model.service.CategoryService;
+import web.model.service.file.FileService;
+import web.model.service.file.policies.NewAccountFilePolicy;
 
 @Service("signService")
+
 public class SignServiceImpl implements SignService{
 	
 	private final static String SIGN_KEY = "SIGN";
@@ -17,12 +25,35 @@ public class SignServiceImpl implements SignService{
 	@Autowired
 	AccountService accountService;
 	
+	@Autowired
+	FileService fileService;
+	
+	@Autowired
+	CategoryService categoryService;
+	
 	@Override
-	public boolean signup(Account newAccount) {
-		accountService.createNewAccount(newAccount);
+	@Transactional
+	public boolean signup(Account newAccount) throws IOException {
+		newAccount = accountService.createNewAccount(newAccount);
+		createAccountDirectory(newAccount);
+		createRootCategory(newAccount);
 		return true;
 	}
 
+	private void createAccountDirectory(Account account) throws IOException {
+		NewAccountFilePolicy afp = new NewAccountFilePolicy(account);
+		fileService.createDirs(afp);
+	}
+	
+	private void createRootCategory(Account account) {
+		Category root = new Category();
+		root.setAccount(account);
+		root.setName("default");
+		root.setId("default");
+		categoryService.create(root);
+	}
+	
+	
 	@Override
 	public Account signin(Account account, HttpSession httpSession) {
 

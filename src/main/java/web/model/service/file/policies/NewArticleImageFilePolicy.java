@@ -26,5 +26,10 @@ public class NewArticleImageFilePolicy implements NewFilePolicy{
 	public String getPathString() {
 		return articleImageFilePathString;
 	}
+
+	@Override
+	public boolean isDir() {
+		return false;
+	}
 	
 }
