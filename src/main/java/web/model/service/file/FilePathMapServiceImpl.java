@@ -31,5 +31,10 @@ public class FilePathMapServiceImpl implements FilePathMapService{
 		em.close();
 		return fpm;
 	}
+
+	@Override
+	public void removeFilePathMap(String id) {
+		fileMapRepo.delete(id);
+	}
 	
 }

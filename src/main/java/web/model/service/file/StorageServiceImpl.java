@@ -42,10 +42,18 @@ public class StorageServiceImpl implements StorageService{
 			while(in.read(buf) > 0) {
 				fos.write(buf);
 			}
+			fos.flush();
 		}catch(IOException ioe) {
 			throw ioe;
 		}finally {
-			fos.close();
+			try {
+				System.out.println("fos close!!!!!!!!");
+				if (fos != null) {
+					fos.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		return file;

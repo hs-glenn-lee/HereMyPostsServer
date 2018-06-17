@@ -74,13 +74,16 @@ public class AccountSettingServiceImpl implements AccountSettingService{
 		account = accountRepo.findOne(account.getId());
 		AccountSetting setting = account.getAccountSetting();
 		
-		//write picture file by using fileStroageService;
+		String oldProfilePictureFileId = setting.getProfilePictureFileId();
+
 		NewProfilePictureFilePolicy filePolicy = new NewProfilePictureFilePolicy(account, ext);
-		String fileId = fileService.saveFile(uploadedPicture, filePolicy);
-		
-		//save AccountSetting
-		setting.setProfilePictureFileId(fileId);
+		String newFileId = fileService.saveFile(uploadedPicture, filePolicy);
+		setting.setProfilePictureFileId(newFileId);
 		accountSettingRepo.save(setting);
+
+		if(oldProfilePictureFileId != null) {//if null == no setted profile picture
+			fileService.deleteFile(oldProfilePictureFileId);
+		}
 		
 		return setting;
 	}

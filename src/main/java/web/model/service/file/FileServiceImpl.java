@@ -79,4 +79,19 @@ public class FileServiceImpl implements FileService{
 		}
 	}
 
+	@Override
+	public void deleteFile(String fileId) throws IOException {
+		FilePathMap fpm = filePathMapService.getFilePathMap(fileId);
+		Path targetPath = Paths.get(fpm.getPath());
+		Files.delete(targetPath);
+		
+		filePathMapService.removeFilePathMap(fileId);
+	}
+
+	@Override
+	public void updateFile(MultipartFile mFile, String oldFileId) throws IOException {
+		FilePathMap fpm = filePathMapService.getFilePathMap(oldFileId);
+		storageService.writeFile(mFile.getInputStream(), Paths.get(fpm.getPath()));
+	}
+
 }

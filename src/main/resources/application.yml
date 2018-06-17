@@ -16,13 +16,18 @@ spring:
       driverClassName: org.mariadb.jdbc.Driver
       tomcat:
         min-idle: 5
-#       initial-size: 5 
+        #initial-size: 5 
   session:
     store-type: redis
   redis:
     host: 127.0.0.1
-#   password: gksdkfkd123
+    #password: gksdkfkd123
     port: 6379
+  http:
+    multipart:
+      #multipart file size limitation
+      max-file-size: 100MB
+      max-request-size: 100MB
 logging:
   level:
     org:

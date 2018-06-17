@@ -1,10 +1,6 @@
 package web.controllers.rest;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import web.controllers.rest.responses.GenericResponse;
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.AccountSetting;

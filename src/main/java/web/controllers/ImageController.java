@@ -38,6 +38,12 @@ public class ImageController {
 		res.setContentType("image/"+fileExt);
 		InputStream imgInputStream = FileUtils.openInputStream(imageFile);
 		IOUtils.copy(imgInputStream, res.getOutputStream());
+		
+		if (imgInputStream != null) {
+			imgInputStream.close();
+		}
+		
+		//TODO optimize performance, image server, try catch
 	}
 	
 	public void validateFileServedAsImage(String fileExt) {
