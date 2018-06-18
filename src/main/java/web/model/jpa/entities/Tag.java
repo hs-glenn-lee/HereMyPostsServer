@@ -25,7 +25,14 @@ public class Tag {
 	
 	@Column(name="name")
 	private String name;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="owner_id")
+	private Account owner;
 	
+	@OneToMany(mappedBy="tag")
+	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
+
 	@Column(name="create_timestamp")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createTimestamp;
@@ -34,23 +41,6 @@ public class Tag {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateTimestamp;
 	
-	@OneToMany(mappedBy="tag")
-	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
-	
-	public List<TagArticle> getTagArticles() {
-		return tagArticles;
-	}
-
-	public void setTagArticles(List<TagArticle> tagArticles) {
-		this.tagArticles = tagArticles;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="owner_id")
-	private Account owner;
-	
-
-
 	public Account getOwner() {
 		return owner;
 	}
@@ -92,7 +82,13 @@ public class Tag {
 	}
 
 	
-	
+	public List<TagArticle> getTagArticles() {
+		return tagArticles;
+	}
+
+	public void setTagArticles(List<TagArticle> tagArticles) {
+		this.tagArticles = tagArticles;
+	}
 	//convention
 /*	public void addArticle(Article article) {
 		TagArticle seriesArticle = new TagArticle(this, article);

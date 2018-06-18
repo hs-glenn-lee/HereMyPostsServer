@@ -15,9 +15,6 @@ public class TagArticle {
 	@Column(name="id")
 	private String id;
 	
-	@Column(name="seq")
-	private Integer seq;
-	
 	@ManyToOne
 	@JoinColumn(name="article_id")
 	private Article article;
@@ -60,14 +57,6 @@ public class TagArticle {
 		if(!tag.getTagArticles().contains(this)) {
 			tag.getTagArticles().add(this);
 		}
-	}
-
-	public Integer getSeq() {
-		return seq;
-	}
-
-	public void setSeq(Integer seq) {
-		this.seq = seq;
 	}
 
 	/*public boolean equals(Series series) {

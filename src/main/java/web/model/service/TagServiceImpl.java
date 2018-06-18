@@ -1,21 +1,18 @@
 package web.model.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
+import web.model.jpa.repos.TagArticleRepo;
 import web.model.jpa.repos.TagRepo;
 import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
@@ -30,113 +27,60 @@ public class TagServiceImpl  implements TagService{
 	TagRepo tagRepo;
 	
 	@Autowired
+	TagArticleRepo tagArticleRepo;
+	
+	@Autowired
 	SignService signService;
-	
+
 	@Override
-	public List<Tag> getSeriesByUsername(String username) {
-		/*Query query = em.createQuery(
-		"SELECT series from Series series"
-		+ "join fetch Account acc"
-		+ "where acc.username = :username");
-		query.setParameter("username", username);
+	public List<Tag> findTagsByOwner(Account owner) {
+		List<Tag> tags = tagRepo.findByOwnerId(owner.getId());
+		return tags;
+	}
+
+	@Override
+	public List<Tag> findTagsByArticle(String articleId) {
+		List<Tag> tags = tagRepo.findByArticleId(articleId);
+		return tags;
+	}
+
+	@Override
+	public TagArticle addTagToArticle(Tag tag, Article article) {
+		TagArticle ta = new TagArticle(tag, article);
+		ta.setId(UUIDUtil.getUUID());
 		
-		List<Series> series = null;
-		series = query.getResultList();*/
-		
-		return tagRepo.findByOwnerUsername(username);
+		tag = tagRepo.save(tag);
+		ta = tagArticleRepo.save(ta);
+		return ta;
 	}
 	
-	
-	
-	
 	@Override
-	public List<Article> getArticlesBySeriesId(String tagId) {
-		Query query = em.createQuery(
-				"SELECT articles from Article articles"
-				+ "join fetch TagArticle ta"
-				+ "join fetch Tag tag"
-				+ "where tag.id = :tagId");
-		
-		query.setParameter("tagId", tagId);
-		
-		List<Article> articles = null;
-		articles = query.getResultList();
-		
-		return articles;
-
+	public TagArticle addTagToArticle(TagArticle ta) {
+		ta.setId(UUIDUtil.getUUID());
+		Tag tag = tagRepo.save(ta.getTag());
+		ta = tagArticleRepo.save(ta);
+		return ta;
 	}
 	
 
 	@Override
-	public Tag saveSeries(Tag series) {
-		em.persist(series);
-		em.close();
-		return series;
-	}
-	
-	@Transactional
-	@Override
-	public Tag createNewSeries(Tag series) {
-		series.setId(UUIDUtil.getUUID());
-		em.persist(series);
-		em.close();
-		return series;
-	}
-	
-	
-	@Override
-	public Tag saveSeries(Account owner, Tag series) {
-		owner = em.find(Account.class, owner.getId());
-		em.persist(owner);
-
-		series.setOwner(owner);
-		em.persist(series);
-		
-		em.close();
-		return series;
-	}
-	
-	
-	@Override
-	public void addSeriesArticle(Article article, Tag series) {
-		
-	}
-	
-
-	@Override
-	public Tag getSeries(String seriesId) {
-		Tag series = em.find(Tag.class, seriesId);
-		return series;
-	}
-	
-	
-
-	@Override
-	public List<Article> getArticlesOfSeries(Tag series) {
-		List<TagArticle> sa = em.find(Tag.class, series.getId()).getTagArticles();
-		
-		
-		return null;
-	}
-
-
-
-
-	@Override
-	public List<Tag> findMySeriesByPage(HttpSession session, Pageable pageable) throws NotSignedInException {
-		Account me = signService.getSign(session).getAccount();
-		List<Tag> seriesList = tagRepo.findMyTagsByPage(me.getId(), pageable);
-		return seriesList;
-	}
-
-
-
-
-	@Override
-	public List<Tag> findAllMySeries(HttpSession session) throws NotSignedInException {
-		Account me = signService.getSign(session).getAccount();
-		List<Tag> seriesList = tagRepo.findAllMyTags(me.getId());
-		return seriesList;
+	public void removeTagFromArticle(Tag tag, Article article) {
+		List<TagArticle> tas = tagArticleRepo.findByTagId(tag.getId());
+		if ( tas.isEmpty() ) {
+			throw new IllegalStateException("there\' no matched tag or article");
+		}else if(tas.size() == 1){//if this tag is being tagged at only one article, delete tagArticle and also tag
+			TagArticle ta = tas.get(0);
+			Tag ta_tag = ta.getTag();
+			tagArticleRepo.delete(ta);
+			tagRepo.delete(ta_tag);
+		}else {//if this tag is being tagged at more than one article, delete tagArticle only
+			for(TagArticle ta : tas) {
+				if(ta.getArticle().equalsWithId(article)) {
+					tagArticleRepo.delete(ta);
+					break;
+				}
+			}
+		}
 	}
 
 }

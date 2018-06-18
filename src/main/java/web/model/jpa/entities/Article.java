@@ -202,9 +202,15 @@ public class Article {
 		this.content = content;
 	}
 
+	/*@Override
+	public boolean equals(Object obj) {
+		return false;
+		
+	}*/
 
-
-
+	public boolean equalsWithId(Article article) {
+		return article.getId().equals(article.getId());
+	}
 	
 	
 	
