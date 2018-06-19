@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +17,10 @@ import org.springframework.stereotype.Service;
 
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
+import web.model.jpa.entities.Tag;
+import web.model.jpa.entities.TagArticle;
 import web.model.jpa.repos.ArticleRepo;
+import web.model.service.TagService;
 import web.model.service.file.FilePathMapService;
 import web.model.service.file.FileService;
 import web.model.service.file.StorageService;
@@ -33,15 +37,12 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Autowired
 	EntityManager em;
-	
-	@Autowired
-	StorageService fileStorage;
-	
-	@Autowired
-	FilePathMapService filePathMapService;
-	
+
 	@Autowired
 	FileService fileService;
+	
+	@Autowired
+	TagService tagService;
 	
 	@Transactional
 	@Override
@@ -57,8 +58,25 @@ public class ArticleServiceImpl implements ArticleService{
 
 		compositeArticle.setContentFileId(fileId);
 		
-		em.persist(compositeArticle);
-		em.close();
+		articleRepo.save(compositeArticle);
+		
+		
+		//save tags
+		List<TagArticle> tas = compositeArticle.getTagArticles();
+		List<Tag> tags = new ArrayList<Tag>();
+		System.out.println(tas);
+		for(TagArticle ta : tas) {
+			ta.setArticle(compositeArticle);
+			ta.getTag().setOwner(compositeArticle.getAuthor());
+			ta.setId(UUIDUtil.getUUID());
+			System.out.println(ta);
+			
+			tags.add(ta.getTag());
+		}
+				
+		tagService.saveTags(tags);
+		tagService.addTagsToArticle(tas);
+
 		return compositeArticle;
 	}
 

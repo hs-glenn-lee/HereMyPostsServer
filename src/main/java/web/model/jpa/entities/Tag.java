@@ -1,5 +1,7 @@
 package web.model.jpa.entities;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,9 +17,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name="tags")
-public class Tag {
+public class Tag implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3942498561244888210L;
 
 	@Id
 	@Column(name="id")
@@ -111,4 +122,13 @@ public class Tag {
 	        }
 	}*/
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("id:" + this.id + ", ");
+		sb.append("name: " + this.name + ", ");
+		sb.append("owner: " + this.owner + "");
+		sb.append("}");
+		return sb.toString();
+	}
 }

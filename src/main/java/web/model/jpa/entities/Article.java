@@ -1,10 +1,10 @@
 package web.model.jpa.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,13 +16,20 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
 import org.hibernate.annotations.Type;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")	
 @Entity
 @Table(name="articles")
-public class Article {
+public class Article implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3850929944559500257L;
+
 	@Id
 	@Column(name="id")
 	private String id;

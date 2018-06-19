@@ -11,7 +11,10 @@ public interface TagService{
 	public List<Tag> findTagsByOwner(Account owner);
 	public List<Tag> findTagsByArticle(String articleId);
 	
+	public List<Tag> saveTags(List<Tag> tags);
+	
 	public TagArticle addTagToArticle(Tag tag, Article article);
 	public TagArticle addTagToArticle(TagArticle ta);
+	public List<TagArticle> addTagsToArticle(List<TagArticle> tas);
 	public void removeTagFromArticle(Tag tag, Article article);
 }

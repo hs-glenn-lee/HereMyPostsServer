@@ -1,7 +1,7 @@
 package web.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 
@@ -81,6 +81,22 @@ public class TagServiceImpl  implements TagService{
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<TagArticle> addTagsToArticle(List<TagArticle> tas) {
+		return tagArticleRepo.save(tas);
+	}
+
+	@Override
+	public List<Tag> saveTags(List<Tag> tags) {//TODO performance
+		for(Tag tag : tags) {
+			if(tag.getId() == null) {
+				tag.setId(UUIDUtil.getUUID());
+				tag.setTagArticles(null);
+			}
+		}
+		return tagRepo.save(tags);
 	}
 
 }

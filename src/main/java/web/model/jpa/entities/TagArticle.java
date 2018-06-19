@@ -1,5 +1,7 @@
 package web.model.jpa.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,10 +9,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name="tags_articles")
-public class TagArticle {
-	
+public class TagArticle implements Serializable{
+
+	private static final long serialVersionUID = 8741257002550640334L;
+
 	@Id
 	@Column(name="id")
 	private String id;
@@ -67,4 +75,15 @@ public class TagArticle {
 		}
 	}*/
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("id:" + this.id + ", ");
+		String article = (this.article ==null)? null : this.article.toString();
+		sb.append("article: " + article + ", ");
+		String tag = (this.tag ==null)? null : this.tag.toString();
+		sb.append("tag: " + tag + "");
+		sb.append("}");
+		return sb.toString(); 
+	}
 }
