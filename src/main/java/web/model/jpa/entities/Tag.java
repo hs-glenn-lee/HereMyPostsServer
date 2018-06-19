@@ -25,49 +25,15 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name="tags")
 public class Tag implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3942498561244888210L;
 
 	@Id
-	@Column(name="id")
-	private String id;
-	
 	@Column(name="name")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="owner_id")
-	private Account owner;
-	
 	@OneToMany(mappedBy="tag")
 	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
-
-	@Column(name="create_timestamp")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createTimestamp;
 	
-	@Column(name="update_timestamp")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updateTimestamp;
-	
-	public Account getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Account owner) {
-		this.owner = owner;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -76,23 +42,6 @@ public class Tag implements Serializable{
 		this.name = name;
 	}
 
-	public Date getCreateTimestamp() {
-		return createTimestamp;
-	}
-
-	public void setCreateTimestamp(Date createTimestamp) {
-		this.createTimestamp = createTimestamp;
-	}
-
-	public Date getUpdateTimestamp() {
-		return updateTimestamp;
-	}
-
-	public void setUpdateTimestamp(Date updateTimestamp) {
-		this.updateTimestamp = updateTimestamp;
-	}
-
-	
 	public List<TagArticle> getTagArticles() {
 		return tagArticles;
 	}
@@ -100,6 +49,7 @@ public class Tag implements Serializable{
 	public void setTagArticles(List<TagArticle> tagArticles) {
 		this.tagArticles = tagArticles;
 	}
+
 	//convention
 /*	public void addArticle(Article article) {
 		TagArticle seriesArticle = new TagArticle(this, article);
@@ -121,13 +71,11 @@ public class Tag implements Serializable{
 	            }
 	        }
 	}*/
-	
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");
-		sb.append("id:" + this.id + ", ");
 		sb.append("name: " + this.name + ", ");
-		sb.append("owner: " + this.owner + "");
 		sb.append("}");
 		return sb.toString();
 	}

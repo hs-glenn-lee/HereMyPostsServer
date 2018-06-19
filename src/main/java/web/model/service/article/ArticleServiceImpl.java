@@ -67,7 +67,6 @@ public class ArticleServiceImpl implements ArticleService{
 		System.out.println(tas);
 		for(TagArticle ta : tas) {
 			ta.setArticle(compositeArticle);
-			ta.getTag().setOwner(compositeArticle.getAuthor());
 			ta.setId(UUIDUtil.getUUID());
 			System.out.println(ta);
 			

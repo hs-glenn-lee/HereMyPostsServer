@@ -11,16 +11,13 @@ import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
 
 public interface TagArticleRepo extends JpaRepository<TagArticle, String>{
-	@Query("select ta from TagArticle ta "
-			+ " where ta.tag.id = :tagId "
-			+ " and ta.article.id = :articleId")
-	public List<TagArticle> findByTagIdAndArticleId(@Param("tagId")String tagId, @Param("articleId")String articleId);
-	
+
 	@Query("select ta from TagArticle ta "
 			+ " where ta.article.id = :articleId ")
 	public List<TagArticle> findByArticleId(@Param("articleId")String articleId);
 	
 	@Query("select ta from TagArticle ta "
-			+ " where ta.tag.id = :tagId ")
-	public List<TagArticle> findByTagId(@Param("tagId") String tagId);
+			+ " where ta.tag.name = :tagName ")
+	public List<TagArticle> findByTagNaame(@Param("tagName") String tagName);
+	
 }

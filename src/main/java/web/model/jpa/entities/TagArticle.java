@@ -28,7 +28,7 @@ public class TagArticle implements Serializable{
 	private Article article;
 	
 	@ManyToOne
-	@JoinColumn(name="tag_id")
+	@JoinColumn(name="tag_name")
 	private Tag tag;
 	
 

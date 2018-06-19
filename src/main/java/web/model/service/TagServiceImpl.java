@@ -32,11 +32,11 @@ public class TagServiceImpl  implements TagService{
 	@Autowired
 	SignService signService;
 
-	@Override
+/*	@Override
 	public List<Tag> findTagsByOwner(Account owner) {
 		List<Tag> tags = tagRepo.findByOwnerId(owner.getId());
 		return tags;
-	}
+	}*/
 
 	@Override
 	public List<Tag> findTagsByArticle(String articleId) {
@@ -65,7 +65,7 @@ public class TagServiceImpl  implements TagService{
 
 	@Override
 	public void removeTagFromArticle(Tag tag, Article article) {
-		List<TagArticle> tas = tagArticleRepo.findByTagId(tag.getId());
+		/*List<TagArticle> tas = tagArticleRepo.findByTagId(tag.getId());
 		if ( tas.isEmpty() ) {
 			throw new IllegalStateException("there\' no matched tag or article");
 		}else if(tas.size() == 1){//if this tag is being tagged at only one article, delete tagArticle and also tag
@@ -80,7 +80,7 @@ public class TagServiceImpl  implements TagService{
 					break;
 				}
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -90,12 +90,6 @@ public class TagServiceImpl  implements TagService{
 
 	@Override
 	public List<Tag> saveTags(List<Tag> tags) {//TODO performance
-		for(Tag tag : tags) {
-			if(tag.getId() == null) {
-				tag.setId(UUIDUtil.getUUID());
-				tag.setTagArticles(null);
-			}
-		}
 		return tagRepo.save(tags);
 	}
 

@@ -32,8 +32,8 @@ public class TagRestController {
 	
 	@RequestMapping(value="/tag/myTags", method=RequestMethod.GET)
 	public List<Tag> getMyTags(HttpServletRequest req) throws NotSignedInException {
-		Account me = signService.getSign(req.getSession()).getAccount();
-		return tagService.findTagsByOwner(me);
+		//Account me = signService.getSign(req.getSession()).getAccount();
+		return null;
 	}
 	
 	@RequestMapping(value="/article/{articleId}/tags", method=RequestMethod.GET)
