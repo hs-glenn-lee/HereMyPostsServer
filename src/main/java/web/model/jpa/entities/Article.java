@@ -194,7 +194,6 @@ public class Article implements Serializable{
 					+ "updateTimestamp;: " + updateTimestamp + ","
 					;
 		return ret;
-		
 	}
 	
 	

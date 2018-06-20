@@ -49,8 +49,7 @@ public class Account implements Serializable{
 	@Column(name="update_timestamp")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatesTimestamp;
-	
-	
+
 	@OneToOne(mappedBy="account", fetch = FetchType.LAZY)
 	private AccountSetting accountSetting;
 
@@ -60,12 +59,11 @@ public class Account implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="author")
 	private Set<Article> articles = new HashSet<Article>();
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="owner")
-	private Set<Tag> tags = new HashSet<Tag>();
 
 	public Account(String username, String plainPassword) {}
 	
 	public Account() {}
+	
 	
 	public Set<Article> getArticles() {
 		return articles;
@@ -74,17 +72,6 @@ public class Account implements Serializable{
 	public void setArticles(Set<Article> articles) {
 		this.articles = articles;
 	}
-
-
-	public Set<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
-	}
-
-	
 
 	public Long getId() {
 		return id;

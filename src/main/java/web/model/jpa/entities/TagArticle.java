@@ -54,6 +54,9 @@ public class TagArticle implements Serializable{
 
 	public void setArticle(Article article) {
 		this.article = article;
+		if(!article.getTagArticles().contains(this)) {
+			article.getTagArticles().add(this);
+		}
 	}
 
 	public Tag getTag() {

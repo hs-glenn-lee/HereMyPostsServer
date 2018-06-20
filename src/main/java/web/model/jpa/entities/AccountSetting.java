@@ -33,7 +33,10 @@ public class AccountSetting implements Serializable{
 	
 	@Column(name="profile_picture_file_id")
 	private String profilePictureFileId;
-
+	
+	@Column(name="my_tags")
+	private String myTags = ""; //mysql mediumtext probably can't set default value 
+	
 	@OneToOne
 	@JoinColumn(name="account_id")
 	private Account account;
@@ -74,6 +77,11 @@ public class AccountSetting implements Serializable{
 	public void setProfilePictureFileId(String profilePictureFileId) {
 		this.profilePictureFileId = profilePictureFileId;
 	}
-
+	public String getMyTags() {
+		return myTags;
+	}
+	public void setMyTags(String myTags) {
+		this.myTags = myTags;
+	}
 
 }

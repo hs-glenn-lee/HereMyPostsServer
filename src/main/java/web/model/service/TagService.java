@@ -3,6 +3,7 @@ package web.model.service;
 import java.util.List;
 
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.AccountSetting;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
@@ -18,5 +19,9 @@ public interface TagService{
 	public TagArticle addTagToArticle(TagArticle ta);
 	public List<TagArticle> addTagsToArticle(List<TagArticle> tas);
 	public void removeTagFromArticle(Tag tag, Article article);
+	
+	//my tags
+	public AccountSetting addMyTag(Account account, List<String> tagNames);
+	public AccountSetting removeMyTag(Account account, String tagName);
 	
 }

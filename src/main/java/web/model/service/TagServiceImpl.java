@@ -1,6 +1,5 @@
 package web.model.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -9,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.AccountSetting;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
+import web.model.jpa.repos.AccountSettingRepo;
 import web.model.jpa.repos.TagArticleRepo;
 import web.model.jpa.repos.TagRepo;
 import web.model.service.sign.SignService;
@@ -31,6 +32,13 @@ public class TagServiceImpl  implements TagService{
 	
 	@Autowired
 	SignService signService;
+	
+	@Autowired
+	AccountSettingService accountSettingService;
+	
+	@Autowired
+	AccountSettingRepo accountSettingRepo;
+	
 
 /*	@Override
 	public List<Tag> findTagsByOwner(Account owner) {
@@ -91,6 +99,37 @@ public class TagServiceImpl  implements TagService{
 	@Override
 	public List<Tag> saveTags(List<Tag> tags) {//TODO performance
 		return tagRepo.save(tags);
+	}
+
+	@Override
+	public AccountSetting addMyTag(Account account, List<String> tagNames) {
+		AccountSetting setting = accountSettingService.findAccountSettingByAccountId(account.getId());
+		String myTagsStr = setting.getMyTags();
+		
+		MyTagUtils myTagUtil = new MyTagUtils(myTagsStr);
+		for(String tagName : tagNames) {
+			myTagUtil.addTag(tagName);
+		}
+		
+		setting.setMyTags(myTagUtil.getTagsString());
+		
+		accountSettingRepo.save(setting);
+		return setting;
+	}
+
+
+	@Override
+	public AccountSetting removeMyTag(Account account, String tagName) {
+		AccountSetting setting = accountSettingService.findAccountSettingByAccountId(account.getId());
+		String myTagsStr = setting.getMyTags();
+		
+		MyTagUtils myTagUtil = new MyTagUtils(myTagsStr);
+		myTagUtil.removeTag(tagName);
+		
+		setting.setMyTags(myTagUtil.getTagsString());
+		
+		accountSettingRepo.save(setting);
+		return setting;
 	}
 
 }

@@ -62,19 +62,10 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		
 		//save tags
-		List<TagArticle> tas = compositeArticle.getTagArticles();
-		List<Tag> tags = new ArrayList<Tag>();
-		System.out.println(tas);
-		for(TagArticle ta : tas) {
-			ta.setArticle(compositeArticle);
-			ta.setId(UUIDUtil.getUUID());
-			System.out.println(ta);
-			
-			tags.add(ta.getTag());
-		}
+		
 				
-		tagService.saveTags(tags);
-		tagService.addTagsToArticle(tas);
+		/*tagService.saveTags(tags);
+		tagService.addTagsToArticle(tas);*/
 
 		return compositeArticle;
 	}
