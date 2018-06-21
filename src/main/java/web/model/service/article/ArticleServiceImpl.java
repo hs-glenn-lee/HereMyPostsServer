@@ -105,6 +105,7 @@ public class ArticleServiceImpl implements ArticleService{
 		Article article = em.find(Article.class, articleId);
 		article.getCategory();
 		article.getAuthor();
+		article.getTagArticles();
 		
 		File content = fileService.getFile(article.getContentFileId());
 		article.setContent(fileToString(content));

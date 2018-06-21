@@ -53,5 +53,8 @@ public class MyTagUtils {
 		return String.join(TAG_SEPERATOR, myTagList);
 	}
 	
+	public List<String> getMyTagList() {
+		return myTagList;
+	}
 	
 }

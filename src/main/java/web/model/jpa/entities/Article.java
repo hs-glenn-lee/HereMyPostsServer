@@ -75,7 +75,7 @@ public class Article implements Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
 	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
-	
+
 	public List<TagArticle> getTagArticles() {
 		return tagArticles;
 	}

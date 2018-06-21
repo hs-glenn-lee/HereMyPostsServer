@@ -129,4 +129,11 @@ public class TagServiceImpl  implements TagService{
 		return setting;
 	}
 
+	@Override
+	public List<String> getMyTags(Account account) {
+		AccountSetting setting = accountSettingService.findAccountSettingByAccountId(account.getId());
+		MyTagUtils mtu = new MyTagUtils(setting.getMyTags());
+		return mtu.getMyTagList();
+	}
+
 }

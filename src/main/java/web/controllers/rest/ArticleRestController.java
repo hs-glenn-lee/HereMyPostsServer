@@ -31,7 +31,9 @@ public class ArticleRestController {
 	
 	@RequestMapping(value="/article/{articleId}", method=RequestMethod.GET)
 	public Article getArticle(@PathVariable String articleId) throws IOException {
-		return articleSerivce.getArticle(articleId);
+		Article a = articleSerivce.getArticle(articleId);
+		System.out.println(a.getTagArticles());
+		return a;
 	}
 	
 	@RequestMapping(value="/article/save", method=RequestMethod.POST)
@@ -39,8 +41,6 @@ public class ArticleRestController {
 		System.out.println(article);
 		System.out.println(article.getCategory());
 		System.out.println(article.getAuthor());
-		
-		
 		System.out.println(article);
 		
 		return articleSerivce.write(article);

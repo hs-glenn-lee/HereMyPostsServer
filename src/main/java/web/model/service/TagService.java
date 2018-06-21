@@ -23,5 +23,6 @@ public interface TagService{
 	//my tags
 	public AccountSetting addMyTags(AccountSetting setting, List<Tag> tags);
 	public AccountSetting removeMyTag(Account account, String tagName);
+	public List<String> getMyTags(Account account);
 	
 }

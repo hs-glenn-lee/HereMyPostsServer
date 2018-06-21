@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import web.controllers.rest.responses.GenericResponse;
@@ -31,14 +31,14 @@ public class TagRestController {
 	SignService signService;
 	
 	@RequestMapping(value="/tag/myTags", method=RequestMethod.GET)
-	public List<Tag> getMyTags(HttpServletRequest req) throws NotSignedInException {
-		//Account me = signService.getSign(req.getSession()).getAccount();
-		return null;
+	public List<String> getMyTags(HttpServletRequest req) throws NotSignedInException {
+		Account me = signService.getSign(req.getSession()).getAccount();
+		return tagService.getMyTags(me);
 	}
 	
 	@RequestMapping(value="/article/{articleId}/tags", method=RequestMethod.GET)
 	public List<Tag> getArticleTags(HttpServletRequest req,
-										@RequestParam("articleId") String articleId) {
+										@PathVariable("articleId") String articleId) {
 		return tagService.findTagsByArticle(articleId);
 	}
 	
@@ -62,7 +62,7 @@ public class TagRestController {
 			return gr;
 		}
 	}
-	
+
 	
 	
 }
