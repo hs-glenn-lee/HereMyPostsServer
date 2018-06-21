@@ -4,23 +4,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import web.model.jpa.entities.Tag;
+
 public class MyTagUtils {
 	
 	private static final String TAG_SEPERATOR = "\u001F";
-	
-	private String myTags;
-	
-	private List<String> myTagList = new ArrayList<String>();
+
+	private List<String> myTagList;
 
 	public MyTagUtils(String myTags) {
-		this.myTags = myTags;
+		myTagList = new ArrayList<String>();
 		String[] myTagsArr = myTags.split(TAG_SEPERATOR);
-		this.myTagList = Arrays.asList(myTagsArr);
+		for(String s : myTagsArr) {
+			myTagList.add(s);
+		}
 	}
 	
 	public void addTag(String tagName) {//append tag if there's no same tag in tagsString 
-		if(getIndexOfMyTagList(tagName) != null) {
-			myTagList.add(tagName);
+		if(getIndexOfMyTagList(tagName) == null) {
+			this.myTagList.add(tagName);
+		}
+	}
+	
+	public void addTags(List<Tag> tags) {
+		for(Tag tag : tags) {
+			this.addTag(tag.getName());
 		}
 	}
 	
@@ -34,7 +42,7 @@ public class MyTagUtils {
 	private Integer getIndexOfMyTagList(String tagName) {//if tagsString contain input tagName return true, else  false;
 		for(int i = 0; i < myTagList.size(); i++) {
 			String storedTagName = myTagList.get(i);
-			if(storedTagName.equals(tagName)) {
+			if(tagName.equals(storedTagName)) {
 				return i;
 			}
 		}
@@ -42,7 +50,7 @@ public class MyTagUtils {
 	}
 	
 	public String getTagsString () {
-		return myTags;
+		return String.join(TAG_SEPERATOR, myTagList);
 	}
 	
 	

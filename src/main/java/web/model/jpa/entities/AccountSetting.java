@@ -83,5 +83,11 @@ public class AccountSetting implements Serializable{
 	public void setMyTags(String myTags) {
 		this.myTags = myTags;
 	}
-
+	
+	public String toString() {
+		return "{"+ "id:" + id +
+					" penName:" + penName +
+					" profilePictureFileId:" + profilePictureFileId +
+					" myTags:"+ myTags+ "}";
+	}
 }

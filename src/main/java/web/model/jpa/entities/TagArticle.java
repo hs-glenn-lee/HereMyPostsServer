@@ -54,9 +54,9 @@ public class TagArticle implements Serializable{
 
 	public void setArticle(Article article) {
 		this.article = article;
-		if(!article.getTagArticles().contains(this)) {
+		/*if(!article.getTagArticles().contains(this)) {
 			article.getTagArticles().add(this);
-		}
+		}*/
 	}
 
 	public Tag getTag() {
@@ -65,9 +65,9 @@ public class TagArticle implements Serializable{
 
 	public void setTag(Tag tag) {
 		this.tag = tag;
-		if(!tag.getTagArticles().contains(this)) {
+		/*if(!tag.getTagArticles().contains(this)) {
 			tag.getTagArticles().add(this);
-		}
+		}*/
 	}
 
 	/*public boolean equals(Series series) {

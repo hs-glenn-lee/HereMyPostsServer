@@ -1,5 +1,7 @@
 package web.model.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -102,14 +104,9 @@ public class TagServiceImpl  implements TagService{
 	}
 
 	@Override
-	public AccountSetting addMyTag(Account account, List<String> tagNames) {
-		AccountSetting setting = accountSettingService.findAccountSettingByAccountId(account.getId());
-		String myTagsStr = setting.getMyTags();
-		
-		MyTagUtils myTagUtil = new MyTagUtils(myTagsStr);
-		for(String tagName : tagNames) {
-			myTagUtil.addTag(tagName);
-		}
+	public AccountSetting addMyTags(AccountSetting setting, List<Tag> tags) {
+		MyTagUtils myTagUtil = new MyTagUtils(setting.getMyTags());
+		myTagUtil.addTags(tags);
 		
 		setting.setMyTags(myTagUtil.getTagsString());
 		

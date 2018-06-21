@@ -21,7 +21,7 @@ public interface TagService{
 	public void removeTagFromArticle(Tag tag, Article article);
 	
 	//my tags
-	public AccountSetting addMyTag(Account account, List<String> tagNames);
+	public AccountSetting addMyTags(AccountSetting setting, List<Tag> tags);
 	public AccountSetting removeMyTag(Account account, String tagName);
 	
 }

@@ -15,16 +15,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
 import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
+import web.model.jpa.repos.AccountRepo;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.service.TagService;
-import web.model.service.file.FilePathMapService;
 import web.model.service.file.FileService;
-import web.model.service.file.StorageService;
-import web.model.service.file.policies.ArticleFilePolicy;
 import web.model.service.file.policies.NewArticleContentFilePolicy;
 import web.model.service.file.policies.NewArticleFilePolicy;
 import web.utils.UUIDUtil;
@@ -42,11 +41,22 @@ public class ArticleServiceImpl implements ArticleService{
 	FileService fileService;
 	
 	@Autowired
+	AccountRepo accountRepo;
+	
+	@Autowired
 	TagService tagService;
 	
 	@Transactional
 	@Override
 	public Article write(Article compositeArticle) throws IOException {
+		
+		//sync author
+		Account author = accountRepo.findOne(compositeArticle.getAuthor().getId());
+		System.out.println(author);
+		author.getAccountSetting();
+		System.out.println(author.getAccountSetting());
+		compositeArticle.setAuthor(author);
+		
 		//set id of new article
 		compositeArticle.setId(UUIDUtil.getUUID());
 		
@@ -60,12 +70,19 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		articleRepo.save(compositeArticle);
 		
+		//save tags and set id of TagArticle
+		List<Tag> tags = new ArrayList<Tag>();
+		for(TagArticle ta : compositeArticle.getTagArticles()) {
+			tags.add(ta.getTag());
+			ta.setId(UUIDUtil.getUUID());
+			ta.setArticle(compositeArticle);
+		}
 		
-		//save tags
+		tagService.saveTags(tags);
 		
-				
-		/*tagService.saveTags(tags);
-		tagService.addTagsToArticle(tas);*/
+		tagService.addTagsToArticle(compositeArticle.getTagArticles());
+
+		tagService.addMyTags(compositeArticle.getAuthor().getAccountSetting(), tags);
 
 		return compositeArticle;
 	}
