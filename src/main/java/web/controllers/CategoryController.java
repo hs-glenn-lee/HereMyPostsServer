@@ -62,10 +62,6 @@ public class CategoryController {
 	public String myCategories(HttpServletRequest req) throws NotSignedInException {
 		Sign sign = signService.getSign(req.getSession());
 		List<Category> cats = categoryService.getCategoriesOwnedBy(sign.getAccount());
-		for(Category cat : cats) {
-			System.out.println(cat.getId());
-			System.out.println(cat.getName());
-		}
 		return "home";
 	}
 	
@@ -73,10 +69,6 @@ public class CategoryController {
 	public String errorTest(HttpServletRequest req) throws NotSignedInException {
 		Sign sign = signService.getSign(req.getSession());
 		List<Category> cats = categoryService.getCategoriesOwnedBy(sign.getAccount());
-		for(Category cat : cats) {
-			System.out.println(cat.getId());
-			System.out.println(cat.getName());
-		}
 		return "home";
 	}
 }

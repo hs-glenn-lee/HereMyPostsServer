@@ -33,7 +33,6 @@ public class CategoryRestController {
 	
 	@RequestMapping(value="/category/create", method=RequestMethod.PUT)
 	public Category create(@RequestBody Category category, HttpServletRequest req) throws NotSignedInException {
-		System.out.println(category);
 		Sign sign = signService.getSign(req.getSession());
 		Account curAcc = sign.getAccount();
 		category.setId(UUIDUtil.getUUID());

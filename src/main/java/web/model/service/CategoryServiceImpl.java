@@ -47,7 +47,6 @@ public class CategoryServiceImpl implements CategoryService{
 	public List<Category> getCategoriesOwnedBy(Account account) {
 		Query q = em.createQuery("SELECT category FROM Category category "
 								+"WHERE category.account.id = :accountId");
-		System.out.println(account.getId());
 		q.setParameter("accountId", account.getId());
 		List<Category> cats = (List<Category>)q.getResultList();
 		return cats;

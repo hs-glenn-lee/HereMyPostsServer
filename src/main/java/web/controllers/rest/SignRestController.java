@@ -49,7 +49,6 @@ public class SignRestController {
 	
 	@RequestMapping(value="/sign-up", method=RequestMethod.PUT)
 	public @ResponseBody GenericResponse<?> signup(@RequestBody Account account) throws IOException {
-		System.out.println(account);
 		signService.signup(account);
 		return new GenericResponse<Object>();
 	}

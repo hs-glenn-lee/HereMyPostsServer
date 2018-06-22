@@ -52,9 +52,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		//sync author
 		Account author = accountRepo.findOne(compositeArticle.getAuthor().getId());
-		System.out.println(author);
 		author.getAccountSetting();
-		System.out.println(author.getAccountSetting());
 		compositeArticle.setAuthor(author);
 		
 		//set id of new article

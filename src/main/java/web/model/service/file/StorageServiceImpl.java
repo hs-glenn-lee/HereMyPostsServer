@@ -47,7 +47,6 @@ public class StorageServiceImpl implements StorageService{
 			throw ioe;
 		}finally {
 			try {
-				System.out.println("fos close!!!!!!!!");
 				if (fos != null) {
 					fos.close();
 				}
