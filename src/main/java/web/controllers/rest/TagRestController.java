@@ -39,7 +39,10 @@ public class TagRestController {
 	@RequestMapping(value="/article/{articleId}/tags", method=RequestMethod.GET)
 	public List<Tag> getArticleTags(HttpServletRequest req,
 										@PathVariable("articleId") String articleId) {
-		return tagService.findTagsByArticle(articleId);
+		List<Tag> tags = tagService.findTagsByArticle(articleId);
+		
+		
+		return tags;
 	}
 	
 	@RequestMapping(value="/tag/addToArticle", method=RequestMethod.PUT)
