@@ -70,7 +70,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		//save tags and set id of TagArticle
 		List<Tag> tags = new ArrayList<Tag>();
-		for(TagArticle ta : compositeArticle.getTagArticles()) {
+		for(TagArticle ta : compositeArticle.getTagsArticles()) {
 			tags.add(ta.getTag());
 			ta.setId(UUIDUtil.getUUID());
 			ta.setArticle(compositeArticle);
@@ -78,7 +78,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		tagService.saveTags(tags);
 		
-		tagService.addTagsToArticle(compositeArticle.getTagArticles());
+		tagService.addTagsToArticle(compositeArticle.getTagsArticles());
 
 		tagService.addMyTags(compositeArticle.getAuthor().getAccountSetting(), tags);
 
@@ -103,7 +103,7 @@ public class ArticleServiceImpl implements ArticleService{
 		Article article = em.find(Article.class, articleId);
 		article.getCategory();
 		article.getAuthor();
-		article.getTagArticles();
+		article.getTagsArticles();
 		
 		File content = fileService.getFile(article.getContentFileId());
 		article.setContent(fileToString(content));

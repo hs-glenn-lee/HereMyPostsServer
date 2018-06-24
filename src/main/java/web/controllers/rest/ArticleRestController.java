@@ -32,7 +32,7 @@ public class ArticleRestController {
 	@RequestMapping(value="/article/{articleId}", method=RequestMethod.GET)
 	public Article getArticle(@PathVariable String articleId) throws IOException {
 		Article a = articleSerivce.getArticle(articleId);
-		System.out.println(a.getTagArticles());
+		System.out.println(a.getTagsArticles());
 		return a;
 	}
 	

@@ -13,7 +13,7 @@ import web.model.jpa.entities.Tag;
 public interface TagRepo extends JpaRepository<Tag, String>{
 
 	@Query("select tag from Tag tag "
-			+ " join fetch tag.tagArticles ta "
+			+ " join fetch tag.tagsArticles ta "
 			+ " join fetch ta.article article "
 			+ " where article.id = :articleId")
 	public List<Tag> findByArticleId(@Param("articleId") String articleId);

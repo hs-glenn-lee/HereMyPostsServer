@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -23,9 +24,10 @@ public class Tag implements Serializable{
 	@Id
 	@Column(name="name")
 	private String name;
-
+	
+	/*@JsonBackReference(value="tag")*/
 	@OneToMany(mappedBy="tag")
-	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
+	private List<TagArticle> tagsArticles = new ArrayList<TagArticle>();
 	
 	public String getName() {
 		return name;
@@ -35,12 +37,12 @@ public class Tag implements Serializable{
 		this.name = name;
 	}
 
-	public List<TagArticle> getTagArticles() {
-		return tagArticles;
+	public List<TagArticle> getTagsArticles() {
+		return tagsArticles;
 	}
 
-	public void setTagArticles(List<TagArticle> tagArticles) {
-		this.tagArticles = tagArticles;
+	public void setTagsArticles(List<TagArticle> tagsArticles) {
+		this.tagsArticles = tagsArticles;
 	}
 
 	//convention

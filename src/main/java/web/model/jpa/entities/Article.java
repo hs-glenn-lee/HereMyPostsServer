@@ -17,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -73,15 +75,16 @@ public class Article implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
 	private Set<Comment> comments;
 	
+	/*@JsonBackReference(value="article")*/
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
-	private List<TagArticle> tagArticles = new ArrayList<TagArticle>();
+	private List<TagArticle> tagsArticles = new ArrayList<TagArticle>();
 
-	public List<TagArticle> getTagArticles() {
-		return tagArticles;
+	public List<TagArticle> getTagsArticles() {
+		return tagsArticles;
 	}
 
-	public void setTagArticles(List<TagArticle> tagArticles) {
-		this.tagArticles = tagArticles;
+	public void setTagsArticles(List<TagArticle> tagsArticles) {
+		this.tagsArticles = tagsArticles;
 	}
 
 	public Set<Comment> getComments() {

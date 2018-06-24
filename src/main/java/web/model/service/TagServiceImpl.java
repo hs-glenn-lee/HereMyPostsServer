@@ -20,7 +20,7 @@ import web.model.jpa.repos.TagRepo;
 import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
 
-@Service("seriesService")
+@Service("tagService")
 public class TagServiceImpl  implements TagService{
 	
 	@Autowired
