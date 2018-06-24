@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,10 +17,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
 import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Article.class)	
@@ -75,7 +77,7 @@ public class Article implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
 	private Set<Comment> comments;
 	
-	/*@JsonBackReference(value="article")*/
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="article")
 	private List<TagArticle> tagsArticles = new ArrayList<TagArticle>();
 

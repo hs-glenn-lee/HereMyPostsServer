@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "name")
 @Entity
 @Table(name="tags")
 public class Tag implements Serializable{
@@ -25,7 +24,7 @@ public class Tag implements Serializable{
 	@Column(name="name")
 	private String name;
 	
-	/*@JsonBackReference(value="tag")*/
+	@JsonBackReference(value="tag")
 	@OneToMany(mappedBy="tag")
 	private List<TagArticle> tagsArticles = new ArrayList<TagArticle>();
 	

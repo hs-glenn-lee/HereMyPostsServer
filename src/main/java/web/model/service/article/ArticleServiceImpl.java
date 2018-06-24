@@ -65,22 +65,6 @@ public class ArticleServiceImpl implements ArticleService{
 						new NewArticleContentFilePolicy(compositeArticle));
 
 		compositeArticle.setContentFileId(fileId);
-		
-		articleRepo.save(compositeArticle);
-		
-		//save tags and set id of TagArticle
-		List<Tag> tags = new ArrayList<Tag>();
-		for(TagArticle ta : compositeArticle.getTagsArticles()) {
-			tags.add(ta.getTag());
-			ta.setId(UUIDUtil.getUUID());
-			ta.setArticle(compositeArticle);
-		}
-		
-		tagService.saveTags(tags);
-		
-		tagService.addTagsToArticle(compositeArticle.getTagsArticles());
-
-		tagService.addMyTags(compositeArticle.getAuthor().getAccountSetting(), tags);
 
 		return compositeArticle;
 	}

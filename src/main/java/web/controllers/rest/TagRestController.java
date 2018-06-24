@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import web.controllers.rest.responses.GenericResponse;
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
-import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
 import web.model.service.TagService;
 import web.model.service.sign.SignService;
@@ -37,35 +35,20 @@ public class TagRestController {
 	}
 	
 	@RequestMapping(value="/article/{articleId}/tags", method=RequestMethod.GET)
-	public List<Tag> getArticleTags(HttpServletRequest req,
+	public List<TagArticle> getTagArticlesOfArticle(HttpServletRequest req,
 										@PathVariable("articleId") String articleId) {
-		List<Tag> tags = tagService.findTagsByArticle(articleId);
-		
-		
-		return tags;
+		List<TagArticle> tas = tagService.findTagArticlesByArticleId(articleId);
+		return tas;
 	}
 	
-	@RequestMapping(value="/tag/addToArticle", method=RequestMethod.PUT)
-	public TagArticle addTagToArticle(HttpServletRequest req,
-								@RequestBody TagArticle ta) {
-		return tagService.addTagToArticle(ta);
+	@RequestMapping(value="/tag/save", method=RequestMethod.PUT)
+	public List<TagArticle> saveTagsArticles(HttpServletRequest req,
+								@RequestBody List<TagArticle> tsas) {
+		
+		return tagService.saveTagsArticles(tsas);
 	}
 	
-	@RequestMapping(value="/tag/removeFromArticle", method=RequestMethod.POST)
-	public GenericResponse<?> removeTagFromArticle(HttpServletRequest req,
-							@RequestBody TagArticle ta) {
-		try {
-			tagService.removeTagFromArticle(ta.getTag(), ta.getArticle());
-			GenericResponse<?> gr = new GenericResponse<Object>();
-			return gr;
-		}catch(Exception e) {
-			GenericResponse<?> gr = new GenericResponse<Object>();
-			gr.setStatus(GenericResponse.STATUS_FAIL);
-			gr.setMessage(e.getMessage());
-			return gr;
-		}
-	}
+	
 
-	
 	
 }

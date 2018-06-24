@@ -15,10 +15,8 @@ public interface TagService{
 	public List<Tag> saveTags(List<Tag> tags);
 
 	//tagArticle
-	public TagArticle addTagToArticle(Tag tag, Article article);
-	public TagArticle addTagToArticle(TagArticle ta);
-	public List<TagArticle> addTagsToArticle(List<TagArticle> tas);
-	public void removeTagFromArticle(Tag tag, Article article);
+	public List<TagArticle> saveTagsArticles(List<TagArticle> tagsArticles);
+	public List<TagArticle> findTagArticlesByArticleId(String articleId);
 	
 	//my tags
 	public AccountSetting addMyTags(AccountSetting setting, List<Tag> tags);

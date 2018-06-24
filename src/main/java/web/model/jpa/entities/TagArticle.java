@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+
 @Entity
 @Table(name="tags_articles")
 public class TagArticle implements Serializable{
@@ -24,12 +24,11 @@ public class TagArticle implements Serializable{
 	@Column(name="id")
 	private String id;
 	
-	/*@JsonManagedReference*/
 	@ManyToOne
 	@JoinColumn(name="article_id")
 	private Article article;
 	
-	/*@JsonManagedReference*/
+	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="tag_name")
 	private Tag tag;
