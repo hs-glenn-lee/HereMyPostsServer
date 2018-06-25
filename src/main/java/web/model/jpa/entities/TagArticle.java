@@ -9,11 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = TagArticle.class)
 @Entity
 @Table(name="tags_articles")
 public class TagArticle implements Serializable{
@@ -28,7 +29,6 @@ public class TagArticle implements Serializable{
 	@JoinColumn(name="article_id")
 	private Article article;
 	
-	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name="tag_name")
 	private Tag tag;
@@ -72,14 +72,6 @@ public class TagArticle implements Serializable{
 		}*/
 	}
 
-	/*public boolean equals(Series series) {
-		if(series.getId() == this.getId()) {
-			return true;
-		}else {
-			return false;
-		}
-	}*/
-	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{");

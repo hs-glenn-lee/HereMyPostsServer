@@ -38,13 +38,16 @@ public class TagRestController {
 	public List<TagArticle> getTagArticlesOfArticle(HttpServletRequest req,
 										@PathVariable("articleId") String articleId) {
 		List<TagArticle> tas = tagService.findTagArticlesByArticleId(articleId);
+		
+		System.out.println("getTagArticlesOfArticle");
+		System.out.println(tas);
+		
 		return tas;
 	}
 	
 	@RequestMapping(value="/tag/save", method=RequestMethod.PUT)
 	public List<TagArticle> saveTagsArticles(HttpServletRequest req,
 								@RequestBody List<TagArticle> tsas) {
-		
 		return tagService.saveTagsArticles(tsas);
 	}
 	

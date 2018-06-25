@@ -15,9 +15,11 @@ import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
 import web.model.jpa.repos.AccountSettingRepo;
+import web.model.jpa.repos.ArticleRepo;
 import web.model.jpa.repos.TagArticleRepo;
 import web.model.jpa.repos.TagRepo;
 import web.model.service.sign.SignService;
+import web.utils.UUIDUtil;
 
 @Service("tagService")
 public class TagServiceImpl  implements TagService{
@@ -40,6 +42,8 @@ public class TagServiceImpl  implements TagService{
 	@Autowired
 	AccountSettingRepo accountSettingRepo;
 
+	@Autowired
+	ArticleRepo articleRepo;
 	
 	//--------tag
 	@Override
@@ -65,10 +69,23 @@ public class TagServiceImpl  implements TagService{
 	public List<TagArticle> saveTagsArticles(List<TagArticle> tagsArticles) {
 		
 		AccountSetting authorSetting = tagsArticles.get(0).getArticle().getAuthor().getAccountSetting();
+		Article article = tagsArticles.get(0).getArticle();
+		System.out.println("saveTagsArticles");
+		System.out.println(article);
+		
+		article = articleRepo.findOne(article.getId());
 		
 		List<Tag> tags = new ArrayList<Tag>();
 		for(TagArticle ta : tagsArticles) {
 			tags.add(ta.getTag());
+			if(ta.getId() == null) {
+				ta.setId(UUIDUtil.getUUID());
+			}
+			if( !article.getId().equals( ta.getArticle().getId() ) ) {
+				throw new IllegalStateException("TagsArticles\'s article must be eqauls.");
+			}else {
+				ta.setArticle(article);
+			}
 		}
 		tagRepo.save(tags);
 		

@@ -65,6 +65,8 @@ public class ArticleServiceImpl implements ArticleService{
 						new NewArticleContentFilePolicy(compositeArticle));
 
 		compositeArticle.setContentFileId(fileId);
+		
+		Article saved = articleRepo.save(compositeArticle);
 
 		return compositeArticle;
 	}
