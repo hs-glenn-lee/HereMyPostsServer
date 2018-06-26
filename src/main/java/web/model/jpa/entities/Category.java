@@ -48,6 +48,7 @@ public class Category implements Serializable {
 	@JoinColumn(name="owner_id")
 	Account account;
 	
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="category")
 	private Set<Article> articles;
 

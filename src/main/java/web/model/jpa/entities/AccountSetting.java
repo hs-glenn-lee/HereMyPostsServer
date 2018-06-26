@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="account_settings")
 public class AccountSetting implements Serializable{
@@ -37,6 +39,7 @@ public class AccountSetting implements Serializable{
 	@Column(name="my_tags")
 	private String myTags = ""; //mysql mediumtext probably can't set default value 
 	
+	@JsonManagedReference
 	@OneToOne
 	@JoinColumn(name="account_id")
 	private Account account;

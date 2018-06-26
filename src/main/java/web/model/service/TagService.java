@@ -15,7 +15,7 @@ public interface TagService{
 	public List<Tag> saveTags(List<Tag> tags);
 
 	//tagArticle
-	public List<TagArticle> saveTagsArticles(List<TagArticle> tagsArticles);
+	public List<TagArticle> saveTagsArticlesOfArticle(String targetArticleId, List<TagArticle> tagsArticles);
 	public List<TagArticle> findTagArticlesByArticleId(String articleId);
 	
 	//my tags

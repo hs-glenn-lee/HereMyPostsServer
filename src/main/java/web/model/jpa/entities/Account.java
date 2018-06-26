@@ -17,11 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-//when jackson convert this object as JSON, this annotation prevent cyclic call like a.b and also b.a
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")	
+
 @Entity
 @Table(name="accounts")
 public class Account implements Serializable{
@@ -50,6 +48,7 @@ public class Account implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatesTimestamp;
 
+	@JsonBackReference
 	@OneToOne(mappedBy="account", fetch = FetchType.LAZY)
 	private AccountSetting accountSetting;
 
@@ -158,7 +157,20 @@ public class Account implements Serializable{
 			sb.append(", ");
 			sb.append(String.format("%s : %s", "updatesTimestamp", this.updatesTimestamp.toString() ));
 		}
+		
+		if(accountSetting!=null) {
+			sb.append(",");
+			sb.append(String.format("%s : %s", "accountSetting", this.accountSetting));
+		}else {
+			sb.append(",");
+			sb.append(String.format("%s : %s", "accountSetting", "null"));
+
+		}
+		
+		
 		sb.append("}");
+		
+		
 		
 		return sb.toString();
 		

@@ -1,6 +1,7 @@
 package web.model.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -18,6 +19,7 @@ import web.model.jpa.repos.AccountSettingRepo;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.jpa.repos.TagArticleRepo;
 import web.model.jpa.repos.TagRepo;
+import web.model.service.article.ArticleService;
 import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
 
@@ -45,6 +47,9 @@ public class TagServiceImpl  implements TagService{
 	@Autowired
 	ArticleRepo articleRepo;
 	
+	@Autowired 
+	ArticleService articleService;
+	
 	//--------tag
 	@Override
 	public List<Tag> findTagsByArticle(String articleId) {
@@ -66,36 +71,80 @@ public class TagServiceImpl  implements TagService{
 	
 	@Transactional
 	@Override
-	public List<TagArticle> saveTagsArticles(List<TagArticle> tagsArticles) {
+	public List<TagArticle> saveTagsArticlesOfArticle(String targetArticleId, List<TagArticle> newTagsArticles) {
+
+		if(newTagsArticles.isEmpty()) {
+			return new ArrayList<TagArticle>();
+		}
 		
-		AccountSetting authorSetting = tagsArticles.get(0).getArticle().getAuthor().getAccountSetting();
-		Article article = tagsArticles.get(0).getArticle();
-		System.out.println("saveTagsArticles");
-		System.out.println(article);
+		Article targetArticle = articleRepo.findOne(targetArticleId);
 		
-		article = articleRepo.findOne(article.getId());
+		validateInputSaveTagsArticlesOfArticle(targetArticle, newTagsArticles);
 		
-		List<Tag> tags = new ArrayList<Tag>();
-		for(TagArticle ta : tagsArticles) {
-			tags.add(ta.getTag());
+		//set old tag articles
+		List<TagArticle> oldTagArticles = tagArticleRepo.findByArticleId(targetArticleId);
+		HashSet<String> oldTsAsIds = new HashSet<String>();
+		for(TagArticle oldTa : oldTagArticles) {
+			oldTsAsIds.add(oldTa.getId());
+		}
+		
+		//set newTagsArticles
+		HashSet<String> newTsAsIds = new HashSet<String>();
+		for(TagArticle ta : newTagsArticles) {
 			if(ta.getId() == null) {
 				ta.setId(UUIDUtil.getUUID());
 			}
-			if( !article.getId().equals( ta.getArticle().getId() ) ) {
-				throw new IllegalStateException("TagsArticles\'s article must be eqauls.");
-			}else {
-				ta.setArticle(article);
+			ta.setArticle(targetArticle);
+			newTsAsIds.add(ta.getId());
+		}
+		
+		//get new ta to save
+		List<Tag> tags = new ArrayList<Tag>();
+		List<TagArticle> newToSave = new ArrayList<TagArticle>();
+		for(TagArticle ta : newTagsArticles) {
+			if(!oldTsAsIds.contains(ta.getId())) {
+				tags.add(ta.getTag());
+				newToSave.add(ta);
 			}
 		}
+		
+		//get old ta to delete
+		List<TagArticle> oldToDelete = new ArrayList<TagArticle>();
+		for(TagArticle oldTa : oldTagArticles) {
+			if(!newTsAsIds.contains(oldTa.getId())) {
+				oldToDelete.add(oldTa);
+			}
+		}
+
 		tagRepo.save(tags);
+		tagArticleRepo.save(newToSave);
+		tagArticleRepo.delete(oldToDelete);
 		
-		List<TagArticle> ret = tagArticleRepo.save(tagsArticles);
-		
+		//save my tags
+		AccountSetting authorSetting = targetArticle.getAuthor().getAccountSetting();
 		this.addMyTags(authorSetting, tags);
-		
+
+		List<TagArticle> ret = newTagsArticles;
 		return ret;
 	}
 	
+	public void validateInputSaveTagsArticlesOfArticle(Article targetArticle, List<TagArticle> tagsArticles) {
+		
+		if(targetArticle == null) {
+			throw new IllegalStateException("targetArticle not found.");
+		}
+
+		for(TagArticle ta : tagsArticles) {
+			Article test = ta.getArticle();
+			if(test == null) {
+				throw new IllegalStateException("article in tagsArticles id null");
+			}
+			if(!targetArticle.getId().equals(test.getId())) {
+				throw new IllegalStateException("article in tagsArticles id must equal to targetArticleId");
+			}
+		}
+		
+	}
 
 	//-----------mytags
 	@Transactional

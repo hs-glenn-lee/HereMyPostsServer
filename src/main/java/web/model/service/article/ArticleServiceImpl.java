@@ -114,6 +114,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		for(Article article : articles) {//this statement prevent loop when serialize object by jackson 
 			article.setCategory(null);
+			article.setCreateTimestamp();
 		}
 		
 		return articles;
@@ -136,11 +137,6 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 
-	@Override
-	public String getArticleContent(String articleId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	
 	private String fileToString(File file) throws IOException {

@@ -10,10 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="tags")
@@ -25,11 +22,12 @@ public class Tag implements Serializable{
 	@Column(name="name")
 	private String name;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="tag")
 	private List<TagArticle> tagsArticles = new ArrayList<TagArticle>();
 	
 	public String getName() {
-		return name;
+		return name; 
 	}
 
 	public void setName(String name) {

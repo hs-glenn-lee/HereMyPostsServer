@@ -1,6 +1,8 @@
 package web.model.jpa.entities;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,9 +24,10 @@ import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Article.class)	
+	
 @Entity
 @Table(name="articles")
 public class Article implements Serializable{
@@ -58,6 +61,9 @@ public class Article implements Serializable{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updateTimestamp;
 	
+	@Transient
+	private String createDateString;
+	
 	@Column(name="is_del")
 	@Type(type="org.hibernate.type.NumericBooleanType")
 	private Boolean isDel = false;
@@ -65,7 +71,8 @@ public class Article implements Serializable{
 	@Column(name="is_public")
 	@Type(type="org.hibernate.type.NumericBooleanType")
 	private Boolean isPublic = false;
-
+	
+	
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
@@ -141,9 +148,20 @@ public class Article implements Serializable{
 	public Date getCreateTimestamp() {
 		return createTimestamp;
 	}
-
-	public void setCreateTimestamp(Date createTimestamp) {
-		this.createTimestamp = createTimestamp;
+	
+	public void setCreateDateString (String createDateString) {
+		this.createDateString=createDateString;
+	}
+	
+	public String getCreateDateString () {
+		return this.createDateString;
+	}
+	
+	public void setCreateTimestamp() {
+		if(createTimestamp != null) {
+			DateFormat dateFormat = new SimpleDateFormat("YYYY.MM.dd");
+			this.createDateString = dateFormat.format(createTimestamp);
+		}
 	}
 
 	public Date getUpdateTimestamp() {

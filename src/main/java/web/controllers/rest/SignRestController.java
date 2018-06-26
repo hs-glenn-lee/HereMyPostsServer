@@ -33,8 +33,10 @@ public class SignRestController {
 	@RequestMapping(value="/sign-in", method=RequestMethod.POST)
 	public GenericResponse<?> signin(@RequestBody Account trying,
 													HttpServletRequest req) {
+		System.out.println(trying);
+		
 		Account account = signService.signin(trying, req.getSession());
-
+		
 		if(account == null) {
 			return GenericResponse.getFail("일치하는 사용자 정보가 없습니다.");
 		}else {

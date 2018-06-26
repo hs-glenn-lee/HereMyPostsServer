@@ -41,6 +41,7 @@ public class AccountRestController {
 	public AccountSetting savePenName(@RequestBody HashMap<String, Object> jsonMap,
 			HttpServletRequest req) throws NotSignedInException {
 		Account me = signService.getSign(req.getSession()).getAccount();
+		System.out.println((String)jsonMap.get("penName"));
 		AccountSetting set = accountSettingService.savePenName((String)jsonMap.get("penName"), me);
 		return set;
 	}

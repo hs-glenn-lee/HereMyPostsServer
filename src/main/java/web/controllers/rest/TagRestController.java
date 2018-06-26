@@ -1,5 +1,6 @@
 package web.controllers.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
+import web.model.jpa.repos.TagArticleRepo;
 import web.model.service.TagService;
 import web.model.service.sign.SignService;
 
@@ -27,6 +30,10 @@ public class TagRestController {
 	
 	@Autowired
 	SignService signService;
+	
+	/////
+	@Autowired
+	TagArticleRepo tagArticleRepo;
 	
 	@RequestMapping(value="/tag/myTags", method=RequestMethod.GET)
 	public List<String> getMyTags(HttpServletRequest req) throws NotSignedInException {
@@ -45,12 +52,32 @@ public class TagRestController {
 		return tas;
 	}
 	
-	@RequestMapping(value="/tag/save", method=RequestMethod.PUT)
-	public List<TagArticle> saveTagsArticles(HttpServletRequest req,
+	@RequestMapping(value="/article/save-tag/{articleId}", method=RequestMethod.PUT)
+	public List<TagArticle> saveTagsArticlesOfArticle(HttpServletRequest req,
+								@PathVariable("articleId") String articleId,
 								@RequestBody List<TagArticle> tsas) {
-		return tagService.saveTagsArticles(tsas);
+		if(tsas == null) {
+			return new ArrayList<TagArticle>();
+		}
+		if(tsas.isEmpty()) {
+			return new ArrayList<TagArticle>();
+		}
+		
+		return tagService.saveTagsArticlesOfArticle(articleId, tsas);
 	}
 	
+	@RequestMapping(value="/test/test", method=RequestMethod.GET)
+	public List<TagArticle> testest() {
+		List<TagArticle> oldTagArticles = tagArticleRepo.findByArticleId("6cfc5109db604313b65f8360854806d7");
+		System.out.println(oldTagArticles);
+		
+		return tagService.findTagArticlesByArticleId("6cfc5109db604313b65f8360854806d7");
+	}
+	
+	@RequestMapping(value="/test/test/test", method=RequestMethod.GET)
+	public List<Tag> testetst() {
+		return tagService.findTagsByArticle("6cfc5109db604313b65f8360854806d7");
+	}
 	
 
 	
