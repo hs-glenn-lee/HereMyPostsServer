@@ -56,7 +56,8 @@ public class ArticleServiceImpl implements ArticleService{
 		compositeArticle.setAuthor(author);
 		
 		//set id of new article
-		compositeArticle.setId(UUIDUtil.getUUID());
+		if(compositeArticle.getId() == null)
+			compositeArticle.setId(UUIDUtil.getUUID());
 		
 		//write article content file and set its file path
 		NewArticleFilePolicy afp = new NewArticleFilePolicy(compositeArticle);
@@ -71,6 +72,11 @@ public class ArticleServiceImpl implements ArticleService{
 		return compositeArticle;
 	}
 
+	@Override
+	public Article save(Article compositeArticle) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 /*	@Override
 	public Article read(String articleId) {
@@ -143,4 +149,7 @@ public class ArticleServiceImpl implements ArticleService{
 		byte[] encoded = Files.readAllBytes(file.toPath());
 		return new String(encoded, StandardCharsets.UTF_8);
 	}
+
+
+	
 }

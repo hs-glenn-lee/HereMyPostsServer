@@ -140,6 +140,9 @@ public class TagServiceImpl  implements TagService{
 				throw new IllegalStateException("article in tagsArticles id null");
 			}
 			if(!targetArticle.getId().equals(test.getId())) {
+				System.out.println("$$$$$$$$");
+				System.out.println(targetArticle);
+				System.out.println(tagsArticles);
 				throw new IllegalStateException("article in tagsArticles id must equal to targetArticleId");
 			}
 		}
