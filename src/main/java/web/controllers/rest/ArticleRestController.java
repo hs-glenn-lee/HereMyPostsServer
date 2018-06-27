@@ -43,7 +43,7 @@ public class ArticleRestController {
 		System.out.println(article.getAuthor());
 		System.out.println(article);
 		
-		return articleSerivce.write(article);
+		return articleSerivce.save(article);
 	}
 	
 	

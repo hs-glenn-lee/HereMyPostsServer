@@ -52,18 +52,11 @@ public class TagRestController {
 		return tas;
 	}
 	
-	@RequestMapping(value="/article/save-tag/{articleId}", method=RequestMethod.PUT)
-	public List<TagArticle> saveTagsArticlesOfArticle(HttpServletRequest req,
+	@RequestMapping(value="/article/update-tag/{articleId}", method=RequestMethod.PUT)
+	public List<TagArticle> updateTagsArticlesOfArticle(HttpServletRequest req,
 								@PathVariable("articleId") String articleId,
 								@RequestBody List<TagArticle> tsas) {
-		if(tsas == null) {// wrong 있던 태그를 모두 제거하면 모두 제거하는 동작을 해야한다.
-			return new ArrayList<TagArticle>();
-		}
-		if(tsas.isEmpty()) {
-			return new ArrayList<TagArticle>();
-		}
-		
-		return tagService.saveTagsArticlesOfArticle(articleId, tsas);
+		return tagService.updateTagsArticlesOfArticle(articleId, tsas);
 	}
 	
 	@RequestMapping(value="/test/test", method=RequestMethod.GET)

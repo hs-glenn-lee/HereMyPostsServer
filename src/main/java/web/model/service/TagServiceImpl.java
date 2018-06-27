@@ -71,12 +71,7 @@ public class TagServiceImpl  implements TagService{
 	
 	@Transactional
 	@Override
-	public List<TagArticle> saveTagsArticlesOfArticle(String targetArticleId, List<TagArticle> newTagsArticles) {
-
-		if(newTagsArticles.isEmpty()) {
-			return new ArrayList<TagArticle>();
-		}
-		
+	public List<TagArticle> updateTagsArticlesOfArticle(String targetArticleId, List<TagArticle> newTagsArticles) {
 		Article targetArticle = articleRepo.findOne(targetArticleId);
 		
 		validateInputSaveTagsArticlesOfArticle(targetArticle, newTagsArticles);
@@ -124,12 +119,13 @@ public class TagServiceImpl  implements TagService{
 		AccountSetting authorSetting = targetArticle.getAuthor().getAccountSetting();
 		this.addMyTags(authorSetting, tags);
 
-		List<TagArticle> ret = newTagsArticles;
-		return ret;
+		return newTagsArticles;
 	}
 	
 	public void validateInputSaveTagsArticlesOfArticle(Article targetArticle, List<TagArticle> tagsArticles) {
-		
+		if(tagsArticles == null) {
+			throw new IllegalStateException("tagsArticles must not be null.");
+		}
 		if(targetArticle == null) {
 			throw new IllegalStateException("targetArticle not found.");
 		}
@@ -140,9 +136,6 @@ public class TagServiceImpl  implements TagService{
 				throw new IllegalStateException("article in tagsArticles id null");
 			}
 			if(!targetArticle.getId().equals(test.getId())) {
-				System.out.println("$$$$$$$$");
-				System.out.println(targetArticle);
-				System.out.println(tagsArticles);
 				throw new IllegalStateException("article in tagsArticles id must equal to targetArticleId");
 			}
 		}

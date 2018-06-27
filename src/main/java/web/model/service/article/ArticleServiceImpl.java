@@ -48,7 +48,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Transactional
 	@Override
-	public Article write(Article compositeArticle) throws IOException {
+	public Article save(Article compositeArticle) throws IOException {
 		
 		//sync author
 		Account author = accountRepo.findOne(compositeArticle.getAuthor().getId());
@@ -69,14 +69,9 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		Article saved = articleRepo.save(compositeArticle);
 
-		return compositeArticle;
+		return saved;
 	}
 
-	@Override
-	public Article save(Article compositeArticle) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 /*	@Override
 	public Article read(String articleId) {
