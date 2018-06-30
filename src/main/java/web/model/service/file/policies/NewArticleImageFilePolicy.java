@@ -12,8 +12,8 @@ public class NewArticleImageFilePolicy implements NewFilePolicy{
 	private Path articleImageFilePath;
 	
 	public NewArticleImageFilePolicy (Article article, String imageFileId, String extension) {
-		NewArticleFilePolicy afp = new NewArticleFilePolicy(article);
-		articleImageFilePathString = afp.getPathString() + File.separator + "images" + File.separator + imageFileId + "." + extension;
+		NewArticleImageDirectoryPolicy aidp = new NewArticleImageDirectoryPolicy(article);
+		articleImageFilePathString = aidp.getPathString() + File.separator + imageFileId + "." + extension;
 		articleImageFilePath = Paths.get(articleImageFilePathString);
 	}
 	

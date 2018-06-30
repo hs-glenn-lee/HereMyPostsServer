@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,20 +11,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
-import web.model.jpa.entities.Tag;
-import web.model.jpa.entities.TagArticle;
 import web.model.jpa.repos.AccountRepo;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.service.TagService;
 import web.model.service.file.FileService;
 import web.model.service.file.policies.NewArticleContentFilePolicy;
-import web.model.service.file.policies.NewArticleFilePolicy;
+import web.model.service.file.policies.NewArticleDirectoryPolicy;
+import web.model.service.file.policies.NewArticleImageDirectoryPolicy;
+import web.model.service.file.policies.NewArticleImageFilePolicy;
+import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
 
 @Service("articleSerivce")
@@ -46,6 +48,9 @@ public class ArticleServiceImpl implements ArticleService{
 	@Autowired
 	TagService tagService;
 	
+	@Autowired
+	SignService signService;
+	
 	@Transactional
 	@Override
 	public Article save(Article compositeArticle) throws IOException {
@@ -60,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService{
 			compositeArticle.setId(UUIDUtil.getUUID());
 		
 		//write article content file and set its file path
-		NewArticleFilePolicy afp = new NewArticleFilePolicy(compositeArticle);
+		NewArticleDirectoryPolicy afp = new NewArticleDirectoryPolicy(compositeArticle);
 		fileService.createDirs(afp);
 		String fileId = fileService.saveFile(compositeArticle.getContent().getBytes(StandardCharsets.UTF_8),
 						new NewArticleContentFilePolicy(compositeArticle));
@@ -143,6 +148,23 @@ public class ArticleServiceImpl implements ArticleService{
 	private String fileToString(File file) throws IOException {
 		byte[] encoded = Files.readAllBytes(file.toPath());
 		return new String(encoded, StandardCharsets.UTF_8);
+	}
+
+	@Transactional
+	@Override
+	public String saveArticleImage(MultipartFile uploadedImage, String articleId, Account me) throws IOException {
+		Article virtualArticle = new Article();
+		virtualArticle.setId(articleId);
+		virtualArticle.setAuthor(me);
+		
+		String imageFileId = UUIDUtil.getUUID();
+		String ext = FilenameUtils.getExtension(uploadedImage.getOriginalFilename()).toLowerCase();
+		
+		NewArticleImageDirectoryPolicy aidp = new NewArticleImageDirectoryPolicy(virtualArticle);
+		fileService.createDirs(aidp);
+		
+		NewArticleImageFilePolicy aifp = new NewArticleImageFilePolicy(virtualArticle, imageFileId, ext);
+		return fileService.saveFile(uploadedImage, aifp);
 	}
 
 

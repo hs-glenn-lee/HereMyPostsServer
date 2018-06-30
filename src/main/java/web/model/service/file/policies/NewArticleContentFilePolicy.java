@@ -12,7 +12,7 @@ public class NewArticleContentFilePolicy implements NewFilePolicy{
 	private Path articleCotentFilePath;
 	
 	public NewArticleContentFilePolicy (Article article) {
-		NewArticleFilePolicy afp = new NewArticleFilePolicy(article);
+		NewArticleDirectoryPolicy afp = new NewArticleDirectoryPolicy(article);
 		articleContentFilePathString = afp.getPathString() + File.separator + article.getId() + ".html";
 		articleCotentFilePath = Paths.get(articleContentFilePathString);
 	}
