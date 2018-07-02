@@ -23,10 +23,11 @@ import web.model.jpa.repos.AccountRepo;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.service.TagService;
 import web.model.service.file.FileService;
-import web.model.service.file.policies.NewArticleContentFilePolicy;
-import web.model.service.file.policies.NewArticleDirectoryPolicy;
-import web.model.service.file.policies.NewArticleImageDirectoryPolicy;
-import web.model.service.file.policies.NewArticleImageFilePolicy;
+import web.model.service.file.policies.ArticleContentBackupFilePolicy;
+import web.model.service.file.policies.ArticleContentFilePolicy;
+import web.model.service.file.policies.ArticleDirectoryPolicy;
+import web.model.service.file.policies.ArticleImageDirectoryPolicy;
+import web.model.service.file.policies.ArticleImageFilePolicy;
 import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
 
@@ -54,27 +55,34 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public Article save(Article compositeArticle) throws IOException {
+		//find old article
+		Article oldArticle = articleRepo.findOne(compositeArticle.getId());
+		if(oldArticle != null) {
+			createBackupContentFile(oldArticle);
+		}
 		
 		//sync author
 		Account author = accountRepo.findOne(compositeArticle.getAuthor().getId());
 		author.getAccountSetting();
 		compositeArticle.setAuthor(author);
-		
-		//set id of new article
-		if(compositeArticle.getId() == null)
-			compositeArticle.setId(UUIDUtil.getUUID());
-		
+
 		//write article content file and set its file path
-		NewArticleDirectoryPolicy afp = new NewArticleDirectoryPolicy(compositeArticle);
+		ArticleDirectoryPolicy afp = new ArticleDirectoryPolicy(compositeArticle);
 		fileService.createDirs(afp);
 		String fileId = fileService.saveFile(compositeArticle.getContent().getBytes(StandardCharsets.UTF_8),
-						new NewArticleContentFilePolicy(compositeArticle));
+						new ArticleContentFilePolicy(compositeArticle));
 
 		compositeArticle.setContentFileId(fileId);
 		
 		Article saved = articleRepo.save(compositeArticle);
 
 		return saved;
+	}
+	
+	private String createBackupContentFile(Article savedArticle) throws IOException{
+		String fileId = savedArticle.getContentFileId();
+		ArticleContentBackupFilePolicy acbfp = new ArticleContentBackupFilePolicy(savedArticle);
+		return fileService.copyFileAs(fileId, acbfp);
 	}
 
 
@@ -160,10 +168,10 @@ public class ArticleServiceImpl implements ArticleService{
 		String imageFileId = UUIDUtil.getUUID();
 		String ext = FilenameUtils.getExtension(uploadedImage.getOriginalFilename()).toLowerCase();
 		
-		NewArticleImageDirectoryPolicy aidp = new NewArticleImageDirectoryPolicy(virtualArticle);
+		ArticleImageDirectoryPolicy aidp = new ArticleImageDirectoryPolicy(virtualArticle);
 		fileService.createDirs(aidp);
 		
-		NewArticleImageFilePolicy aifp = new NewArticleImageFilePolicy(virtualArticle, imageFileId, ext);
+		ArticleImageFilePolicy aifp = new ArticleImageFilePolicy(virtualArticle, imageFileId, ext);
 		return fileService.saveFile(uploadedImage, aifp);
 	}
 

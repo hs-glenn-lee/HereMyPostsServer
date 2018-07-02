@@ -4,18 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import web.model.jpa.entities.Account;
-import web.model.jpa.entities.Article;
-import web.model.jpa.entities.FilePathMap;
-import web.model.service.file.policies.AccountFilePolicy;
-import web.model.service.file.policies.ArticleFilePolicy;
 
 /*
  * 얘는 대체 하는게뭐냐 ㅋㅋㅋㅋ
@@ -62,6 +55,12 @@ public class StorageServiceImpl implements StorageService{
 	@Override
 	public Path writeFile(byte[] data, Path path) throws IOException {
 		return Files.write(path, data);
+	}
+
+	@Override
+	public Path copyFile(Path sourcePath, Path targetPath) throws IOException {
+		Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
+		return targetPath;
 	}
 
 }

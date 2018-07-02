@@ -16,7 +16,7 @@ import web.model.jpa.entities.AccountSetting;
 import web.model.jpa.repos.AccountRepo;
 import web.model.jpa.repos.AccountSettingRepo;
 import web.model.service.file.FileService;
-import web.model.service.file.policies.NewProfilePictureFilePolicy;
+import web.model.service.file.policies.ProfilePictureFilePolicy;
 import web.utils.JpegExtensionUtils;
 
 @Service("accountSettingService")
@@ -76,7 +76,7 @@ public class AccountSettingServiceImpl implements AccountSettingService{
 		
 		String oldProfilePictureFileId = setting.getProfilePictureFileId();
 
-		NewProfilePictureFilePolicy filePolicy = new NewProfilePictureFilePolicy(account, ext);
+		ProfilePictureFilePolicy filePolicy = new ProfilePictureFilePolicy(account, ext);
 		String newFileId = fileService.saveFile(uploadedPicture, filePolicy);
 		setting.setProfilePictureFileId(newFileId);
 		accountSettingRepo.save(setting);

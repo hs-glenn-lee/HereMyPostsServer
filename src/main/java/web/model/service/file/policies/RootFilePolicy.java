@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class NewRootFilePolicy implements NewFilePolicy{
+public class RootFilePolicy implements FilePolicy{
 	private static final String USER_FILES_ROOT_PATH_STRING = "/usr/heremyposts/user-files";
 	private static final Path USER_FILES_ROOT_PATH = Paths.get(USER_FILES_ROOT_PATH_STRING);
 	
@@ -30,7 +30,7 @@ public class NewRootFilePolicy implements NewFilePolicy{
 		}
 	}
 	
-	public NewRootFilePolicy() {}
+	public RootFilePolicy() {}
 	
 	
 	@Override

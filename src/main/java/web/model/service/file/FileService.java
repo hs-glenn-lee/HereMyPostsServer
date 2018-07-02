@@ -6,13 +6,14 @@ import java.nio.file.Path;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import web.model.service.file.policies.NewFilePolicy;
+import web.model.service.file.policies.FilePolicy;
 
 public interface FileService {
-	public String saveFile(MultipartFile mFile, NewFilePolicy filePolicy) throws IOException;
-	public String saveFile(byte[] data, NewFilePolicy filePolicy) throws IOException;
+	public String saveFile(MultipartFile mFile, FilePolicy filePolicy) throws IOException;
+	public String saveFile(byte[] data, FilePolicy filePolicy) throws IOException;
+	public String copyFileAs(String id, FilePolicy filePolicy) throws IOException;
 	
-	public void createDirs(NewFilePolicy filePolicy) throws IOException;
+	public void createDirs(FilePolicy filePolicy) throws IOException;
 	
 	public File getFile(String fileId);
 	public Path getPath(String fileId);

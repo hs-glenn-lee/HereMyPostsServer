@@ -23,7 +23,7 @@ import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.service.article.ArticleService;
 import web.model.service.file.FileService;
-import web.model.service.file.policies.NewArticleImageFilePolicy;
+import web.model.service.file.policies.ArticleImageFilePolicy;
 import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
 

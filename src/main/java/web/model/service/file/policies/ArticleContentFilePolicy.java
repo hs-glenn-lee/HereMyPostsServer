@@ -6,13 +6,13 @@ import java.nio.file.Paths;
 
 import web.model.jpa.entities.Article;
 
-public class NewArticleContentFilePolicy implements NewFilePolicy{
+public class ArticleContentFilePolicy implements FilePolicy{
 
 	private String articleContentFilePathString;
 	private Path articleCotentFilePath;
 	
-	public NewArticleContentFilePolicy (Article article) {
-		NewArticleDirectoryPolicy afp = new NewArticleDirectoryPolicy(article);
+	public ArticleContentFilePolicy (Article article) {
+		ArticleDirectoryPolicy afp = new ArticleDirectoryPolicy(article);
 		articleContentFilePathString = afp.getPathString() + File.separator + article.getId() + ".html";
 		articleCotentFilePath = Paths.get(articleContentFilePathString);
 	}

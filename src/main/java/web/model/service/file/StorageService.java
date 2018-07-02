@@ -12,5 +12,6 @@ public interface StorageService {
 	//--
 	public File writeFile(InputStream in, Path path) throws IOException;
 	public Path writeFile(byte[] data, Path path) throws IOException;
+	public Path copyFile(Path sourcePath,Path targetPath) throws IOException;
 	
 }

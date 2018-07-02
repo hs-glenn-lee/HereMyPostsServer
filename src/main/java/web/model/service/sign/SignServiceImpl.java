@@ -14,7 +14,7 @@ import web.model.jpa.entities.Category;
 import web.model.service.AccountService;
 import web.model.service.CategoryService;
 import web.model.service.file.FileService;
-import web.model.service.file.policies.NewAccountFilePolicy;
+import web.model.service.file.policies.AccountFilePolicy;
 
 @Service("signService")
 
@@ -41,7 +41,7 @@ public class SignServiceImpl implements SignService{
 	}
 
 	private void createAccountDirectory(Account account) throws IOException {
-		NewAccountFilePolicy afp = new NewAccountFilePolicy(account);
+		AccountFilePolicy afp = new AccountFilePolicy(account);
 		fileService.createDirs(afp);
 	}
 	

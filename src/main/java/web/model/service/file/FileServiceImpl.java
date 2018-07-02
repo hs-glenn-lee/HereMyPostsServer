@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import web.model.jpa.entities.FilePathMap;
-import web.model.service.file.policies.NewFilePolicy;
+import web.model.service.file.policies.FilePolicy;
 import web.utils.UUIDUtil;
 
 @Service("fileService")
@@ -36,7 +36,7 @@ public class FileServiceImpl implements FileService{
 	}
 	
 	@Override
-	public String saveFile(MultipartFile mFile, NewFilePolicy filePolicy) throws IOException {
+	public String saveFile(MultipartFile mFile, FilePolicy filePolicy) throws IOException {
 		Path path = filePolicy.getPath();
 		
 		if(filePolicy.isDir()) {
@@ -53,7 +53,7 @@ public class FileServiceImpl implements FileService{
 	}
 
 	@Override
-	public String saveFile(byte[] data, NewFilePolicy filePolicy) throws IOException {
+	public String saveFile(byte[] data, FilePolicy filePolicy) throws IOException {
 		Path path = filePolicy.getPath();
 		
 		if(filePolicy.isDir()) {
@@ -68,9 +68,22 @@ public class FileServiceImpl implements FileService{
 		return fileId;
 	}
 	
+	@Override
+	public String copyFileAs(String id, FilePolicy filePolicy) throws IOException {
+		FilePathMap source = filePathMapService.getFilePathMap(id);
+		Path sourcePath = Paths.get(source.getPath());
+		Path targetPath = filePolicy.getPath();
+		
+		storageService.copyFile(sourcePath, targetPath);
+		
+		String targetFileId = UUIDUtil.getUUID();
+		filePathMapService.putFilePathMap(targetFileId, targetPath.toString());
+		
+		return targetFileId;
+	}
 	
 	@Override
-	public void createDirs(NewFilePolicy filePolicy) throws IOException {
+	public void createDirs(FilePolicy filePolicy) throws IOException {
 		Path path = filePolicy.getPath();
 		if(filePolicy.isDir()) {
 			Files.createDirectories(path);
@@ -93,5 +106,7 @@ public class FileServiceImpl implements FileService{
 		FilePathMap fpm = filePathMapService.getFilePathMap(oldFileId);
 		storageService.writeFile(mFile.getInputStream(), Paths.get(fpm.getPath()));
 	}
+
+
 
 }

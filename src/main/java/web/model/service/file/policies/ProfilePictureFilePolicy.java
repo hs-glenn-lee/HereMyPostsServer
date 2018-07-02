@@ -7,13 +7,13 @@ import java.nio.file.Paths;
 import web.model.jpa.entities.Account;
 import web.utils.UUIDUtil;
 
-public class NewProfilePictureFilePolicy implements NewFilePolicy{
+public class ProfilePictureFilePolicy implements FilePolicy{
 
 	private String profilePictureFilePathString;
 	private Path profilePictureFilePath;
 	
-	public NewProfilePictureFilePolicy (Account account, String extension) {
-		NewAccountFilePolicy afp = new NewAccountFilePolicy(account);
+	public ProfilePictureFilePolicy (Account account, String extension) {
+		AccountFilePolicy afp = new AccountFilePolicy(account);
 		profilePictureFilePathString = afp.getPathString() + File.separator + UUIDUtil.getUUID() +"_profile_picture." + extension;
 		profilePictureFilePath = Paths.get(profilePictureFilePathString);
 	}

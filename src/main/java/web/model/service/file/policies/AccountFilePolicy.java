@@ -6,33 +6,30 @@ import java.nio.file.Paths;
 
 import web.model.jpa.entities.Account;
 
-/*
- * User 과 관련된 파일을 쓸 떄 이 클래스에 명시된 path로 파일을 쓴다.
- * Decorator Pattern
- * 
- * */
-public class AccountFilePolicy extends FilePolicy{
+public class AccountFilePolicy implements FilePolicy{
+
+	private String accountPathString;
+	private Path accountPath;
 	
-	private Long userId = null;
+	public AccountFilePolicy (Account account) {
+		RootFilePolicy rfp = new RootFilePolicy();
+		accountPathString = rfp.getPathString() + File.separator + account.getId();
+		accountPath = Paths.get(accountPathString);
+	}
 	
-	public AccountFilePolicy(Account account) {
-		this.userId = account.getId();
+	@Override
+	public Path getPath() {
+		return accountPath;
 	}
 
-	public String getUserPathString() {
-		return super.getRootPath() + File.separator + this.userId;
-	}
-	
-	public Path getUserPath() {
-		return Paths.get(getUserPathString());
-	}
-	
-	public String getProfilePicturePathString () {
-		return this.getUserPathString() + File.separator + "profile_picture"; // file will be saved as "profile_picture"
-	}
-	
-	public Path getProfilePicturePath() {
-		return Paths.get(getProfilePicturePathString());
+	@Override
+	public String getPathString() {
+		return accountPathString;
 	}
 
+	@Override
+	public boolean isDir() {
+		return true;
+	}
+	
 }
