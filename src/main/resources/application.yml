@@ -9,7 +9,7 @@ spring:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
   datasource:
-      url: jdbc:mariadb://here-my-posts-db.czllu3jioidj.ap-northeast-2.rds.amazonaws.com:3306/here_my_posts_db
+      url: jdbc:mariadb://127.0.0.1:3306/here_my_posts_db
       username: here_my_posts_app
       password: abc123!
       driver-class-name: org.mariadb.jdbc.Driver

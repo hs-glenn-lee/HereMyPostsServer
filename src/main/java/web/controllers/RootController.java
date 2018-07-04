@@ -16,19 +16,19 @@ public class RootController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String root(Model model) {
-		String v = testService.getValue(0);
+		//String v = testService.getValue(0);
 		return "index";
 	}
 	
 	@RequestMapping(value="/sign/sign-in", method=RequestMethod.GET)
 	public String signIn(Model model) {
-		String v = testService.getValue(0); 
+		//String v = testService.getValue(0); 
 		return "index";
 	}
 	
 	@RequestMapping(value="/sign/sign-up", method=RequestMethod.GET)
 	public String signUp(Model model) {
-		String v = testService.getValue(0);
+		//String v = testService.getValue(0);
 		return "index";
 	}
 }
