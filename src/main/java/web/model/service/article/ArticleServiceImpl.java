@@ -13,6 +13,8 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -150,8 +152,11 @@ public class ArticleServiceImpl implements ArticleService{
 		return recentArticles;
 	}
 	
-
-	
+	@Override
+	public Page<Article> findRecentArticlesPageByUsername(String username, Pageable pageable) {
+		
+		return articleRepo.findAll(pageable);
+	}
 	
 	private String fileToString(File file) throws IOException {
 		byte[] encoded = Files.readAllBytes(file.toPath());
@@ -174,6 +179,13 @@ public class ArticleServiceImpl implements ArticleService{
 		ArticleImageFilePolicy aifp = new ArticleImageFilePolicy(virtualArticle, imageFileId, ext);
 		return fileService.saveFile(uploadedImage, aifp);
 	}
+
+	@Override
+	public Long countOfArticlesByUsername(String username) {
+		return articleRepo.countByUsername(username);
+	}
+
+	
 
 
 	

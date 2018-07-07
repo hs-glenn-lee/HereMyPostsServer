@@ -7,8 +7,9 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import web.controllers.rest.parameters.PageParameter;
+import web.controllers.rest.responses.GenericResponse;
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.service.article.ArticleService;
 import web.model.service.file.FileService;
-import web.model.service.file.policies.ArticleImageFilePolicy;
 import web.model.service.sign.SignService;
 import web.utils.UUIDUtil;
 
@@ -68,6 +70,27 @@ public class ArticleRestController {
 	public List<Article> getRecentArticles(HttpServletRequest req, @PathVariable String username) {
 		return articleSerivce.getRecentArticles(username);
 	}
+	
+	@RequestMapping(value="/{username}/recent-articles-", method=RequestMethod.POST)
+	public List<Article> findRecentArticlesByUsername(HttpServletRequest req,
+			@PathVariable String username,
+			@RequestBody PageParameter pageParameter) {
+		PageRequest pReq = pageParameter.toPageRequest();
+		Page<Article> ret_ = articleSerivce.findRecentArticlesPageByUsername(username, pReq);
+		
+		//TODO page isFirst ... learn these api
+		List<Article> ret = ret_.getContent();
+		return ret;
+	}
+	
+	@RequestMapping(value="/{username}/article/count", method=RequestMethod.GET)
+	public HashMap<String, Long> countOfArticlesByUsername (	@PathVariable String username ) {
+		Long ret = articleSerivce.countOfArticlesByUsername(username);
+		HashMap<String, Long> res = new HashMap<String, Long> ();
+		res.put("count", ret);
+		return res;
+	}
+	
 	
 	@RequestMapping(value="/article/{articleId}/image", method=RequestMethod.POST)
 	public HashMap<String, String> uploadArticleImage(
