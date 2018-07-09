@@ -66,12 +66,12 @@ public class ArticleRestController {
 		return articleSerivce.getArticlesOfCategory(categoryId);
 	}
 	
-	@RequestMapping(value="/{username}/recent-articles", method=RequestMethod.GET)
+	/*@RequestMapping(value="/{username}/recent-articles", method=RequestMethod.GET)
 	public List<Article> getRecentArticles(HttpServletRequest req, @PathVariable String username) {
 		return articleSerivce.getRecentArticles(username);
-	}
+	}*/
 	
-	@RequestMapping(value="/{username}/recent-articles-", method=RequestMethod.POST)
+	@RequestMapping(value="/{username}/recent-articles", method=RequestMethod.POST)
 	public List<Article> findRecentArticlesByUsername(HttpServletRequest req,
 			@PathVariable String username,
 			@RequestBody PageParameter pageParameter) {
@@ -80,6 +80,14 @@ public class ArticleRestController {
 		
 		//TODO page isFirst ... learn these api
 		List<Article> ret = ret_.getContent();
+		
+		for(Article ac : ret) {
+			//ac.setUpdateDateString();
+			ac.setUpdateDateStringAsUpdateTimestamp();
+			System.out.println(ac);
+			System.out.println(ac.getUpdateDateString());
+			
+		}
 		return ret;
 	}
 	

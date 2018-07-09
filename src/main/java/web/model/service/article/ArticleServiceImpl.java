@@ -130,7 +130,7 @@ public class ArticleServiceImpl implements ArticleService{
 		
 		for(Article article : articles) {//this statement prevent loop when serialize object by jackson 
 			article.setCategory(null);
-			article.setCreateTimestamp();
+			article.setUpdateDateStringAsUpdateTimestamp();
 		}
 		
 		return articles;
@@ -154,8 +154,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Override
 	public Page<Article> findRecentArticlesPageByUsername(String username, Pageable pageable) {
-		
-		return articleRepo.findAll(pageable);
+		return articleRepo.findRecentArticlesPageByUsername(username, pageable);
 	}
 	
 	private String fileToString(File file) throws IOException {

@@ -64,6 +64,9 @@ public class Article implements Serializable{
 	@Transient
 	private String createDateString;
 	
+	@Transient
+	private String updateDateString;
+	
 	@Column(name="is_del")
 	@Type(type="org.hibernate.type.NumericBooleanType")
 	private Boolean isDel = false;
@@ -153,16 +156,39 @@ public class Article implements Serializable{
 		this.createDateString=createDateString;
 	}
 	
-	public String getCreateDateString () {
-		return this.createDateString;
-	}
-	
-	public void setCreateTimestamp() {
+	public void setCreateDateStringAsCreateTimestamp() {
 		if(createTimestamp != null) {
 			DateFormat dateFormat = new SimpleDateFormat("YYYY.MM.dd");
 			this.createDateString = dateFormat.format(createTimestamp);
 		}
 	}
+	
+	public String getCreateDateString () {
+		return this.createDateString;
+	}
+	
+	public void setCreateTimestamp(Date createTimestamp) {
+		this.createTimestamp = createTimestamp;
+		if(createTimestamp != null) {
+			DateFormat dateFormat = new SimpleDateFormat("YYYY.MM.dd");
+			this.createDateString = dateFormat.format(createTimestamp);
+		}
+	}
+	
+	public String getUpdateDateString () {
+		return this.updateDateString;
+	}
+	
+	public void setUpdateDateString(String updateDateString) {
+		this.updateDateString = updateDateString;
+	}
+	public void setUpdateDateStringAsUpdateTimestamp() {
+		if(updateTimestamp != null) {
+			DateFormat dateFormat = new SimpleDateFormat("YYYY.MM.dd");
+			this.updateDateString = dateFormat.format(updateTimestamp);
+		}
+	}
+	
 
 	public Date getUpdateTimestamp() {
 		return updateTimestamp;
@@ -170,6 +196,10 @@ public class Article implements Serializable{
 
 	public void setUpdateTimestamp(Date updateTimestamp) {
 		this.updateTimestamp = updateTimestamp;
+		if(updateTimestamp != null) {
+			DateFormat dateFormat = new SimpleDateFormat("YYYY.MM.dd");
+			this.updateDateString = dateFormat.format(updateTimestamp);
+		}
 	}
 
 
