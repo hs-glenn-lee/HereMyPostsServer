@@ -14,10 +14,13 @@ public class MyTagUtils {
 
 	public MyTagUtils(String myTags) {
 		myTagList = new ArrayList<String>();
-		String[] myTagsArr = myTags.split(TAG_SEPERATOR);
-		for(String s : myTagsArr) {
-			myTagList.add(s);
+		if(!myTags.equals("")) {
+			String[] myTagsArr = myTags.split(TAG_SEPERATOR);
+			for(String s : myTagsArr) {
+				myTagList.add(s);
+			}
 		}
+		
 	}
 	
 	public void addTag(String tagName) {//append tag if there's no same tag in tagsString 
