@@ -78,11 +78,13 @@ public class SignRestController {
 		mine.setPassword("");
 		return mine;
 	}
-
-/*	@RequestMapping("/sign-out")
-	public String signout(HttpServletRequest req) {
+	
+	//temp
+	@RequestMapping(value="/sign-out", method=RequestMethod.GET)
+	public GenericResponse<?> signout(HttpServletRequest req) {
 		req.getSession().invalidate();
-		return "/";
-	}*/
+		GenericResponse<Object> res = new GenericResponse<Object>();
+		return res;
+	}
 
 }

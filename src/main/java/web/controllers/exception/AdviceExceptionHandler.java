@@ -17,10 +17,15 @@ public class AdviceExceptionHandler {
 
 	@ExceptionHandler(NotSignedInException.class)
 	public @ResponseBody ResponseEntity<?> handleNotSignedInException(HttpServletRequest req, Exception exception) throws JSONException {
-		String headerAccept = req.getHeader("Content-Type");
+		String headerContentType = req.getHeader("Content-Type");
+		String headerAccept = req.getHeader("Accept");
+		
+		System.out.println("AdviceExceptionHandler");
+		System.out.println(headerContentType);
+		System.out.println(headerAccept);
 		
 		if(headerAccept != null) {
-			if(headerAccept.equals("application/json")) {
+			if(headerAccept.contains("application/json")) {
 				ExceptionAttributes exceptionAttribute = new ExceptionAttributes(exception, HttpStatus.FORBIDDEN.value());
 				ResponseEntity<?> respEntity = new ResponseEntity<ExceptionAttributes>(exceptionAttribute, HttpStatus.FORBIDDEN);
 				return respEntity;
