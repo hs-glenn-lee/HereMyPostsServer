@@ -52,7 +52,7 @@ public class Account implements Serializable{
 	@OneToOne(mappedBy="account", fetch = FetchType.LAZY)
 	private AccountSetting accountSetting;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="account")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="owner")
 	private Set<Category> categories = new HashSet<Category>();
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="author")

@@ -47,7 +47,7 @@ public class SignServiceImpl implements SignService{
 	
 	private void createRootCategory(Account account) {
 		Category root = new Category();
-		root.setAccount(account);
+		root.setOwner(account);
 		root.setName("default");
 		root.setId("default_" + account.getId());
 		root.setSeq(0);

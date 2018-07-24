@@ -46,7 +46,7 @@ public class Category implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="owner_id")
-	Account account;
+	Account owner;
 	
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="category")
@@ -84,12 +84,12 @@ public class Category implements Serializable {
 		this.seq = seq;
 	}
 
-	public Account getAccount() {
-		return account;
+	public Account getOwner() {
+		return owner;
 	}
 
-	public void setAccount(Account account) {
-		this.account = account;
+	public void setOwner(Account account) {
+		this.owner = account;
 	}
 	
 	public Boolean getIsDel() {

@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
+import web.model.jpa.repos.ArticleRepo;
 import web.model.jpa.repos.CategoryRepo;
 
 @Service("categoryService")
@@ -20,17 +23,20 @@ public class CategoryServiceImpl implements CategoryService{
 	CategoryRepo categoryRepo;
 	
 	@Autowired
+	ArticleRepo articleRepo;
+	
+	@Autowired
 	EntityManager em;
 	
 	@Override
 	public Category create(Category category) {
-		//todo validate
+		//TODO validate
 		return categoryRepo.saveAndFlush(category);
 	}
 	
 	@Override
 	public Category update(Category category) {
-		//todo validate
+		//TODO validate
 		return categoryRepo.saveAndFlush(category);
 	}
 
@@ -38,26 +44,44 @@ public class CategoryServiceImpl implements CategoryService{
 	public Category get(String id) {
 		return categoryRepo.getOne(id);
 	}
-
+	
+	@Transactional
 	@Override
-	public void remove(String categoryId, Long ownerId) {
+	public int remove(String categoryId, Long ownerId) {
 		Category tagetCategory = categoryRepo.getOne(categoryId);
-		List<Category> allOwned = this.getCategoriesOwnedBy(tagetCategory.getAccount());
-		System.out.println(getAllChildrenCategory(tagetCategory, allOwned));
+		List<Category> allOwned = this.getCategoriesOwnedBy(tagetCategory.getOwner());
+		List<Category> targetChildren = getAllChildrenCategoryFromCategoryList(tagetCategory, allOwned);
+		
+		tagetCategory.setIsDel(true);
+		targetChildren.forEach(el -> el.setIsDel(true));
+		
+		targetChildren.add(tagetCategory);
+		List<Category> targets = targetChildren;
+		//remove categories
+		categoryRepo.save(targets);
+		
+		//remove articles
+		List<Article> targetArticles = articleRepo.getArticlesOf(targets);
+		targetArticles.forEach(el -> el.setIsDel(true));
+		articleRepo.save(targetArticles);
+		
+		return targetArticles.size();
 	}
 	
-	private List<Category> getAllChildrenCategory(Category target, List<Category> catList) {
-		boolean hasMoreChildren = true;
-		List<String> curLevelChildrenIds = new ArrayList<String>();
-		List<String> nextLevelChildrenIds = new ArrayList<String>();
+	private List<Category> getAllChildrenCategoryFromCategoryList(Category target, List<Category> catList) {
 		List<Category> ret = new ArrayList<Category>();
+		
+		boolean hasMoreChildren = true;
+		List<String> nextLevelChildrenIds = new ArrayList<String>();
+		List<String> curLevelChildrenIds = new ArrayList<String>();
 		curLevelChildrenIds.add(target.getId());
+		
 		while(hasMoreChildren) {
 			for(Category cat : catList) {
 				for(String catId : curLevelChildrenIds) {
-					if(cat.getParentId().equals(catId)) {
+					if(catId.equals(cat.getParentId())) {
 						ret.add(cat);
-						nextLevelChildrenIds.add(catId);
+						nextLevelChildrenIds.add(cat.getId());
 					}
 				}
 			}
@@ -72,13 +96,9 @@ public class CategoryServiceImpl implements CategoryService{
 	
 
 	
-
 	@Override
 	public List<Category> getCategoriesOwnedBy(Account account) {
-		Query q = em.createQuery("SELECT category FROM Category category "
-								+"WHERE category.account.id = :accountId");
-		q.setParameter("accountId", account.getId());
-		List<Category> cats = (List<Category>)q.getResultList();
+		List<Category> cats = categoryRepo.findCategoriesOwnedBy(account.getId());
 		return cats;
 	}
 
