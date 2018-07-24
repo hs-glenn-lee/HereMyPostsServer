@@ -42,6 +42,27 @@ public class CategoryRestController {
 		return newwest;
 	}
 	
+	@RequestMapping(value="/category/update", method=RequestMethod.PUT)
+	public Category update(@RequestBody Category category, HttpServletRequest req) throws NotSignedInException {
+		Sign sign = signService.getSign(req.getSession());
+		Account curAcc = sign.getAccount();
+		category.setId(UUIDUtil.getUUID());
+		category.setAccount(curAcc);
+		Category newwest = categoryService.update(category);
+		category.setAccount(curAcc);
+		return newwest;
+	}
+	
+	@RequestMapping(value="/category/remove", method=RequestMethod.PUT)
+	public Category remove(@RequestBody Category category, HttpServletRequest req) throws NotSignedInException {
+		Sign sign = signService.getSign(req.getSession());
+		Account curAcc = sign.getAccount();
+		category.setId(UUIDUtil.getUUID());
+		category.setAccount(curAcc);
+		categoryService.remove(category.getId(), curAcc.getId());
+		category.setAccount(curAcc);
+		return new Category();
+	}
 	
 	@RequestMapping(value="/category/all", method=RequestMethod.GET)
 	public List<Category> getAllMyCategory(HttpServletRequest req) throws NotSignedInException {

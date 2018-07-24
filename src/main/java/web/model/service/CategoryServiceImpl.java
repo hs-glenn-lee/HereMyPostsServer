@@ -1,5 +1,6 @@
 package web.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Category;
 import web.model.jpa.repos.CategoryRepo;
-import web.utils.UUIDUtil;
 
 @Service("categoryService")
 public class CategoryServiceImpl implements CategoryService{
@@ -24,6 +24,13 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	@Override
 	public Category create(Category category) {
+		//todo validate
+		return categoryRepo.saveAndFlush(category);
+	}
+	
+	@Override
+	public Category update(Category category) {
+		//todo validate
 		return categoryRepo.saveAndFlush(category);
 	}
 
@@ -33,15 +40,38 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public void  delete(Category category) {
-		categoryRepo.delete(category);
+	public void remove(String categoryId, Long ownerId) {
+		Category tagetCategory = categoryRepo.getOne(categoryId);
+		List<Category> allOwned = this.getCategoriesOwnedBy(tagetCategory.getAccount());
+		System.out.println(getAllChildrenCategory(tagetCategory, allOwned));
 	}
+	
+	private List<Category> getAllChildrenCategory(Category target, List<Category> catList) {
+		boolean hasMoreChildren = true;
+		List<String> curLevelChildrenIds = new ArrayList<String>();
+		List<String> nextLevelChildrenIds = new ArrayList<String>();
+		List<Category> ret = new ArrayList<Category>();
+		curLevelChildrenIds.add(target.getId());
+		while(hasMoreChildren) {
+			for(Category cat : catList) {
+				for(String catId : curLevelChildrenIds) {
+					if(cat.getParentId().equals(catId)) {
+						ret.add(cat);
+						nextLevelChildrenIds.add(catId);
+					}
+				}
+			}
+			
+			hasMoreChildren = (nextLevelChildrenIds.isEmpty())? false : true;
+			curLevelChildrenIds.clear();
+			curLevelChildrenIds.addAll(nextLevelChildrenIds);
+			nextLevelChildrenIds.clear();
+		}
+		return ret;
+	}
+	
 
-	@Override
-	public Category update(Category category) {
-		Category updated = em.merge(category);
-		return updated;
-	}
+	
 
 	@Override
 	public List<Category> getCategoriesOwnedBy(Account account) {

@@ -12,7 +12,7 @@ public interface CategoryService {
 	
 	public Category get(String id);
 	
-	public void delete(Category category);
+	public void remove(String categoryId, Long ownerId);
 	
 	public Category update(Category category);
 	
