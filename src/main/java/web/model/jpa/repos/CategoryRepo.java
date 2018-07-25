@@ -15,5 +15,15 @@ public interface CategoryRepo extends JpaRepository<Category, String>{
 			+ " category.isDel = FALSE")
 	List<Category> findCategoriesOwnedBy(@Param("ownerId") Long ownerId);
 	
+	@Query("SELECT category "
+			+ " FROM Category category "
+			+ " WHERE category.id = :categoryId AND "
+			+ " category.owner.id = :ownerId ")
+	Category findByIdAndOwner(@Param("categoryId")String categoryId, @Param("ownerId") Long ownerId);
 	
+	@Query("SELECT category "
+			+ " FROM Category category "
+			+ " WHERE category.parentId = :categoryId AND "
+			+ " category.owner.id = :ownerId ")
+	List<Category> findChildrenByIdAndOwner(@Param("categoryId")String categoryId, @Param("ownerId") Long ownerId);
 }

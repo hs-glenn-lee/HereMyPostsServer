@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
 import web.model.jpa.repos.ArticleRepo;
 import web.model.jpa.repos.CategoryRepo;
+import web.utils.UUIDUtil;
 
 @Service("categoryService")
 public class CategoryServiceImpl implements CategoryService{
@@ -28,16 +28,38 @@ public class CategoryServiceImpl implements CategoryService{
 	@Autowired
 	EntityManager em;
 	
+	@Transactional
 	@Override
-	public Category create(Category category) {
-		//TODO validate
-		return categoryRepo.saveAndFlush(category);
+	public Category create(Category category, Account owner) {
+		validateCategory(category, owner);
+		
+		category.setId(UUIDUtil.getUUID());
+		category.setOwner(owner);
+		return categoryRepo.save(category);
 	}
 	
+	private void validateCategory(Category cat, Account owner) {
+		if(cat == null) { throw new IllegalStateException("Null Category"); }
+		if(cat.getName().length() > 50) { throw new IllegalStateException("Too long Category name"); }
+
+		List<Category> sibilings = categoryRepo.findChildrenByIdAndOwner(cat.getParentId(), owner.getId());
+		for(Category sib : sibilings) {
+			if(sib.getName().equals(cat.getName())) {
+				throw new IllegalStateException("이미 하위에 같은 이름의 카테고리가 있습니다.");
+			}
+		}
+		
+	}
+	
+	@Transactional
 	@Override
-	public Category update(Category category) {
-		//TODO validate
-		return categoryRepo.saveAndFlush(category);
+	public Category update(Category category, Account owner) {
+		validateCategory(category, owner);
+		
+		Category old = categoryRepo.findByIdAndOwner(category.getId(), owner.getId());
+		old.setName(category.getName());
+		old.setIsPublic(category.getIsPublic());
+		return categoryRepo.save(old);
 	}
 
 	@Override
@@ -47,16 +69,18 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	@Transactional
 	@Override
-	public int remove(String categoryId, Long ownerId) {
-		Category tagetCategory = categoryRepo.getOne(categoryId);
-		List<Category> allOwned = this.getCategoriesOwnedBy(tagetCategory.getOwner());
-		List<Category> targetChildren = getAllChildrenCategoryFromCategoryList(tagetCategory, allOwned);
+	public int remove(String categoryId, Account owner) {
+		Category tagetCategory = categoryRepo.findByIdAndOwner(categoryId, owner.getId());
+		List<Category> allOwned = categoryRepo.findCategoriesOwnedBy(owner.getId());
+		List<Category> targetChildren = getDescendantsFromCategoryList(tagetCategory, allOwned);
 		
 		tagetCategory.setIsDel(true);
 		targetChildren.forEach(el -> el.setIsDel(true));
 		
+		//merge target and its descendants  
 		targetChildren.add(tagetCategory);
 		List<Category> targets = targetChildren;
+		
 		//remove categories
 		categoryRepo.save(targets);
 		
@@ -68,7 +92,7 @@ public class CategoryServiceImpl implements CategoryService{
 		return targetArticles.size();
 	}
 	
-	private List<Category> getAllChildrenCategoryFromCategoryList(Category target, List<Category> catList) {
+	private List<Category> getDescendantsFromCategoryList(Category target, List<Category> catList) {
 		List<Category> ret = new ArrayList<Category>();
 		
 		boolean hasMoreChildren = true;

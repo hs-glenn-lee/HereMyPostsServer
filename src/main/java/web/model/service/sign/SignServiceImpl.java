@@ -51,7 +51,7 @@ public class SignServiceImpl implements SignService{
 		root.setName("default");
 		root.setId("default_" + account.getId());
 		root.setSeq(0);
-		categoryService.create(root);
+		categoryService.create(root, account);
 	}
 	
 	
