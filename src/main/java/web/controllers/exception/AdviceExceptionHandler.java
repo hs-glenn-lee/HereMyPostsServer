@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import web.exceptions.DeletedException;
 import web.exceptions.NotSignedInException;
 
 @ControllerAdvice
@@ -17,12 +18,7 @@ public class AdviceExceptionHandler {
 
 	@ExceptionHandler(NotSignedInException.class)
 	public @ResponseBody ResponseEntity<?> handleNotSignedInException(HttpServletRequest req, Exception exception) throws JSONException {
-		String headerContentType = req.getHeader("Content-Type");
 		String headerAccept = req.getHeader("Accept");
-		
-		System.out.println("AdviceExceptionHandler");
-		System.out.println(headerContentType);
-		System.out.println(headerAccept);
 		
 		if(headerAccept != null) {
 			if(headerAccept.contains("application/json")) {
@@ -35,6 +31,27 @@ public class AdviceExceptionHandler {
 		String stringContent = "로그인이 필요한 서비스 입니다.";
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Location", "/exception/not-signed-in");
+		
+		ResponseEntity<?> respEntity = new ResponseEntity<String>(stringContent, headers, HttpStatus.FOUND);
+		return respEntity;
+
+	}
+	
+	@ExceptionHandler(DeletedException.class)
+	public @ResponseBody ResponseEntity<?> handleDeletedException(HttpServletRequest req, Exception exception) throws JSONException {
+		String headerAccept = req.getHeader("Accept");
+		
+		if(headerAccept != null) {
+			if(headerAccept.contains("application/json")) {
+				ExceptionAttributes exceptionAttribute = new ExceptionAttributes(exception, HttpStatus.FORBIDDEN.value());
+				ResponseEntity<?> respEntity = new ResponseEntity<ExceptionAttributes>(exceptionAttribute, HttpStatus.FORBIDDEN);
+				return respEntity;
+			}
+		}
+
+		String stringContent = "삭제된 리소스입니다.";
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Location", "/exception/deleted-exception");
 		
 		ResponseEntity<?> respEntity = new ResponseEntity<String>(stringContent, headers, HttpStatus.FOUND);
 		return respEntity;

@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="/css/reset.css">
 </head>
 <body>
-	삭제된 리소스입니다.
+	로그인이 필요한 서비스 입니다.
+	<a href="/sign-in">로그인 하기</a>
 </body>
 </html>

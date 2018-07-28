@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * which is not permitted without signed-in session status. 
  * */
 @ResponseStatus(value=HttpStatus.FORBIDDEN)
-public class NotSignedInException extends Exception{
+public class DeletedException extends Exception{
 
-	private static final long serialVersionUID = 7500096759685457171L;
-
-	public NotSignedInException() {
-		super("삭제된 리소스입니다.");
+	private static final long serialVersionUID = -4081398255688059175L;
+	
+	public DeletedException() {
+		super("로그인이 필요한 서비스입니다. 로그인 해주세요.");
 	}
 
 }

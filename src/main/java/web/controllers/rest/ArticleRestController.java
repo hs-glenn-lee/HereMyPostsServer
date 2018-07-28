@@ -36,8 +36,7 @@ public class ArticleRestController {
 	
 	@Autowired
 	ArticleService articleSerivce;
-	
-	
+
 	@Autowired
 	FileService fileService;
 	
@@ -47,17 +46,11 @@ public class ArticleRestController {
 	@RequestMapping(value="/article/{articleId}", method=RequestMethod.GET)
 	public Article getArticle(@PathVariable String articleId) throws IOException {
 		Article a = articleSerivce.getArticle(articleId);
-		System.out.println(a.getTagsArticles());
 		return a;
 	}
 	
 	@RequestMapping(value="/article/save", method=RequestMethod.POST)
 	public Article saveArticle(HttpServletRequest req, @RequestBody Article article) throws IOException {
-		System.out.println(article);
-		System.out.println(article.getCategory());
-		System.out.println(article.getAuthor());
-		System.out.println(article);
-		
 		return articleSerivce.save(article);
 	}
 	
@@ -66,10 +59,6 @@ public class ArticleRestController {
 		return articleSerivce.getArticlesOfCategory(categoryId);
 	}
 	
-	/*@RequestMapping(value="/{username}/recent-articles", method=RequestMethod.GET)
-	public List<Article> getRecentArticles(HttpServletRequest req, @PathVariable String username) {
-		return articleSerivce.getRecentArticles(username);
-	}*/
 	
 	@RequestMapping(value="/{username}/recent-articles", method=RequestMethod.POST)
 	public List<Article> findRecentArticlesByUsername(HttpServletRequest req,
@@ -115,15 +104,20 @@ public class ArticleRestController {
 		return res;
 	}
 	
-	
-	
-	
 	@RequestMapping(value="/article/utils/getNewArticleId", method=RequestMethod.GET)
 	public HashMap<String, String> getNewArticleId() {
 		HashMap<String, String> res = new HashMap<String,String>();
 		res.put("newArticleId", UUIDUtil.getUUID());
 		return res;
 	}
+	
+	@RequestMapping(value="/article/delete/{articleId}", method=RequestMethod.DELETE)
+	public Article deleteArticle(@PathVariable("articleId") String articleId,
+			HttpServletRequest req) {
+		Article deleted = articleSerivce.delete(articleId);
+		return deleted;
+	}
+	
 	
 	
 }

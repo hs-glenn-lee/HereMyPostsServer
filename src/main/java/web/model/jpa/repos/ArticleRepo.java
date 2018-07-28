@@ -14,14 +14,16 @@ import web.model.jpa.entities.Category;
 public interface ArticleRepo extends JpaRepository<Article, String>{
 	@Query("select article from Article article "
 			+ " join article.author aa"
-			+ " where aa.username = :username")
+			+ " where aa.username = :username AND"
+			+ " article.isDel = FALSE")
 	Page<Article> findRecentArticlesPageByUsername(@Param("username")String username, Pageable pageable);
 	
 	@Query("SELECT COUNT(article) FROM Article article WHERE article.author.username= :username")
     Long countByUsername(@Param("username")String username);
 	
 	@Query("SELECT article FROM Article article "
-			+ " WHERE article.category in :categoryList ")
+			+ " WHERE article.category in :categoryList AND "
+			+ " article.isDel = FALSE ")
 	List<Article> getArticlesOf(@Param("categoryList") List<Category> categories);
 	
 }

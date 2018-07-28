@@ -184,6 +184,14 @@ public class ArticleServiceImpl implements ArticleService{
 		return articleRepo.countByUsername(username);
 	}
 
+	@Override
+	public Article delete(String articleId) {
+		Article deletingTarget = articleRepo.findOne(articleId);
+		deletingTarget.setIsDel(true);
+		articleRepo.save(deletingTarget);
+		return deletingTarget;
+	}
+
 	
 
 
