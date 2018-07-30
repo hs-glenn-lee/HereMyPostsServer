@@ -1,12 +1,12 @@
 package web.controllers.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +17,7 @@ import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Tag;
 import web.model.jpa.entities.TagArticle;
+import web.model.jpa.repos.AccountRepo;
 import web.model.jpa.repos.TagArticleRepo;
 import web.model.service.TagService;
 import web.model.service.sign.SignService;
@@ -70,6 +71,16 @@ public class TagRestController {
 	@RequestMapping(value="/test/test/test", method=RequestMethod.GET)
 	public List<Tag> testetst() {
 		return tagService.findTagsByArticle("6cfc5109db604313b65f8360854806d7");
+	}
+	
+	@Autowired
+	AccountRepo accountRepo;
+	
+	@RequestMapping(value="/test/test/test/test", method=RequestMethod.GET)
+	public String test(Model model) {
+		System.out.println("eeeeee");
+		Account a = accountRepo.test(12l);
+		return "index";
 	}
 	
 
