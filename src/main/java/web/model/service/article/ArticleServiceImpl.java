@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +62,10 @@ public class ArticleServiceImpl implements ArticleService{
 		Article oldArticle = articleRepo.findOne(compositeArticle.getId());
 		if(oldArticle != null) {
 			createBackupContentFile(oldArticle);
+		}else {
+			compositeArticle.setCreateTimestamp(new Date());
 		}
+		compositeArticle.setUpdateTimestamp(new Date());
 		
 		//sync author
 		Account author = accountRepo.findOne(compositeArticle.getAuthor().getId());
@@ -77,7 +81,6 @@ public class ArticleServiceImpl implements ArticleService{
 		compositeArticle.setContentFileId(fileId);
 		
 		Article saved = articleRepo.save(compositeArticle);
-
 		return saved;
 	}
 	
@@ -88,18 +91,7 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 
 
-/*	@Override
-	public Article read(String articleId) {
-		Query q = em.createQuery("SELECT article FROM Article article "
-								  +"inner join fetch article.category "
-								  +"inner join fetch article.author "
-								  +"WHERE article.id = :id"
-								  );
-		q.setParameter("id", articleId);
-		Article article = (Article) q.getSingleResult();
-		return article;
-	}
-*/
+
 	@Override
 	public Article getArticle(String articleId) throws IOException {
 		Article article = em.find(Article.class, articleId);
@@ -122,18 +114,16 @@ public class ArticleServiceImpl implements ArticleService{
 
 
 	@Override
-	public Set<Article> getArticlesOfCategory(String categoryId) {
-		Category category = em.find(Category.class, categoryId);
-		Set<Article> articles = category.getArticles();
-		
-		em.close();
+	public List<Article> getArticlesOfCategory(String categoryId) {
+		List<Article> ret = articleRepo.findArticlesOfCategory(categoryId);
+		/*
 		
 		for(Article article : articles) {//this statement prevent loop when serialize object by jackson 
 			article.setCategory(null);
 			article.setUpdateDateStringAsUpdateTimestamp();
 		}
-		
-		return articles;
+		*/
+		return ret;
 	}
 
 	@Override
@@ -183,9 +173,11 @@ public class ArticleServiceImpl implements ArticleService{
 	public Long countOfArticlesByUsername(String username) {
 		return articleRepo.countByUsername(username);
 	}
-
+	
+	@Transactional
 	@Override
 	public Article delete(String articleId) {
+		System.out.println(articleId);
 		Article deletingTarget = articleRepo.findOne(articleId);
 		deletingTarget.setIsDel(true);
 		articleRepo.save(deletingTarget);

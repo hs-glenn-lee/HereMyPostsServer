@@ -18,12 +18,17 @@ public interface ArticleRepo extends JpaRepository<Article, String>{
 			+ " article.isDel = FALSE")
 	Page<Article> findRecentArticlesPageByUsername(@Param("username")String username, Pageable pageable);
 	
-	@Query("SELECT COUNT(article) FROM Article article WHERE article.author.username= :username")
+	@Query("SELECT COUNT(article) FROM Article article WHERE article.author.username= :username AND article.isDel = FALSE")
     Long countByUsername(@Param("username")String username);
 	
 	@Query("SELECT article FROM Article article "
 			+ " WHERE article.category in :categoryList AND "
 			+ " article.isDel = FALSE ")
 	List<Article> getArticlesOf(@Param("categoryList") List<Category> categories);
+	
+	@Query("SELECT article FROM Article article "
+			+ " WHERE article.category.id = :categoryId AND "
+			+ " article.isDel = FALSE ")
+	List<Article> findArticlesOfCategory(@Param("categoryId") String categoryId);
 	
 }

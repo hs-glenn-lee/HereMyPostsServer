@@ -20,7 +20,7 @@ public interface ArticleService {
 	public Page<Article> findRecentArticlesPageByUsername(String username, Pageable pageable);
 	public Long countOfArticlesByUsername(String username);
 	public List<Article> getArticlesAuthoredBy(String authorId);
-	public Set<Article> getArticlesOfCategory(String categoryId);
+	public List<Article> getArticlesOfCategory(String categoryId);
 	public Article delete(String articleId);
 	
 	

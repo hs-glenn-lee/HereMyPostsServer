@@ -51,12 +51,20 @@ public class ArticleRestController {
 	
 	@RequestMapping(value="/article/save", method=RequestMethod.POST)
 	public Article saveArticle(HttpServletRequest req, @RequestBody Article article) throws IOException {
-		return articleSerivce.save(article);
+		Article saved = articleSerivce.save(article);
+		saved.setUpdateDateStringAsUpdateTimestamp();
+		System.out.println("!!!");
+		System.out.println(saved);
+		return saved;
 	}
 	
 	@RequestMapping(value="/category/{categoryId}/articles", method=RequestMethod.GET)
-	public Set<Article> getArticlesOfCategory(HttpServletRequest req, @PathVariable String categoryId) {
-		return articleSerivce.getArticlesOfCategory(categoryId);
+	public List<Article> getArticlesOfCategory(HttpServletRequest req, @PathVariable String categoryId) {
+		List<Article> ret = articleSerivce.getArticlesOfCategory(categoryId);
+		for(Article ac : ret) {
+			ac.setUpdateDateStringAsUpdateTimestamp();
+		}
+		return ret;
 	}
 	
 	
@@ -71,11 +79,7 @@ public class ArticleRestController {
 		List<Article> ret = ret_.getContent();
 		
 		for(Article ac : ret) {
-			//ac.setUpdateDateString();
 			ac.setUpdateDateStringAsUpdateTimestamp();
-			System.out.println(ac);
-			System.out.println(ac.getUpdateDateString());
-			
 		}
 		return ret;
 	}
