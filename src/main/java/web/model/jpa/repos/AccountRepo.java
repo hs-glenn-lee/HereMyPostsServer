@@ -15,7 +15,7 @@ public interface AccountRepo extends JpaRepository<Account, Long>{
 			+ " where act.id = :id")
 	public List<Account> findWithAccountSetting(@Param("id")Long id);
 	
-	public List<Account> findByUsername(String username);
+	public Account findByUsername(String username);
 	
 	public List<Account> findByEmail(String email);
 	

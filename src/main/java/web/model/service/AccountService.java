@@ -1,6 +1,7 @@
 package web.model.service;
 
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.AccountSetting;
 
 public interface AccountService {
 	
@@ -23,5 +24,10 @@ public interface AccountService {
 	 * is parameter email unique as new Account
 	 * */
 	public boolean isUniqueNewEmail(String email);
+	
+	/**
+	 * get Account that has public information of.
+	 * */
+	public AccountSetting getPublicAccountSetting(String username);
 
 }

@@ -13,7 +13,7 @@ import web.model.jpa.entities.AccountSetting;
 import web.model.jpa.repos.AccountRepo;
 import web.model.jpa.repos.AccountSettingRepo;
 
-@Transactional
+
 @Service("accountService")
 public class AccountServiceImpl implements AccountService{
 	
@@ -26,7 +26,7 @@ public class AccountServiceImpl implements AccountService{
 	@Autowired
 	EntityManager em;
 
-	
+	@Transactional
 	@Override
 	public Account createNewAccount(Account newAccount) throws IllegalStateException{
 		validateNewAccount(newAccount);
@@ -53,7 +53,8 @@ public class AccountServiceImpl implements AccountService{
 			throw new IllegalStateException("이미 사용중인 이메일입니다.");
 		}
 	}
-
+	
+	@Transactional
 	@Override
 	public Account authenticate(String username, String password) {
 		List<Account> finded = accountRepo.findByUsernameAndPassword(username, password);
@@ -66,8 +67,8 @@ public class AccountServiceImpl implements AccountService{
 	
 	@Override
 	public boolean isUniqueNewUsername(String username) {
-		List<Account> findByName = accountRepo.findByUsername(username);
-		if(!findByName.isEmpty()) {
+		Account findByName = accountRepo.findByUsername(username);
+		if(findByName != null) {
 			return false;
 		}else {
 			return true;
@@ -76,12 +77,27 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public boolean isUniqueNewEmail(String email) {
-		List<Account> findByName = accountRepo.findByEmail(email);
-		if(!findByName.isEmpty()) {
+		List<Account> findByEmail = accountRepo.findByEmail(email);
+		if(!findByEmail.isEmpty()) {
 			return false;
 		}else {
 			return true;
 		}
+	}
+
+	@Override
+	public AccountSetting getPublicAccountSetting(String username) {
+		if(username == null) {
+			throw new IllegalStateException("Username is null.");
+		}
+		
+		AccountSetting ret = accountSettingRepo.findByAccountUsername(username);
+		if(ret == null) {
+			throw new IllegalStateException("Account not found.");
+		}
+		
+		ret.getAccount().setPassword(null);
+		return ret;
 	}
 	
 	

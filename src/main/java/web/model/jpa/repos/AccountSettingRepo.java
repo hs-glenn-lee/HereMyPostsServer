@@ -12,5 +12,10 @@ public interface AccountSettingRepo extends JpaRepository<AccountSetting, Long>{
 	@Query("select accountSetting from AccountSetting accountSetting "
 			+ " join fetch accountSetting.account account"
 			+ " where account.id = :accountId")
-	public List<AccountSetting> findByAccountId(@Param("accountId") Long accountId);
+	public AccountSetting findByAccountId(@Param("accountId") Long accountId);
+	
+	@Query("select accountSetting from AccountSetting accountSetting "
+			+ " join fetch accountSetting.account account"
+			+ " where account.username = :username")
+	public AccountSetting findByAccountUsername(@Param("username") String username);
 }
