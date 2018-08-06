@@ -46,6 +46,8 @@ public class ArticleRestController {
 	@RequestMapping(value="/article/{articleId}", method=RequestMethod.GET)
 	public Article getArticle(@PathVariable String articleId) throws IOException {
 		Article a = articleSerivce.getArticle(articleId);
+		a.setUpdateDateStringAsUpdateTimestamp();
+		a.setCreateDateStringAsCreateTimestamp();
 		return a;
 	}
 	
@@ -63,6 +65,7 @@ public class ArticleRestController {
 		List<Article> ret = articleSerivce.getArticlesOfCategory(categoryId);
 		for(Article ac : ret) {
 			ac.setUpdateDateStringAsUpdateTimestamp();
+			ac.setCreateDateStringAsCreateTimestamp();
 		}
 		return ret;
 	}
@@ -80,6 +83,7 @@ public class ArticleRestController {
 		
 		for(Article ac : ret) {
 			ac.setUpdateDateStringAsUpdateTimestamp();
+			ac.setCreateDateStringAsCreateTimestamp();
 		}
 		return ret;
 	}
