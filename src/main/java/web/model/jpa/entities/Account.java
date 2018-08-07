@@ -58,7 +58,9 @@ public class Account implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="author")
 	private Set<Article> articles = new HashSet<Article>();
 	
-
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="author")
+	private Set<Comment> comments = new HashSet<Comment>();
+	
 	public Account(String username, String plainPassword) {}
 	
 	public Account() {}
@@ -70,6 +72,14 @@ public class Account implements Serializable{
 
 	public void setArticles(Set<Article> articles) {
 		this.articles = articles;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public Long getId() {

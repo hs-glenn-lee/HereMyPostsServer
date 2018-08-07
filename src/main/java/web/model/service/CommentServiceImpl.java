@@ -33,17 +33,13 @@ public class CommentServiceImpl implements CommentService{
 
 	@Override
 	public List<Comment> getComments(String articleId) {
-		/*Article article = em.find(Article.class, articleId);//todo is comments has article??
-		article.getComments();
-		System.out.println(article.getComments().size());*/
-		
-		Query query = em.createQuery("SELECT c from Comment c join fetch c.article ca"
-				+ "	where ca.id = :articleId ");
-		query.setParameter("articleId", articleId);
-		
-		List<Comment> comments = query.getResultList();
-		em.close();
-		return comments;
+		List<Comment> ret = commentRepo.findByArticleId(articleId);
+		for(Comment c : ret) {
+			if(!c.getIsAnonymous()) {
+				c.getAuthor().setPassword(null);
+			}
+		}
+		return ret;
 	}
 
 	@Override

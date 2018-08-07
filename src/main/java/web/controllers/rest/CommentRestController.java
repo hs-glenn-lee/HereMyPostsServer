@@ -1,8 +1,8 @@
 package web.controllers.rest;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import web.controllers.rest.responses.CommentAsResponse;
 import web.model.jpa.entities.Comment;
 import web.model.service.CommentService;
 
@@ -37,9 +38,14 @@ public class CommentRestController {
 	}
 	
 	@RequestMapping(value="/article/{articleId}/comments", method=RequestMethod.GET)
-	public List<Comment> getCommentsOfArticle(HttpServletRequest req, @PathVariable String articleId) {
-		List<Comment> com = commentService.getComments(articleId);
-		return com;
+	public List<CommentAsResponse> getCommentsOfArticle(HttpServletRequest req, @PathVariable String articleId) {
+		List<Comment> commments = commentService.getComments(articleId);
+		List<CommentAsResponse> ret = new ArrayList<CommentAsResponse>();
+		for(Comment c : commments) {
+			ret.add(new CommentAsResponse(c));
+		}
+		
+		return ret;
 	}
 
 }

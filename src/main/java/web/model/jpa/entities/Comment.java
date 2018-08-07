@@ -24,26 +24,28 @@ public class Comment {
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="author_name")
-	private String authorName;
-	
-	@Column(name="author_id")
-	private Long authorId;
-	
 	@Column(name="content")
 	private String content;
 	
-	@Column(name="is_del")
-	@Type(type="org.hibernate.type.NumericBooleanType")
-	Boolean isDel;
+	@ManyToOne
+	@JoinColumn(name="author_id")
+	private Account author;
+
 	
 	@Column(name="is_anonymous")
 	@Type(type="org.hibernate.type.NumericBooleanType")
 	Boolean isAnonymous;
 	
+	@Column(name="anonymous_author_name")
+	private String anonymousAuthorName;
+	
 	@Column(name="anonymous_pass_word")
-	String anonymousPassword;
+	private String anonymousPassword;
 
+	@Column(name="is_del")
+	@Type(type="org.hibernate.type.NumericBooleanType")
+	private Boolean isDel;
+	
 	@Column(name="create_timestamp")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createTimestamp;
@@ -55,7 +57,7 @@ public class Comment {
 	@ManyToOne
 	@JoinColumn(name="article_id")
 	private Article article;
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -64,13 +66,7 @@ public class Comment {
 		this.id = id;
 	}
 
-	public String getAuthorName() {
-		return authorName;
-	}
 
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
-	}
 
 	public String getContent() {
 		return content;
@@ -78,6 +74,14 @@ public class Comment {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Account getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Account author) {
+		this.author = author;
 	}
 
 	public Boolean getIsDel() {
@@ -96,12 +100,13 @@ public class Comment {
 		this.isAnonymous = isAnonymous;
 	}
 
-	public Long getAuthorId() {
-		return authorId;
+
+	public String getAnonymousAuthorName() {
+		return anonymousAuthorName;
 	}
 
-	public void setAuthorId(Long autorId) {
-		this.authorId = autorId;
+	public void setAnonymousAuthorName(String anonymousAuthorName) {
+		this.anonymousAuthorName = anonymousAuthorName;
 	}
 
 	public Date getCreateTimestamp() {
