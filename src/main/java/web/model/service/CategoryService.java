@@ -24,6 +24,8 @@ public interface CategoryService {
 	
 	public List<Category> getCategoriesOwnedBy(Account account);
 	
+	public List<Category> getPublicCategoriesOwnedBy(String username);
+	
 	
 	
 	

@@ -66,5 +66,13 @@ public class CategoryRestController {
 		List<Category> catList = categoryService.getCategoriesOwnedBy(sign.getAccount());
 		return catList;
 	}
+	
+	
+	@RequestMapping(value="/{username}/category/public", method=RequestMethod.GET)
+	public List<Category> getPublicCategories(HttpServletRequest req, @PathVariable("username") String username) throws NotSignedInException {
+		List<Category> catList = categoryService.getPublicCategoriesOwnedBy(username);
+		return catList;
+	}
+	
 
 }

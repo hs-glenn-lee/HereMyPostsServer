@@ -125,6 +125,13 @@ public class CategoryServiceImpl implements CategoryService{
 		List<Category> cats = categoryRepo.findCategoriesOwnedBy(account.getId());
 		return cats;
 	}
+	
+	@Override
+	public List<Category> getPublicCategoriesOwnedBy(String username) {
+		List<Category> cats = categoryRepo.findPublicCategoriesByOwnerUsername(username);
+		return cats;
+	}
+
 
 	@Override
 	public List<Category> updateAll(List<Category> categories) {
@@ -132,4 +139,5 @@ public class CategoryServiceImpl implements CategoryService{
 		return null;
 	}
 
+	
 }

@@ -17,6 +17,13 @@ public interface CategoryRepo extends JpaRepository<Category, String>{
 	
 	@Query("SELECT category "
 			+ " FROM Category category "
+			+ " WHERE category.owner.username = :username AND "
+			+ " category.isPublic = TRUE AND "
+			+ " category.isDel = FALSE")
+	List<Category> findPublicCategoriesByOwnerUsername(@Param("username") String username);
+	
+	@Query("SELECT category "
+			+ " FROM Category category "
 			+ " WHERE category.id = :categoryId AND "
 			+ " category.owner.id = :ownerId ")
 	Category findByIdAndOwner(@Param("categoryId")String categoryId, @Param("ownerId") Long ownerId);
