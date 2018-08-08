@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import web.exceptions.DeletedException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
@@ -104,7 +105,22 @@ public class ArticleServiceImpl implements ArticleService{
 		em.close();
 		return article;
 	}
-
+	
+	@Override
+	public Article getPublicArticle(String articleId) throws IOException, DeletedException {
+		Article article = articleRepo.findPublicArticle(articleId);
+		if(article == null) { throw new IllegalStateException("article not found");}
+		if(article.getIsDel()) { throw new DeletedException();}
+		
+		article.getCategory();
+		article.getAuthor();
+		article.getTagsArticles();
+		
+		File content = fileService.getFile(article.getContentFileId());
+		article.setContent(fileToString(content));
+		return article;
+	}
+	
 	@Override
 	public List<Article> getArticlesAuthoredBy(String authorId) {
 		// TODO Auto-generated method stub
@@ -183,6 +199,8 @@ public class ArticleServiceImpl implements ArticleService{
 		articleRepo.save(deletingTarget);
 		return deletingTarget;
 	}
+
+	
 
 	
 

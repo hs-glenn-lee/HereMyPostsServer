@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import web.controllers.rest.parameters.PageParameter;
 import web.controllers.rest.responses.GenericResponse;
+import web.exceptions.DeletedException;
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
@@ -50,6 +51,13 @@ public class ArticleRestController {
 		a.setCreateDateStringAsCreateTimestamp();
 		return a;
 	}
+	
+	@RequestMapping(value="/article/public/{articleId}", method=RequestMethod.GET)
+	public Article getPublicArticle(@PathVariable String articleId) throws IOException, DeletedException {
+		Article a = articleSerivce.getPublicArticle(articleId);
+		return a;
+	}
+	
 	
 	@RequestMapping(value="/article/save", method=RequestMethod.POST)
 	public Article saveArticle(HttpServletRequest req, @RequestBody Article article) throws IOException {

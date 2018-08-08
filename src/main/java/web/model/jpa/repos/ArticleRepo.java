@@ -31,4 +31,9 @@ public interface ArticleRepo extends JpaRepository<Article, String>{
 			+ " article.isDel = FALSE ")
 	List<Article> findArticlesOfCategory(@Param("categoryId") String categoryId);
 	
+	@Query("SELECT article FROM Article article "
+			+ " WHERE article.id in :articleId AND "
+			+ " article.isPublic = TRUE ")
+	Article findPublicArticle(@Param("articleId") String articleId);
+	
 }
