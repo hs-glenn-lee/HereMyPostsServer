@@ -25,14 +25,12 @@ public class CommentServiceImpl implements CommentService{
 	@Transactional
 	@Override
 	public Comment writeComment(Comment comment) {
-		em.persist(comment);
-		em.flush();
-		em.close();
+		comment = commentRepo.saveAndFlush(comment);
 		return comment;
 	}
 
 	@Override
-	public List<Comment> getComments(String articleId) {
+	public List<Comment> getCommentsByArticleId(String articleId) {
 		List<Comment> ret = commentRepo.findByArticleId(articleId);
 		for(Comment c : ret) {
 			if(!c.getIsAnonymous()) {
@@ -41,10 +39,19 @@ public class CommentServiceImpl implements CommentService{
 		}
 		return ret;
 	}
+	
+	@Override
+	public Long getCountCommentsByArticleId(String articleId) {
+		Long count = commentRepo.findCountCommentsByArticleId(articleId);
+		return count;
+	}
+	
 
 	@Override
 	public Comment getComment(Long commentId) {
 		return commentRepo.getOne(commentId);
 	}
+
+	
 
 }

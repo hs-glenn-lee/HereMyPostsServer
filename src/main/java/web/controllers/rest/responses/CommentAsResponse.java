@@ -6,6 +6,7 @@ import web.model.jpa.entities.Comment;
 
 public class CommentAsResponse {
 	
+	private Long id;
 	private Boolean isAnonyumous;
 	private String authorName;
 	private String profilePictureFileId;
@@ -16,6 +17,7 @@ public class CommentAsResponse {
 	private Boolean isDel;
 	
 	public CommentAsResponse(Comment comment) {
+		this.id = comment.getId();
 		this.isAnonyumous = comment.getIsAnonymous();
 		if(this.isAnonyumous) {
 			this.authorName = comment.getAnonymousAuthorName();
@@ -28,6 +30,14 @@ public class CommentAsResponse {
 		this.updateTimestamp = comment.getUpdateTimestamp();
 		this.articleId = comment.getArticle().getId();
 		this.isDel = comment.getIsDel();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Boolean getIsAnonyumous() {

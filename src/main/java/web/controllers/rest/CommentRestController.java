@@ -2,6 +2,7 @@ package web.controllers.rest;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,22 +31,37 @@ public class CommentRestController {
 	public Comment getComment(@PathVariable String commentId) throws IOException {
 		Long _commentId = Long.parseLong(commentId);
 		return commentService.getComment(_commentId);
+		
 	}
 	
+	
 	@RequestMapping(value="/comment/write", method=RequestMethod.PUT)
-	public Comment writeComment(HttpServletRequest req, @RequestBody Comment comment) throws IOException {
-		return commentService.writeComment(comment);
+	public CommentAsResponse writeComment(HttpServletRequest req, @RequestBody Comment comment) throws IOException {
+		Comment written = commentService.writeComment(comment);
+		CommentAsResponse cr = new CommentAsResponse(written);
+		return cr;
+		
 	}
 	
 	@RequestMapping(value="/article/{articleId}/comments", method=RequestMethod.GET)
 	public List<CommentAsResponse> getCommentsOfArticle(HttpServletRequest req, @PathVariable String articleId) {
-		List<Comment> commments = commentService.getComments(articleId);
+		List<Comment> commments = commentService.getCommentsByArticleId(articleId);
 		List<CommentAsResponse> ret = new ArrayList<CommentAsResponse>();
 		for(Comment c : commments) {
 			ret.add(new CommentAsResponse(c));
 		}
 		
 		return ret;
+		
+	}
+	
+	@RequestMapping(value="/article/{articleId}/comments/count", method=RequestMethod.GET)
+	public HashMap<String, Long> getCountCommentsOfArticle(HttpServletRequest req, @PathVariable String articleId) {
+		Long count = commentService.getCountCommentsByArticleId(articleId);
+		HashMap<String, Long> res = new HashMap<String, Long> ();
+		res.put("count", count);
+		return res;
+		
 	}
 
 }

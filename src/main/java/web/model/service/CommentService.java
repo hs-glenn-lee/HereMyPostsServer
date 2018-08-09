@@ -8,7 +8,9 @@ public interface CommentService {
 	
 	public Comment writeComment(Comment comment);
 	
-	public List<Comment> getComments(String articleId);
+	public List<Comment> getCommentsByArticleId(String articleId);
+	
+	public Long getCountCommentsByArticleId(String articleId);
 	
 	public Comment getComment(Long commentId);
 	

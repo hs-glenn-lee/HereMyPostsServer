@@ -44,7 +44,7 @@ public class Comment {
 
 	@Column(name="is_del")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	private Boolean isDel;
+	private Boolean isDel = false;
 	
 	@Column(name="create_timestamp")
 	@Temporal(TemporalType.TIMESTAMP)
