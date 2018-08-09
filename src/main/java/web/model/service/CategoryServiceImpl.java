@@ -127,8 +127,8 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 	
 	@Override
-	public List<Category> getPublicCategoriesOwnedBy(String username) {
-		List<Category> cats = categoryRepo.findPublicCategoriesByOwnerUsername(username);
+	public List<Category> getCategoriesByOwenerUsername(String username) {
+		List<Category> cats = categoryRepo.findCategoriesByOwnerUsername(username);
 		return cats;
 	}
 
