@@ -132,13 +132,14 @@ public class ArticleServiceImpl implements ArticleService{
 	@Override
 	public List<Article> getArticlesOfCategory(String categoryId) {
 		List<Article> ret = articleRepo.findArticlesOfCategory(categoryId);
-		/*
-		
-		for(Article article : articles) {//this statement prevent loop when serialize object by jackson 
-			article.setCategory(null);
-			article.setUpdateDateStringAsUpdateTimestamp();
-		}
-		*/
+		return ret;
+	}
+	
+	@Override
+	public List<Article> getPublicArticlesOfCategory(String categoryId) {
+		System.out.println("wefwefwefwef");
+		List<Article> ret = articleRepo.findPublicArticlesOfCategory(categoryId);
+		System.out.println(ret);
 		return ret;
 	}
 
@@ -162,6 +163,12 @@ public class ArticleServiceImpl implements ArticleService{
 	public Page<Article> findRecentArticlesPageByUsername(String username, Pageable pageable) {
 		return articleRepo.findRecentArticlesPageByUsername(username, pageable);
 	}
+	
+	@Override
+	public Page<Article> findRecentPublicArticlesPageByUsername(String username, Pageable pageable) {
+		return articleRepo.findRecentPublicArticlesPageByUsername(username, pageable);
+	}
+
 	
 	private String fileToString(File file) throws IOException {
 		byte[] encoded = Files.readAllBytes(file.toPath());
@@ -199,6 +206,9 @@ public class ArticleServiceImpl implements ArticleService{
 		articleRepo.save(deletingTarget);
 		return deletingTarget;
 	}
+
+
+	
 
 	
 

@@ -18,6 +18,14 @@ public interface ArticleRepo extends JpaRepository<Article, String>{
 			+ " article.isDel = FALSE")
 	Page<Article> findRecentArticlesPageByUsername(@Param("username")String username, Pageable pageable);
 	
+	@Query("select article from Article article "
+			+ " join article.author aa"
+			+ " where aa.username = :username AND"
+			+ " article.isDel = FALSE "
+			+ " AND article.isPublic = TRUE "
+			+ " AND article.category.isPublic = TRUE")
+	Page<Article> findRecentPublicArticlesPageByUsername(@Param("username")String username, Pageable pageable);
+	
 	@Query("SELECT COUNT(article) FROM Article article WHERE article.author.username= :username AND article.isDel = FALSE")
     Long countByUsername(@Param("username")String username);
 	
@@ -31,9 +39,19 @@ public interface ArticleRepo extends JpaRepository<Article, String>{
 			+ " article.isDel = FALSE ")
 	List<Article> findArticlesOfCategory(@Param("categoryId") String categoryId);
 	
+	
 	@Query("SELECT article FROM Article article "
-			+ " WHERE article.id in :articleId AND "
-			+ " article.isPublic = TRUE ")
+			+ " WHERE article.category.id = :categoryId "
+			+ " AND article.category.isPublic = TRUE "
+			+ " AND article.isPublic = TRUE "
+			/*+ " AND article.isDel = FALSE "*/)
+	List<Article> findPublicArticlesOfCategory(@Param("categoryId") String categoryId);
+	
+	
+	@Query("SELECT article FROM Article article "
+			+ " WHERE article.id in :articleId "
+			+ " AND article.isPublic = TRUE "
+			+ " AND article.category.isPublic = TRUE")
 	Article findPublicArticle(@Param("articleId") String articleId);
 	
 }

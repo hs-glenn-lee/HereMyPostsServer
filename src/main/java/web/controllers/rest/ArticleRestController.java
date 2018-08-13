@@ -63,18 +63,19 @@ public class ArticleRestController {
 	public Article saveArticle(HttpServletRequest req, @RequestBody Article article) throws IOException {
 		Article saved = articleSerivce.save(article);
 		saved.setUpdateDateStringAsUpdateTimestamp();
-		System.out.println("!!!");
-		System.out.println(saved);
 		return saved;
 	}
 	
 	@RequestMapping(value="/category/{categoryId}/articles", method=RequestMethod.GET)
 	public List<Article> getArticlesOfCategory(HttpServletRequest req, @PathVariable String categoryId) {
 		List<Article> ret = articleSerivce.getArticlesOfCategory(categoryId);
-		for(Article ac : ret) {
-			ac.setUpdateDateStringAsUpdateTimestamp();
-			ac.setCreateDateStringAsCreateTimestamp();
-		}
+		return ret;
+	}
+	
+	@RequestMapping(value="/{username}/category/{categoryId}/public-articles", method=RequestMethod.GET)
+	public List<Article> getPublicArticlesOfCategory(HttpServletRequest req,
+			@PathVariable String categoryId) {
+		List<Article> ret = articleSerivce.getPublicArticlesOfCategory(categoryId);
 		return ret;
 	}
 	
@@ -88,16 +89,24 @@ public class ArticleRestController {
 		
 		//TODO page isFirst ... learn these api
 		List<Article> ret = ret_.getContent();
-		
-		for(Article ac : ret) {
-			ac.setUpdateDateStringAsUpdateTimestamp();
-			ac.setCreateDateStringAsCreateTimestamp();
-		}
 		return ret;
 	}
 	
+	@RequestMapping(value="/{username}/recent-public-articles", method=RequestMethod.POST)
+	public List<Article> findRecentPublicArticlesByUsername(HttpServletRequest req,
+			@PathVariable String username,
+			@RequestBody PageParameter pageParameter) {
+		PageRequest pReq = pageParameter.toPageRequest();
+		Page<Article> ret_ = articleSerivce.findRecentPublicArticlesPageByUsername(username, pReq);
+		
+		//TODO page isFirst ... learn these api
+		List<Article> ret = ret_.getContent();
+		return ret;
+	}
+	
+	
 	@RequestMapping(value="/{username}/article/count", method=RequestMethod.GET)
-	public HashMap<String, Long> countOfArticlesByUsername (	@PathVariable String username ) {
+	public HashMap<String, Long> countOfArticlesByUsername (@PathVariable String username ) {
 		Long ret = articleSerivce.countOfArticlesByUsername(username);
 		HashMap<String, Long> res = new HashMap<String, Long> ();
 		res.put("count", ret);

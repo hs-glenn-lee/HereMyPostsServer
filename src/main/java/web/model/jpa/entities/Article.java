@@ -73,7 +73,7 @@ public class Article implements Serializable{
 
 	@Column(name="is_public")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	private Boolean isPublic = false;
+	private Boolean isPublic = true;
 	
 	
 	@ManyToOne
