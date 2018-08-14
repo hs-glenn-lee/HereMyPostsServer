@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import web.exceptions.DeletedException;
 import web.exceptions.NotSignedInException;
+import web.exceptions.PrivateArticleException;
 
 @ControllerAdvice
 public class AdviceExceptionHandler {
@@ -52,6 +53,29 @@ public class AdviceExceptionHandler {
 		String stringContent = "삭제된 리소스입니다.";
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Location", "/exception/deleted-exception");
+		
+		ResponseEntity<?> respEntity = new ResponseEntity<String>(stringContent, headers, HttpStatus.FOUND);
+		return respEntity;
+
+	}
+	
+	@ExceptionHandler(PrivateArticleException.class)
+	public @ResponseBody ResponseEntity<?> handlePrivateArticleException(HttpServletRequest req, Exception exception) throws JSONException {
+		System.out.println("PrivateArticleException");
+		
+		String headerAccept = req.getHeader("Accept");
+		
+		if(headerAccept != null) {
+			if(headerAccept.contains("application/json")) {
+				ExceptionAttributes exceptionAttribute = new ExceptionAttributes(exception, HttpStatus.FORBIDDEN.value());
+				ResponseEntity<?> respEntity = new ResponseEntity<ExceptionAttributes>(exceptionAttribute, HttpStatus.FORBIDDEN);
+				return respEntity;
+			}
+		}
+
+		String stringContent = "비공개 글 입니다.";
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Location", "/exception/private-article-exception");
 		
 		ResponseEntity<?> respEntity = new ResponseEntity<String>(stringContent, headers, HttpStatus.FOUND);
 		return respEntity;

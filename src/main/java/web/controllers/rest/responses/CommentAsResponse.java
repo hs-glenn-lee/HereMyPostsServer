@@ -7,7 +7,7 @@ import web.model.jpa.entities.Comment;
 public class CommentAsResponse {
 	
 	private Long id;
-	private Boolean isAnonyumous;
+	private Boolean isAnonymous;
 	private String authorName;
 	private String profilePictureFileId;
 	private String content;
@@ -18,8 +18,8 @@ public class CommentAsResponse {
 	
 	public CommentAsResponse(Comment comment) {
 		this.id = comment.getId();
-		this.isAnonyumous = comment.getIsAnonymous();
-		if(this.isAnonyumous) {
+		this.isAnonymous = comment.getIsAnonymous();
+		if(this.isAnonymous) {
 			this.authorName = comment.getAnonymousAuthorName();
 		}else {
 			this.authorName = comment.getAuthor().getAccountSetting().getPenName();
@@ -40,12 +40,12 @@ public class CommentAsResponse {
 		this.id = id;
 	}
 
-	public Boolean getIsAnonyumous() {
-		return isAnonyumous;
+	public Boolean getIsAnonymous() {
+		return isAnonymous;
 	}
 
-	public void setIsAnonyumous(Boolean isAnonyumous) {
-		this.isAnonyumous = isAnonyumous;
+	public void setIsAnonymous(Boolean isAnonyumous) {
+		this.isAnonymous = isAnonyumous;
 	}
 
 	public String getAuthorName() {

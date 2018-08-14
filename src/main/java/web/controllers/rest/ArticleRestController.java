@@ -23,6 +23,7 @@ import web.controllers.rest.parameters.PageParameter;
 import web.controllers.rest.responses.GenericResponse;
 import web.exceptions.DeletedException;
 import web.exceptions.NotSignedInException;
+import web.exceptions.PrivateArticleException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.service.article.ArticleService;
@@ -53,7 +54,7 @@ public class ArticleRestController {
 	}
 	
 	@RequestMapping(value="/article/public/{articleId}", method=RequestMethod.GET)
-	public Article getPublicArticle(@PathVariable String articleId) throws IOException, DeletedException {
+	public Article getPublicArticle(@PathVariable String articleId) throws IOException, DeletedException, PrivateArticleException {
 		Article a = articleSerivce.getPublicArticle(articleId);
 		return a;
 	}
@@ -139,6 +140,7 @@ public class ArticleRestController {
 	@RequestMapping(value="/article/delete/{articleId}", method=RequestMethod.DELETE)
 	public Article deleteArticle(@PathVariable("articleId") String articleId,
 			HttpServletRequest req) {
+		//TODO important sign
 		Article deleted = articleSerivce.delete(articleId);
 		return deleted;
 	}

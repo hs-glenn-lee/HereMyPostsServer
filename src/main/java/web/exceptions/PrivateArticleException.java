@@ -13,7 +13,7 @@ public class PrivateArticleException extends Exception{
 	private static final long serialVersionUID = 5882546160776834804L;
 
 	public PrivateArticleException() {
-		super("비공개 글입니다.");
+		super("비공개 글입니다. 조회할 수 없습니다.");
 	}
 
 }

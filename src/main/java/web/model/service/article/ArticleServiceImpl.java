@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import web.exceptions.DeletedException;
+import web.exceptions.PrivateArticleException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 import web.model.jpa.entities.Category;
@@ -107,10 +108,12 @@ public class ArticleServiceImpl implements ArticleService{
 	}
 	
 	@Override
-	public Article getPublicArticle(String articleId) throws IOException, DeletedException {
-		Article article = articleRepo.findPublicArticle(articleId);
-		if(article == null) { throw new IllegalStateException("article not found");}
+	public Article getPublicArticle(String articleId) throws IOException, DeletedException, PrivateArticleException {
+		Article article = articleRepo.findOne(articleId);
+		if(article == null) { throw new IllegalStateException("글을 찾을 수 없습니다.");}
 		if(article.getIsDel()) { throw new DeletedException();}
+		if(!article.getIsPublic()) { throw new PrivateArticleException();}
+		if(!article.getCategory().getIsPublic()) { throw new PrivateArticleException();}
 		
 		article.getCategory();
 		article.getAuthor();
@@ -137,9 +140,7 @@ public class ArticleServiceImpl implements ArticleService{
 	
 	@Override
 	public List<Article> getPublicArticlesOfCategory(String categoryId) {
-		System.out.println("wefwefwefwef");
 		List<Article> ret = articleRepo.findPublicArticlesOfCategory(categoryId);
-		System.out.println(ret);
 		return ret;
 	}
 
@@ -148,6 +149,9 @@ public class ArticleServiceImpl implements ArticleService{
 		Query query = em.createQuery("select article from Article article"
 				+ " where article.author.username = :username "
 				+ " order by article.createTimestamp desc");
+		
+		
+		
 		query.setParameter("username", username);
 		int pageNumber = 1;
 		int pageSize = 10;
@@ -200,7 +204,6 @@ public class ArticleServiceImpl implements ArticleService{
 	@Transactional
 	@Override
 	public Article delete(String articleId) {
-		System.out.println(articleId);
 		Article deletingTarget = articleRepo.findOne(articleId);
 		deletingTarget.setIsDel(true);
 		articleRepo.save(deletingTarget);

@@ -23,4 +23,12 @@ public interface CommentRepo extends JpaRepository<Comment, Long>{
 	Long findCountCommentsByArticleId(@Param("articleId") String articleId);
 	
 	
+	@Query("SELECT c from Comment c "
+			+ " join fetch c.article cArticle "
+			+ " left outer join fetch c.author cAuthor "
+			+ " left join fetch cAuthor.accountSetting cAuthorSetting "
+			+ "	where c.id = :id "
+			+ " AND c.isDel = FALSE")
+	Comment findOneWithAuthorAndAccountSetting(@Param("id") Long id);
+	
 }

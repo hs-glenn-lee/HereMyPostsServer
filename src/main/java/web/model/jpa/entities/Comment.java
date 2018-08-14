@@ -140,5 +140,18 @@ public class Comment {
 	public void setAnonymousPassword(String anonymousPassword) {
 		this.anonymousPassword = anonymousPassword;
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		sb.append("id:" + this.id +", ");
+		sb.append("content:" + this.content +", ");
+		if(author !=null)
+			sb.append("author:" + this.author +", ");
+		
+		sb.append("}");
+		
+		return sb.toString();
+	}
 
 }

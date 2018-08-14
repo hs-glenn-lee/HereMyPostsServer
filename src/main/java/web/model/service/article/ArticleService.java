@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import web.exceptions.DeletedException;
+import web.exceptions.PrivateArticleException;
 import web.model.jpa.entities.Account;
 import web.model.jpa.entities.Article;
 
@@ -15,7 +16,7 @@ public interface ArticleService {
 	
 	public Article save(Article compositeArticle) throws IOException;
 	public Article getArticle(String articleId) throws IOException;
-	public Article getPublicArticle(String articleId) throws IOException, DeletedException;
+	public Article getPublicArticle(String articleId) throws IOException, DeletedException, PrivateArticleException;
 	public String saveArticleImage(MultipartFile uploadedImage, String articleId, Account me) throws IOException;
 	public List<Article> getRecentArticles(String username);
 	

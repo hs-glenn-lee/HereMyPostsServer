@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import web.controllers.rest.responses.CommentAsResponse;
+import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Comment;
 import web.model.service.CommentService;
 
@@ -38,9 +39,16 @@ public class CommentRestController {
 	@RequestMapping(value="/comment/write", method=RequestMethod.PUT)
 	public CommentAsResponse writeComment(HttpServletRequest req, @RequestBody Comment comment) throws IOException {
 		Comment written = commentService.writeComment(comment);
+		written.toString();
 		CommentAsResponse cr = new CommentAsResponse(written);
 		return cr;
-		
+	}
+	
+	@RequestMapping(value="/comment/delete", method=RequestMethod.POST)
+	public CommentAsResponse deleteComment(HttpServletRequest req,
+			@RequestBody Comment comment) throws IOException, NotSignedInException {
+		Comment deleted = commentService.deleteComment(comment, req.getSession());
+		return new CommentAsResponse(deleted);
 	}
 	
 	@RequestMapping(value="/article/{articleId}/comments", method=RequestMethod.GET)
