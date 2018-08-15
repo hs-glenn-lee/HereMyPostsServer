@@ -13,7 +13,7 @@ public class NotSignedInException extends Exception{
 	private static final long serialVersionUID = 7500096759685457171L;
 
 	public NotSignedInException() {
-		super("삭제된 리소스입니다.");
+		super("로그인이 필요한 서비스입니다. 로그인 해주세요.");
 	}
 
 }

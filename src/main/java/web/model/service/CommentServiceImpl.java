@@ -93,8 +93,12 @@ public class CommentServiceImpl implements CommentService{
 			throw new IllegalStateException("Comment Not Found.");
 		}
 
+		System.out.println(target);
+		System.out.println(comment);
+		
 		if(target.getIsAnonymous()) {
-			if(target.getAnonymousPassword() == comment.getAnonymousPassword()) {
+			
+			if(target.getAnonymousPassword().equals(comment.getAnonymousPassword())) {
 				target.setIsDel(true);
 				commentRepo.saveAndFlush(target);
 				return target;
@@ -102,7 +106,11 @@ public class CommentServiceImpl implements CommentService{
 				throw new IllegalStateException("Wrong Password.");
 			}
 		}else {
-			if(target.getAuthor().getId() == signService.getSign(httpSession).getAccount().getId()) {
+			System.out.println(target.getAuthor().getId());
+			System.out.println(signService.getSign(httpSession).getAccount());
+			
+			if(target.getAuthor().getId().equals(signService.getSign(httpSession).getAccount().getId())) {
+				
 				target.setIsDel(true);
 				commentRepo.saveAndFlush(target);
 				target.getAuthor().getAccountSetting();
