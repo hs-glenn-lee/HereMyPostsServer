@@ -9,6 +9,7 @@ public class CommentAsResponse {
 	private Long id;
 	private Boolean isAnonymous;
 	private String authorName;
+	private Long authorId;
 	private String profilePictureFileId;
 	private String content;
 	private Date createTimestamp;
@@ -23,6 +24,7 @@ public class CommentAsResponse {
 			this.authorName = comment.getAnonymousAuthorName();
 		}else {
 			this.authorName = comment.getAuthor().getAccountSetting().getPenName();
+			this.authorId = comment.getAuthor().getId();
 			this.profilePictureFileId = comment.getAuthor().getAccountSetting().getProfilePictureFileId();
 		}
 		this.content = comment.getContent();
@@ -54,6 +56,14 @@ public class CommentAsResponse {
 
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
+	}
+
+	public Long getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(Long authorId) {
+		this.authorId = authorId;
 	}
 
 	public String getProfilePictureFileId() {
