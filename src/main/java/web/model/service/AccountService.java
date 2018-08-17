@@ -8,7 +8,7 @@ public interface AccountService {
 	/**
 	 * this method would be called in context of signing up. create new account and initialize AccountSetting, 
 	 * */
-	public Account createNewAccount(Account newAccount) throws IllegalStateException;
+	public Account createNewAccount(AccountSetting newAccountSetting) throws IllegalStateException;
 	
 	/**
 	 * match account with username and password. if authenticate successfully return Account, else return null.

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.AccountSetting;
 import web.model.jpa.entities.Category;
 import web.model.service.AccountService;
 import web.model.service.CategoryService;
@@ -33,8 +34,8 @@ public class SignServiceImpl implements SignService{
 	
 	@Override
 	@Transactional
-	public boolean signup(Account newAccount) throws IOException {
-		newAccount = accountService.createNewAccount(newAccount);
+	public boolean signup(AccountSetting newAccountSetting) throws IOException {
+		Account newAccount = accountService.createNewAccount(newAccountSetting);
 		createAccountDirectory(newAccount);
 		createRootCategory(newAccount);
 		return true;

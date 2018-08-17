@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import web.controllers.rest.responses.GenericResponse;
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.AccountSetting;
 import web.model.service.AccountService;
 import web.model.service.sign.Sign;
 import web.model.service.sign.SignService;
@@ -33,8 +34,6 @@ public class SignRestController {
 	@RequestMapping(value="/sign-in", method=RequestMethod.POST)
 	public GenericResponse<?> signin(@RequestBody Account trying,
 													HttpServletRequest req) {
-		System.out.println(trying);
-		
 		Account account = signService.signin(trying, req.getSession());
 		
 		if(account == null) {
@@ -50,8 +49,8 @@ public class SignRestController {
 	}
 	
 	@RequestMapping(value="/sign-up", method=RequestMethod.PUT)
-	public @ResponseBody GenericResponse<?> signup(@RequestBody Account account) throws IOException {
-		signService.signup(account);
+	public @ResponseBody GenericResponse<?> signup(@RequestBody AccountSetting accountSettingAndAccount) throws IOException {
+		signService.signup(accountSettingAndAccount);
 		return new GenericResponse<Object>();
 	}
 	

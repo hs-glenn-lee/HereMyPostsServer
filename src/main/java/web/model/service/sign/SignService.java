@@ -6,10 +6,11 @@ import javax.servlet.http.HttpSession;
 
 import web.exceptions.NotSignedInException;
 import web.model.jpa.entities.Account;
+import web.model.jpa.entities.AccountSetting;
 
 public interface SignService {
 	
-	public boolean signup(Account account) throws IOException;
+	public boolean signup(AccountSetting accountSetting) throws IOException;
 	
 	/**
 	 * if not valid username and password, this will return null

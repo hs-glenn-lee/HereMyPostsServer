@@ -28,16 +28,21 @@ public class AccountServiceImpl implements AccountService{
 
 	@Transactional
 	@Override
-	public Account createNewAccount(Account newAccount) throws IllegalStateException{
+	public Account createNewAccount(AccountSetting newAccountSetting) throws IllegalStateException{
+		Account newAccount = newAccountSetting.getAccount();
 		validateNewAccount(newAccount);
 		
 		//save Account should precede before save AccountSetting, because account.id must be set first.
-		Account created = accountRepo.save(newAccount);
+		newAccount.setAccountSetting(null);
+		Account created = accountRepo.saveAndFlush(newAccount);
 		
 		//initial empty AccountSetting
 		AccountSetting actSet = new AccountSetting("","");
+		actSet.setPenName(newAccountSetting.getPenName());
 		actSet.setAccount(created);
-		accountSettingRepo.save(actSet);
+		actSet = accountSettingRepo.saveAndFlush(actSet);
+		
+		created.setAccountSetting(actSet);
 
 		return created;
 	}
