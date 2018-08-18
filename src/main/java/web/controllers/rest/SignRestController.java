@@ -79,7 +79,7 @@ public class SignRestController {
 	}
 	
 	//temp
-	@RequestMapping(value="/sign-out", method=RequestMethod.GET)
+	@RequestMapping(value="/sign-out", method=RequestMethod.POST)
 	public GenericResponse<?> signout(HttpServletRequest req) {
 		req.getSession().invalidate();
 		GenericResponse<Object> res = new GenericResponse<Object>();
