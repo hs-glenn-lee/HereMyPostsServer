@@ -42,7 +42,7 @@ public class Category implements Serializable {
 	
 	@Column(name="is_public")
 	@Type(type="org.hibernate.type.NumericBooleanType")
-	Boolean isPublic = false;
+	Boolean isPublic = true;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="owner_id")
