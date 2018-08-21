@@ -45,7 +45,17 @@ public class CategoryServiceImpl implements CategoryService{
 		List<Category> sibilings = categoryRepo.findChildrenByIdAndOwner(cat.getParentId(), owner.getId());
 		for(Category sib : sibilings) {
 			if(sib.getName().equals(cat.getName())) {
-				throw new IllegalStateException("이미 하위에 같은 이름의 카테고리가 있습니다.");
+				
+				System.out.println("-----");
+				System.out.println(sib);
+				
+				System.out.println(cat);
+				
+				if(sib.getId().equals(cat.getId())) {
+					
+				}else {
+					throw new IllegalStateException("이미 하위에 같은 이름의 카테고리가 있습니다.");
+				}
 			}
 		}
 		
