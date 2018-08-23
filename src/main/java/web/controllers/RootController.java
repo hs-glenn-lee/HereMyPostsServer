@@ -1,33 +1,37 @@
 package web.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import web.model.service.TestService;
-
 @Controller
 @RequestMapping("/")
 public class RootController {
-	@Autowired
-	TestService testService;
-	
-	@RequestMapping(method=RequestMethod.GET)
+
+/*	@RequestMapping(method=RequestMethod.GET)
 	public String root(Model model) {
 		//String v = testService.getValue(0);
 		return "index";
 	}
+	*/
 	
-	@RequestMapping(value="/sign/sign-in", method=RequestMethod.GET)
-	public String signIn(Model model) {
-		//String v = testService.getValue(0); 
-		return "index";
-	}
-	
-	@RequestMapping(value="/sign/sign-up", method=RequestMethod.GET)
-	public String signUp(Model model) {
+	@RequestMapping(value={""
+			, "/sign/sign-in"
+			, "/sign/sign-up"
+			, "/me/settings"
+			, "/{username}"
+			, "/{username}/manager/{articleId}"
+			, "/{username}/manager"
+			, "/{username}/article"
+			, "/{username}/article/{articleId}"
+			
+			, "/error/not-signed-in"
+			
+			, "/agreements/privacy-policy"
+			, "/agreements/terms-of-service"
+			})
+	public String root(Model model) {
 		//String v = testService.getValue(0);
 		return "index";
 	}
