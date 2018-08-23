@@ -44,13 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 		List<Category> sibilings = categoryRepo.findChildrenByIdAndOwner(cat.getParentId(), owner.getId());
 		for(Category sib : sibilings) {
-			if(sib.getName().equals(cat.getName())) {
-				
-				System.out.println("-----");
-				System.out.println(sib);
-				
-				System.out.println(cat);
-				
+			if(sib.getName().equals(cat.getName())) {				
 				if(sib.getId().equals(cat.getId())) {
 					
 				}else {
