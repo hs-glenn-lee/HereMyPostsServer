@@ -1,5 +1,5 @@
-spring:
-  profiles.active: development
+#spring:
+#  profiles.active: @spring.profiles.active=@spring.profiles.active@
 
 ---
 spring:
@@ -12,6 +12,39 @@ spring:
       url: jdbc:mariadb://127.0.0.1:3306/here_my_posts_db
       username: here_my_posts_app
       password: abc123!
+      driver-class-name: org.mariadb.jdbc.Driver
+      driverClassName: org.mariadb.jdbc.Driver
+      tomcat:
+        min-idle: 5
+        #initial-size: 5 
+  session:
+    store-type: redis
+  redis:
+    host: 127.0.0.1
+    #password: gksdkfkd123
+    port: 6379
+  http:
+    multipart:
+      #multipart file size limitation
+      max-file-size: 100MB
+      max-request-size: 100MB
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+
+---
+spring:
+  profiles: production
+  mvc:  
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+      url: jdbc:mariadb://127.0.0.1:3306/papertower_db
+      username: papertower_dba
+      password: papertowerlee123!
       driver-class-name: org.mariadb.jdbc.Driver
       driverClassName: org.mariadb.jdbc.Driver
       tomcat:
