@@ -33,7 +33,8 @@ logging:
     org:
       springframework:
         web: DEBUG
-
+server:
+  port: 8080
 ---
 spring:
   profiles: production
@@ -66,3 +67,5 @@ logging:
     org:
       springframework:
         web: DEBUG
+server:
+  port: 80
