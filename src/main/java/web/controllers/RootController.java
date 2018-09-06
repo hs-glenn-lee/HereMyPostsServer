@@ -1,9 +1,12 @@
 package web.controllers;
 
+import java.util.Locale;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Controller
 @RequestMapping("/")
@@ -31,8 +34,7 @@ public class RootController {
 			, "/agreements/privacy-policy"
 			, "/agreements/terms-of-service"
 			})
-	public String root(Model model) {
-		//String v = testService.getValue(0);
+	public String root(ModelAndView mnv) throws Exception {
 		return "index";
 	}
 }

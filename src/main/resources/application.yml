@@ -1,13 +1,12 @@
-#spring:
-#  profiles.active: @spring.profiles.active=@spring.profiles.active@
 
----
 spring:
-  profiles: development
   mvc:  
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
+---
+spring:
+  profiles: development
   datasource:
       url: jdbc:mariadb://127.0.0.1:3306/here_my_posts_db
       username: here_my_posts_app
@@ -39,10 +38,6 @@ server:
 ---
 spring:
   profiles: production
-  mvc:  
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
   datasource:
       url: jdbc:mariadb://127.0.0.1:3306/papertower_db
       username: papertower_dba
